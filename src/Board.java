@@ -5,6 +5,8 @@ public class Board {
     private static final int SIZE = 15;
     private Square[][] board = new Square[SIZE][SIZE];
 
+
+
     /**
      * Create empty board.
      */
@@ -31,10 +33,34 @@ public class Board {
     }
 
     /**
-     * just for testing
+     * Set's a letter on the board
+     */
+    public void setLetterOnBoard(int i, int j, char letter) {
+
+        if (board[i][j].getLetter() == ' ') {
+            board[i][j].setLetter(letter);
+        } else {
+            System.out.println("Invalid Insertion");
+        }
+    }
+
+
+
+
+    /**
+     * Get's a letter on the board
+     */
+    public Square getLetterOnBoard(int i, int j) {
+        return board[i][j];
+    }
+
+
+
+    /**
+     * Main method used for testing
      */
     public static void main(String[] args) {
-        Board board = new Board();
-        board.printBoard();
+
+
     }
 }
