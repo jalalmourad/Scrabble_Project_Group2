@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * Main class of Scrabble Game
  */
 public class Game {
-    
+
     Hand playerHand;
     Bag bag;
     Board board;
