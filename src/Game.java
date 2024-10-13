@@ -24,14 +24,15 @@ public class Game {
        // if(playerHand.getLetters().contains(letter)) {
 
                 if (playerHand.getLetters().contains(letter)) {
+                    System.out.println("Letter Placed is: "+letter+"\n");
                     board.setLetterOnBoard(x, y, letter);
                     playerHand.getLetters().remove(playerHand.getLetterPosition(letter));
                 }
 
        // }
-
-            System.out.println("This letter is not in your hand!");
-
+        else {
+                    System.out.println("This letter is not in your hand!\n");
+                }
     }
 
 
