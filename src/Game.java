@@ -8,6 +8,7 @@ public class Game {
     Hand playerHand;
     Bag bag;
     Board board;
+    Player player;
 
     /**
      * Create game.
@@ -58,28 +59,53 @@ public class Game {
         System.out.println();
     }
 
+    public Hand getPlayerHand() {
+        return playerHand;
+    }
 
+    public Bag getBag(){
+        return bag;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
 
     public static void main(String[] args) {
         Game game = new Game();
         Bag bag = new Bag();
+//
+//        game.playerHand.setLetters(bag.getAlphabet());
+//        game.playerHand.printHand();
+//
+//        game.setLetterOnBoard(1,1,'A');
+//        game.playerHand.printHand();
+//        game.setLetterOnBoard(1,2,'B');
+//        game.playerHand.printHand();
+//        game.setLetterOnBoard(1,3,'C');
+//        game.playerHand.printHand();
+//        game.setLetterOnBoard(1,4,'D');
+//        game.playerHand.printHand();
+//        game.setLetterOnBoard(1,5,'E');
+//        game.playerHand.printHand();
+//
+//        game.board.printBoard();
 
-        game.playerHand.setLetters(bag.getAlphabet());
-        game.playerHand.printHand();
+        game.getPlayerHand().setLetters(bag.getAlphabet());
+        game.getPlayerHand().printHand();
 
         game.setLetterOnBoard(1,1,'A');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
         game.setLetterOnBoard(1,2,'B');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
         game.setLetterOnBoard(1,3,'C');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
         game.setLetterOnBoard(1,4,'D');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
         game.setLetterOnBoard(1,5,'E');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
 
-        game.board.printBoard();
-
+        game.getBoard().printBoard();
 
 
 //        game.play();
