@@ -17,7 +17,7 @@ public class Game {
         playerHand = new Hand();
         bag = new Bag();
         board = new Board();
-        playerHand.setLetters(bag.getAlphabet());
+        //playerHand.setLetters(bag.getAlphabet());
     }
 
     public void setLetterOnBoard(int x, int y, char letter){
@@ -28,11 +28,12 @@ public class Game {
                     System.out.println("Letter Placed is: "+letter+"\n");
                     board.setLetterOnBoard(x, y, letter);
                     playerHand.getLetters().remove(playerHand.getLetterPosition(letter));
+                    playerHand.refillHand();
                 }
 
        // }
         else {
-                    System.out.println("This letter is not in your hand!\n");
+                    System.out.println("The letter "+ letter+ " is not in your hand!\n");
                 }
     }
 
@@ -105,6 +106,11 @@ public class Game {
         game.setLetterOnBoard(1,5,'E');
         game.getPlayerHand().printHand();
 
+//        while (game.getPlayerHand().getLettersSize()<7){
+//            game.playerHand.getLetters().add(bag.addRandomChar());
+//        }
+
+        //game.getPlayerHand().printHand();
         game.getBoard().printBoard();
 
 

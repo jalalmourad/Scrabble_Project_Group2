@@ -51,6 +51,13 @@ public class Bag {
         return bagChars;
     }
 
+    public char addRandomChar(){
+        Random rand = new Random();
+
+        char c = alphabet.get(rand.nextInt(alphabet.size()));
+            alphabet.remove(rand.nextInt(alphabet.size()));
+        return c;
+    }
 
     public static void addChars(char c, int n){
         for(int i = 0; i < n; i++){
