@@ -8,6 +8,7 @@ public class Game {
     Hand playerHand;
     Bag bag;
     Board board;
+    Player player;
 
     /**
      * Create game.
@@ -16,7 +17,7 @@ public class Game {
         playerHand = new Hand();
         bag = new Bag();
         board = new Board();
-        playerHand.setLetters(bag.getAlphabet());
+        //playerHand.setLetters(bag.getAlphabet());
     }
 
     public void setLetterOnBoard(int x, int y, char letter){
@@ -27,11 +28,12 @@ public class Game {
                     System.out.println("Letter Placed is: "+letter+"\n");
                     board.setLetterOnBoard(x, y, letter);
                     playerHand.getLetters().remove(playerHand.getLetterPosition(letter));
+                    playerHand.refillHand();
                 }
 
        // }
         else {
-                    System.out.println("This letter is not in your hand!\n");
+                    System.out.println("The letter "+ letter+ " is not in your hand!\n");
                 }
     }
 
@@ -58,28 +60,58 @@ public class Game {
         System.out.println();
     }
 
+    public Hand getPlayerHand() {
+        return playerHand;
+    }
 
+    public Bag getBag(){
+        return bag;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
 
     public static void main(String[] args) {
         Game game = new Game();
         Bag bag = new Bag();
+//
+//        game.playerHand.setLetters(bag.getAlphabet());
+//        game.playerHand.printHand();
+//
+//        game.setLetterOnBoard(1,1,'A');
+//        game.playerHand.printHand();
+//        game.setLetterOnBoard(1,2,'B');
+//        game.playerHand.printHand();
+//        game.setLetterOnBoard(1,3,'C');
+//        game.playerHand.printHand();
+//        game.setLetterOnBoard(1,4,'D');
+//        game.playerHand.printHand();
+//        game.setLetterOnBoard(1,5,'E');
+//        game.playerHand.printHand();
+//
+//        game.board.printBoard();
 
-        game.playerHand.setLetters(bag.getAlphabet());
-        game.playerHand.printHand();
+        game.getPlayerHand().setLetters(bag.getAlphabet());
+        game.getPlayerHand().printHand();
 
         game.setLetterOnBoard(1,1,'A');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
         game.setLetterOnBoard(1,2,'B');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
         game.setLetterOnBoard(1,3,'C');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
         game.setLetterOnBoard(1,4,'D');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
         game.setLetterOnBoard(1,5,'E');
-        game.playerHand.printHand();
+        game.getPlayerHand().printHand();
 
-        game.board.printBoard();
+//        while (game.getPlayerHand().getLettersSize()<7){
+//            game.playerHand.getLetters().add(bag.addRandomChar());
+//        }
 
+        //game.getPlayerHand().printHand();
+        game.getBoard().printBoard();
 
 
 //        game.play();

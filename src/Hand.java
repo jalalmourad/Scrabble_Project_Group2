@@ -5,10 +5,13 @@ public class Hand {
 
 private ArrayList<Character> letters;
 
-
+    Bag bag;
 
 public Hand() {
     letters = new ArrayList<Character>();
+    bag = new Bag();
+
+        setLetters(bag.getAlphabet());
 }
 
     public ArrayList<Character> getLetters() {
@@ -19,6 +22,15 @@ public Hand() {
     letters.add(letter);
 
 }
+
+    public void refillHand(){
+
+    while (letters.size()<7){
+
+        addLetter(bag.addRandomChar());
+    }
+
+    }
 
 public void setLetters(ArrayList<Character> bagChars){
     this.letters = bagChars;
