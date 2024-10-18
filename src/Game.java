@@ -13,6 +13,7 @@ public class Game {
     Board board;
     Scanner sc;
 
+
     /**
      * Create game.
      */
@@ -62,10 +63,40 @@ public class Game {
      * Begin game, loops until game is over.
      */
     public void play() {
-        printIntro();
 
-        while (true) {
-            //board.printBoard();
+        printIntro();
+        participants();
+
+        boolean gameOn = true;
+        while (gameOn) {
+            for (Player currentPlayer : players) {
+                System.out.println("It's " + currentPlayer.getName() + "'s turn.");
+
+                getPlayerHand(currentPlayer);
+
+                System.out.print("Enter the X coordinate: ");
+                int x = sc.nextInt();
+
+                System.out.print("Enter the Y coordinate: ");
+                int y = sc.nextInt();
+
+                System.out.print("Enter the letter to place: ");
+                char letter = sc.next().charAt(0);
+
+                setLetterOnBoard(x, y, letter, currentPlayer);
+
+                board.printBoard();
+                getPlayerHand(currentPlayer);
+
+                System.out.println();
+
+                System.out.print("Continue playing? (yes/no): ");
+                String continueGame = sc.next();
+                if (continueGame.equalsIgnoreCase("no")) {
+                    gameOn = false;
+                    break;
+                }
+            }
         }
     }
 
@@ -93,39 +124,41 @@ public class Game {
         return board;
     }
 
+
     public static void main(String[] args) {
         Game game = new Game();
-        game.participants();
-        Bag bag = new Bag();
-        int i = 0;
 
-        //testing for multiple players
-        for (Player currentPlayer : game.players) {
-            System.out.println("It's " + currentPlayer.getName() + "'s turn.");
-
-            // Set the letters for the current player's hand
-            currentPlayer.getHand().setLetters(bag.getAlphabet());
-            game.getPlayerHand(currentPlayer);  // Print the player's hand
-
-            // Simulate making moves and updating the board
-            game.setLetterOnBoard(i, 1, 'A', currentPlayer);  // Place 'A'
-            game.getPlayerHand(currentPlayer);  // Print the player's hand
-
-            game.setLetterOnBoard(i, 2, 'B', currentPlayer);  // Place 'B'
-            game.getPlayerHand(currentPlayer);  // Print the player's hand
-
-            game.setLetterOnBoard(i, 3, 'C', currentPlayer);  // Place 'C'
-            game.getPlayerHand(currentPlayer);  // Print the player's hand
-
-            game.setLetterOnBoard(i, 4, 'D', currentPlayer);  // Place 'D'
-            game.getPlayerHand(currentPlayer);  // Print the player's hand
-
-            game.setLetterOnBoard(i, 5, 'E', currentPlayer);  // Place 'E'
-            game.getPlayerHand(currentPlayer);  // Print the player's hand
-            i += 1;
-
-            System.out.println();  // Separate turns with a blank line
-        }
+//        game.participants();
+//        Bag bag = new Bag();
+//        int i = 0;
+//
+//        //testing for multiple players
+//        for (Player currentPlayer : game.players) {
+//            System.out.println("It's " + currentPlayer.getName() + "'s turn.");
+//
+//            // Set the letters for the current player's hand
+//            currentPlayer.getHand().setLetters(bag.getAlphabet());
+//            game.getPlayerHand(currentPlayer);  // Print the player's hand
+//
+//            // Simulate making moves and updating the board
+//            game.setLetterOnBoard(i, 1, 'A', currentPlayer);  // Place 'A'
+//            game.getPlayerHand(currentPlayer);  // Print the player's hand
+//
+//            game.setLetterOnBoard(i, 2, 'B', currentPlayer);  // Place 'B'
+//            game.getPlayerHand(currentPlayer);  // Print the player's hand
+//
+//            game.setLetterOnBoard(i, 3, 'C', currentPlayer);  // Place 'C'
+//            game.getPlayerHand(currentPlayer);  // Print the player's hand
+//
+//            game.setLetterOnBoard(i, 4, 'D', currentPlayer);  // Place 'D'
+//            game.getPlayerHand(currentPlayer);  // Print the player's hand
+//
+//            game.setLetterOnBoard(i, 5, 'E', currentPlayer);  // Place 'E'
+//            game.getPlayerHand(currentPlayer);  // Print the player's hand
+//            i += 1;
+//
+//            System.out.println();  // Separate turns with a blank line
+//        }
 //
 //        game.playerHand.setLetters(bag.getAlphabet());
 //        game.playerHand.printHand();
@@ -162,8 +195,9 @@ public class Game {
 //        }
 
         //game.getPlayerHand().printHand();
-        game.getBoard().printBoard();
+  //      game.getBoard().printBoard();
 
+        game.play();
 
 //        game.play();
     }
