@@ -31,88 +31,31 @@ public class Square {
     }
 
 
-    public int letterScore(){
-
-        if (letter == 'A'){
-            score = 1;
-        }
-        if (letter == 'E'){
-            score = 1;
-        }
-        if (letter == 'I'){
-            score = 1;
-        }
-        if (letter == 'O'){
-            score = 1;
-        }
-        if (letter == 'U'){
-            score = 1;
-        }
-        if (letter == 'L'){
-            score = 1;
-        }
-        if (letter == 'N'){
-            score = 1;
-        }
-        if (letter == 'S'){
-            score = 1;
-        }
-        if (letter == 'T'){
-            score = 1;
-        }
-        if (letter == 'R'){
-            score = 1;
-        }
-        if (letter == 'D'){
-            score = 2;
-        }
-        if (letter == 'G'){
-            score = 2;
-        }
-        if (letter == 'B'){
-            score = 3;
-        }
-        if (letter == 'C'){
-            score = 3;
-        }
-        if (letter == 'M'){
-            score = 3;
-        }
-        if (letter == 'P'){
-            score = 3;
-        }
-        if (letter == 'F'){
-            score = 3;
-        }
-        if (letter == 'H'){
-            score = 4;
-        }
-        if (letter == 'V'){
-            score = 4;
-        }
-        if (letter == 'W'){
-            score = 4;
-        }
-        if (letter == 'Y'){
-            score = 4;
-        }
-        if (letter == 'K'){
-            score = 5;
-        }
-        if (letter == 'J'){
-            score = 8;
-        }
-        if (letter == 'X'){
-            score = 8;
-        }
-        if (letter == 'Q'){
-            score = 10;
-        }
-        if (letter == 'Z'){
-            score = 10;
+    public int letterScore() {
+        for (char i = 'A'; i <= 'Z'; i++) {
+            if (i == 'A' || i == 'E' || i == 'I' || i == 'O' || i == 'U'
+                    || i == 'L' || i == 'N' || i == 'S' || i == 'T' || i == 'R') {
+                score = 1;
+            }
+            else if (i == 'D' || i == 'G') {
+                score = 2;
+            }
+            else if (i == 'B' || i == 'C' || i == 'M' || i == 'P') {
+                score = 3;
+            }
+            else if (i == 'F' || i == 'H' || i == 'V' || i == 'W' || i == 'Y') {
+                score = 4;
+            }
+            else if (i == 'K') {
+                score = 5;
+            }
+            else if (i == 'J' || i == 'X') {
+                score = 8;
+            }
+            else { // Q, Z
+                score = 10;
+            }
         }
         return score;
     }
-
-
 }

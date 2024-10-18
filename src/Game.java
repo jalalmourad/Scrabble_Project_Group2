@@ -1,22 +1,28 @@
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Main class of Scrabble Game
  */
 public class Game {
 
+    List<Player> players;
     Hand playerHand;
     Bag bag;
     Board board;
-    Player player;
+    private Parser parser;
+    //Player player;
 
     /**
      * Create game.
      */
     public Game() {
-        playerHand = new Hand();
+        players = new ArrayList<>();
+
+        playerHand = new Hand(); // MOVE INTO PLAYER
         bag = new Bag();
         board = new Board();
+        parser = new Parser();
         //playerHand.setLetters(bag.getAlphabet());
     }
 
@@ -24,19 +30,40 @@ public class Game {
 
        // if(playerHand.getLetters().contains(letter)) {
 
-                if (playerHand.getLetters().contains(letter)) {
-                    System.out.println("Letter Placed is: "+letter+"\n");
-                    board.setLetterOnBoard(x, y, letter);
-                    playerHand.getLetters().remove(playerHand.getLetterPosition(letter));
-                    playerHand.refillHand();
-                }
+        if (playerHand.getLetters().contains(letter)) {
+            System.out.println("Letter Placed is: "+letter+"\n");
+            board.setLetterOnBoard(x, y, letter);
+            playerHand.getLetters().remove(playerHand.getLetterPosition(letter));
+            playerHand.refillHand();
+        }
 
        // }
         else {
-                    System.out.println("The letter "+ letter+ " is not in your hand!\n");
-                }
+            System.out.println("The letter "+ letter+ " is not in your hand!\n");
+        }
     }
 
+
+    private boolean processCommand(Command command) {
+        boolean quit = false;
+
+        if (!command.isCommand()) {
+            System.out.println("Unknown command, please try again.");
+            return false;
+        }
+
+        String c = command.getCommand();
+        if (c.equals("play")) {
+            // PLAYER GETS THEIR TURN
+        } else if (c.equals("pass")) {
+            // PLAYER CAN FORFEIT THEIR TURN, GOES TO NEXT PLAYER
+        } else if (c.equals("quit")) {
+            quit = true;
+        } else if (c.equals("help")) {
+            printHelp();
+        }
+        return quit;
+    }
 
     /**
      * Begin game, loops until game is over.
@@ -44,20 +71,12 @@ public class Game {
     public void play() {
         printIntro();
 
-        while (true) {
-            //board.printBoard();
+        boolean gameDone = false;
+        while (!gameDone) {
+            Command command = parser.getCurrentCommand();
+            gameDone = processCommand(command);
         }
-    }
-
-    /**
-     * Print game introduction.
-     */
-    public void printIntro() {
-        System.out.println();
-        System.out.println("Welcome to the game of Scrabble!");
-        System.out.println();
-        System.out.println();
-        System.out.println();
+        System.out.println("Thanks for playing!");
     }
 
     public Hand getPlayerHand() {
@@ -70,6 +89,28 @@ public class Game {
 
     public Board getBoard() {
         return board;
+    }
+
+    /**
+     * Print game introduction.
+     */
+    public void printIntro() {
+        System.out.println();
+        System.out.println("Welcome to the game of Scrabble!");
+        System.out.println("Please enter how many players you would like to have, with a minimum of 2:");
+        System.out.println();
+    }
+
+    /**
+     * Print game help.
+     */
+    public void printHelp() {
+        System.out.println();
+        System.out.println("Options:");
+        System.out.println("play: play your turn, place a letter on the board.");
+        System.out.println("pass: forfeit your turn, allow the next player to play.");
+        System.out.println("quit: End the game, automatically results in everyone's loss.");
+        System.out.println();
     }
 
     public static void main(String[] args) {
