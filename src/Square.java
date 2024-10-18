@@ -31,88 +31,29 @@ public class Square {
     }
 
 
-    public int letterScore(){
-
-        if (letter == 'A'){
+    public int letterScore(char l) {
+        if (l == 'A' || l == 'E' || l == 'I' || l == 'O' || l == 'U'
+                || l == 'L' || l == 'N' || l == 'S' || l == 'T' || l == 'R') {
             score = 1;
         }
-        if (letter == 'E'){
-            score = 1;
-        }
-        if (letter == 'I'){
-            score = 1;
-        }
-        if (letter == 'O'){
-            score = 1;
-        }
-        if (letter == 'U'){
-            score = 1;
-        }
-        if (letter == 'L'){
-            score = 1;
-        }
-        if (letter == 'N'){
-            score = 1;
-        }
-        if (letter == 'S'){
-            score = 1;
-        }
-        if (letter == 'T'){
-            score = 1;
-        }
-        if (letter == 'R'){
-            score = 1;
-        }
-        if (letter == 'D'){
+        else if (l == 'D' || l == 'G') {
             score = 2;
         }
-        if (letter == 'G'){
-            score = 2;
-        }
-        if (letter == 'B'){
+        else if (l == 'B' || l == 'C' || l == 'M' || l == 'P') {
             score = 3;
         }
-        if (letter == 'C'){
-            score = 3;
-        }
-        if (letter == 'M'){
-            score = 3;
-        }
-        if (letter == 'P'){
-            score = 3;
-        }
-        if (letter == 'F'){
-            score = 3;
-        }
-        if (letter == 'H'){
+        else if (l == 'F' || l == 'H' || l == 'V' || l == 'W' || l == 'Y') {
             score = 4;
         }
-        if (letter == 'V'){
-            score = 4;
-        }
-        if (letter == 'W'){
-            score = 4;
-        }
-        if (letter == 'Y'){
-            score = 4;
-        }
-        if (letter == 'K'){
+        else if (l == 'K') {
             score = 5;
         }
-        if (letter == 'J'){
+        else if (l == 'J' || l == 'X') {
             score = 8;
         }
-        if (letter == 'X'){
-            score = 8;
-        }
-        if (letter == 'Q'){
-            score = 10;
-        }
-        if (letter == 'Z'){
+        else { // Q, Z
             score = 10;
         }
         return score;
     }
-
-
 }
