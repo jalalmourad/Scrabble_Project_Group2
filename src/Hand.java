@@ -38,9 +38,15 @@ public class Hand {
     }
 
 
+
+public void printHand(String name) {
+    System.out.print(name + "'s Letters in hand: ");
+    for(int i = 0; i<letters.size();i++){
+
     public void printHand() {
         System.out.print("Letters in hand: ");
         for(int i = 0; i<letters.size();i++){
+
 
             System.out.print(letters.get(i)+" ");
         }
