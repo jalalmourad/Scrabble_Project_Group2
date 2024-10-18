@@ -44,12 +44,15 @@ public class Bag {
 
     public ArrayList<Character> getAlphabet() {
         Random rand = new Random();
+        ArrayList<Character> newBagChars = new ArrayList<>();
 
-        for (int i = 0;i<7;i++){
-            bagChars.add(alphabet.get(rand.nextInt(alphabet.size())));
-            alphabet.remove(rand.nextInt(alphabet.size()));
+        for (int i = 0; i < 7 && !alphabet.isEmpty(); i++) {
+            int index = rand.nextInt(alphabet.size());
+            newBagChars.add(alphabet.get(index));
+            alphabet.remove(index);
         }
-        return bagChars;
+
+        return newBagChars;
     }
 
     public char addRandomChar(){
