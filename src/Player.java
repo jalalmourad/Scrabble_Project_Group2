@@ -7,18 +7,12 @@ public class Player {
     private String name;
     private int score;
     ArrayList<String> words;
-    private Hand hand;
 
 
     public Player(String name) {
         this.name = name;
         this.score = 0;
-
-        this.words = new ArrayList();
-        this.hand = new Hand();
-
         this.words = new ArrayList<>();
-
     }
 
 
@@ -34,14 +28,6 @@ public class Player {
 
         this.words.add(word);
         return wordScore;
-    }
-
-    public Hand getHand() {
-        return this.hand;
-    }
-
-    public String getName() {
-        return this.name;
     }
 
     public int getPlayerScore() {
