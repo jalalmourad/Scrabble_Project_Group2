@@ -21,7 +21,7 @@ public class Player {
 
         for (char letter : word.toCharArray()) {
             Square square = new Square(letter);
-            wordScore += square.letterScore();
+            wordScore += square.letterScore(letter);
         }
 
         this.score += wordScore;

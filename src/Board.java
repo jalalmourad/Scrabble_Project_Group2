@@ -5,8 +5,6 @@ public class Board {
     private static final int SIZE = 15;
     private Square[][] board = new Square[SIZE][SIZE];
 
-
-
     /**
      * Create empty board.
      */
