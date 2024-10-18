@@ -59,4 +59,12 @@ public class Hand {
         return letters.size();
     }
 
+    public void swap(char letter, Bag bag){
+
+        if (lettersInHand(letter)){
+            letters.set(getLetterPosition(letter), bag.addRandomChar());
+        }
+
+    }
+
 }
