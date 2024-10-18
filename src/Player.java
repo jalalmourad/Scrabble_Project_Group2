@@ -13,8 +13,12 @@ public class Player {
     public Player(String name) {
         this.name = name;
         this.score = 0;
+
         this.words = new ArrayList();
         this.hand = new Hand();
+
+        this.words = new ArrayList<>();
+
     }
 
 
@@ -23,7 +27,8 @@ public class Player {
 
         for (char letter : word.toCharArray()) {
             Square square = new Square(letter);
-            wordScore += square.letterScore();    }
+            wordScore += square.letterScore(letter);
+        }
 
         this.score += wordScore;
 

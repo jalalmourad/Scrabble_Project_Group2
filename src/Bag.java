@@ -8,6 +8,7 @@ public class Bag {
 
     private ArrayList<Character> bagChars;
 
+    // Scrabble Letter Distribution (according to official game rules)
     static {
         addChars('A', 9);
         addChars('B', 3);
