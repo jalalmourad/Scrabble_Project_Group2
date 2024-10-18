@@ -106,11 +106,6 @@ public class Game {
         game.setLetterOnBoard(1,5,'E');
         game.getPlayerHand().printHand();
 
-//        while (game.getPlayerHand().getLettersSize()<7){
-//            game.playerHand.getLetters().add(bag.addRandomChar());
-//        }
-
-        //game.getPlayerHand().printHand();
         game.getBoard().printBoard();
 
 
