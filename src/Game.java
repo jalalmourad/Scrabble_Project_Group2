@@ -27,27 +27,38 @@ public class Game {
      * Add players to the game.
      */
     public void participants() {
-        System.out.println("Provide the number of players participating in the game: ");
-        int n = sc.nextInt();
+        boolean numPlayers = false;
 
-        for (int i = 0; i < n; i++) {
-            System.out.println("Player "+(i+1)+": ");
-            String playerName = sc.next();
-            Player player = new Player(playerName);
-            player.getHand().setLetters(bag.getAlphabet());
-            players.add(player);
+        while (!numPlayers) {
+            System.out.println("Provide the number of players participating in the game (2-4 players): ");
+            int n = sc.nextInt();
+
+            if (n < 2) {
+                System.out.println("Not enough players!");
+            } else if (n > 4) {
+                System.out.println("Too many players!");
+            } else {
+                for (int i = 0; i < n; i++) {
+                    System.out.println("Player "+(i+1)+": ");
+                    String playerName = sc.next();
+                    Player player = new Player(playerName);
+                    player.getHand().setLetters(bag.getAlphabet());
+                    players.add(player);
+                }
+                numPlayers = true;
+            }
         }
     }
 
     /**
      * Set a letter on the board for a player.
      */
-    public void setLetterOnBoard(int x, int y, char letter, Player player) {
+    public void setLetterOnBoard(int y, int x, char letter, Player player) {
         Hand playerHand = player.getHand();
 
         if (playerHand.getLetters().contains(letter)) {
             System.out.println("Letter Placed is: "+letter+"\n");
-            board.setLetterOnBoard(x,y,letter);
+            board.setLetterOnBoard(y,x,letter);
             playerHand.getLetters().remove(playerHand.getLetterPosition(letter));
             playerHand.refillHand();
         } else {
@@ -68,7 +79,7 @@ public class Game {
             int y = sc.nextInt();
             System.out.print("Enter the letter to place: ");
             char letter = sc.next().charAt(0);
-            setLetterOnBoard(x, y, letter, currentPlayer);
+            setLetterOnBoard(y, x, letter, currentPlayer);
             placedLetters.add(letter);
             System.out.print("Do you want to place another letter? (yes/no): ");
             String placeAnother = sc.next();
@@ -86,7 +97,6 @@ public class Game {
             System.out.println(formedWord+" is not a valid English word!");
         }
     }
-
 
     public String formWordFromPlacedLetters(List<Character> placedLetters) {
         StringBuilder word = new StringBuilder();
