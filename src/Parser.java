@@ -2,14 +2,19 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 public class Parser {
 
     private Set<String> englishWords;
+    private Scanner scanner;
+    private CommandWords words;
 
     public Parser() {
         englishWords = new HashSet<>();
+        scanner = new Scanner(System.in);
+        words = new CommandWords();
     }
 
     public void loadWordsFromFile(String filePath) {
@@ -22,10 +27,27 @@ public class Parser {
             System.out.println("Error reading the word list: " + e.getMessage());
         }
     }
+
     public boolean isValidWord(String word) {
         return englishWords.contains(word.toUpperCase());
     }
 
+    public Command getCurrentCommand() {
+        String input;
+
+        input = scanner.nextLine();
+        Scanner commandScanner = new Scanner(input);
+        if (commandScanner.hasNext()) {
+            input = commandScanner.next();
+        }
+
+        if (words.isValidCommand(input)) {
+            return new Command(input);
+        }
+        else {
+            return new Command(null);
+        }
+    }
 
 }
 

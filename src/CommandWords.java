@@ -3,7 +3,7 @@
  */
 public class CommandWords {
 
-    private static final String[] commandWords = {"play", "pass", "quit", "help","swap"};
+    private static final String[] commandWords = {"play", "pass", "quit"};
 
     /**
      * Check if valid command.

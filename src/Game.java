@@ -106,7 +106,6 @@ public class Game {
         return word.toString();
     }
 
-
     public void play() {
         printIntro();
         participants();
@@ -116,16 +115,31 @@ public class Game {
             for (Player currentPlayer : players) {
                 System.out.println("It's "+currentPlayer.getName()+"'s turn.");
                 getPlayerHand(currentPlayer);
-                playTurn(currentPlayer);
-                board.printBoard();
-                getPlayerHand(currentPlayer);
-                System.out.print("Continue playing? (yes/no): ");
-                String continueGame = sc.next();
-                if (continueGame.equalsIgnoreCase("no")) {
+
+                printActions();
+                Command command = parser.getCurrentCommand();
+                while (!command.isCommand()) {
+                    System.out.println("Unknown command, please try again.");
+                    command = parser.getCurrentCommand();
+                }
+                String c = command.getCommand();
+                if (c.equals("play")) {
+                    playTurn(currentPlayer);
+                    board.printBoard();
+                    getPlayerHand(currentPlayer);
+                } else if (c.equals("pass")) {
+                    continue;
+                } else if (c.equals("quit")) {
                     gameOn = false;
                     break;
-                }}
+                }
+            }
         }
+    }
+
+    public void printActions() {
+        System.out.println();
+        System.out.println("Your command words are: play | pass | quit");
     }
 
     /**
