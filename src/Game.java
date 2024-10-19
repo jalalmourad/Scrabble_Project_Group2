@@ -130,6 +130,7 @@ public class Game {
                 } else if (c.equals("pass")) {
                     continue;
                 } else if (c.equals("quit")) {
+                    System.out.println("Thanks for playing, goodbye!");
                     gameOn = false;
                     break;
                 }
