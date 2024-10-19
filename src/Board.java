@@ -50,8 +50,8 @@ public class Board {
     /**
      * Get a letter on the board
      */
-    public Square getLetterOnBoard(int i, int j) {
-        return board[i][j];
+    public char getLetterOnBoard(int i, int j) {
+        return board[i][j].getLetter();
     }
 
 
