@@ -83,24 +83,21 @@ public class Game {
             System.out.print("Enter the letter to place: ");
             char letter = sc.next().charAt(0);
 
-            if (turn == 1){
-                if (x!= 8 && y!= 8){
-                    System.out.println("Illegal move, Please start from the centre (X:8, Y:8)");
-                    System.out.println("Please make sure to start from [8 : 8]");
-                    System.out.print("Enter the X coordinate: ");
-                    int a = sc.nextInt();
-                    System.out.print("Enter the Y coordinate: ");
-                    int b = sc.nextInt();
-                    System.out.print("Enter the letter to place: ");
-                    char l = sc.next().charAt(0);
-                    setLetterOnBoard(b, a, l, currentPlayer);
-                    placedLetters.add(l);
-                    System.out.print("Do you want to place another letter? (yes/no): ");
-                    String placeAnother = sc.next();
-                    if (placeAnother.equalsIgnoreCase("no")) {
-                        turnOver = true;
-                    }
+            if (turn == 1) {
+                if (x != 8 && y != 8) {
+                    int a = 0;
+                    int b = 0;
+                    while (a != 8 && b != 8) {
+                        System.out.println("Illegal move, Please start from the centre (X:8, Y:8)");
+                        System.out.println("Please make sure to start from [8 : 8]");
 
+                        System.out.print("Enter the X coordinate: ");
+                        a = sc.nextInt();
+                        System.out.print("Enter the Y coordinate: ");
+                        b = sc.nextInt();
+                    }
+                    x = 8;
+                    y = 8;
                 }
             }
 
