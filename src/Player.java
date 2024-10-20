@@ -18,7 +18,7 @@ public class Player {
     }
 
 
-    public int calculateWordScore(String word) {
+    public void calculateWordScore(String word) {
         int wordScore = 0;
 
         for (char letter : word.toCharArray()) {
@@ -29,8 +29,8 @@ public class Player {
         this.score += wordScore;
 
         this.words.add(word);
-        return wordScore;
     }
+
     public Hand getHand() {
         return this.hand;
     }
@@ -43,16 +43,12 @@ public class Player {
         return score;
     }
 
-    public int getTotalScore(){
-        return score;
-    }
-
     public static void main(String[] args) {
         String s = "HELLO";
         Player player1 = new Player("Jalal");
 
-        int i = player1.calculateWordScore(s);
-        System.out.println(i);
+        player1.calculateWordScore(s);
+        System.out.println(player1.getPlayerScore());
     }
 
 }

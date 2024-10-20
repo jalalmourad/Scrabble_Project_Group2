@@ -66,9 +66,7 @@ public class Game {
         }
     }
 
-
     public void playTurn(Player currentPlayer) {
-
 
         List<Character> placedLetters = new ArrayList<>();
         boolean turnOver = false;
@@ -93,6 +91,7 @@ public class Game {
 
         if (parser.isValidWord(formedWord)) {
             System.out.println(formedWord+" is a valid word!");
+            currentPlayer.calculateWordScore(formedWord);
         } else {
             System.out.println(formedWord+" is not a valid English word!");
         }
@@ -127,9 +126,12 @@ public class Game {
                     playTurn(currentPlayer);
                     board.printBoard();
                     getPlayerHand(currentPlayer);
+                    printScoreboard();
                 } else if (c.equals("pass")) {
+                    printScoreboard();
                     continue;
                 } else if (c.equals("quit")) {
+                    printScoreboard();
                     System.out.println("Thanks for playing, goodbye!");
                     gameOn = false;
                     break;
@@ -141,6 +143,15 @@ public class Game {
     public void printActions() {
         System.out.println();
         System.out.println("Your command words are: play | pass | quit");
+        System.out.println();
+    }
+
+
+    public void printScoreboard() {
+        for (Player p : players) {
+            System.out.println(p.getName() + ": " + p.getPlayerScore() + " pts");
+        }
+        System.out.println();
     }
 
     /**
