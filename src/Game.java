@@ -67,9 +67,9 @@ public class Game {
     }
 
     public void playTurn(Player currentPlayer) {
-        List<Character> placedLetters = new ArrayList<>();
         List<int[]> placedPositions = new ArrayList<>();
         boolean turnOver = false;
+
         while (!turnOver) {
             turn++;
             System.out.print("Enter the letter to place: ");
@@ -79,49 +79,77 @@ public class Game {
             System.out.print("Enter the Y coordinate: ");
             int y = sc.nextInt();
 
-            if (turn == 1) {
-                if (x != 7 || y != 7) {
+            if (turn== 1) {
+                if (x !=7 || y != 7) {
                     System.out.println("Illegal move, you must start from the center (X:7, Y:7)");
-                    continue;}
+                    continue;
+                }
             }
-
-            if ((x + 1 < 15 && board.getLetterOnBoard(y, x + 1) != ' ') || (y + 1 < 15 && board.getLetterOnBoard(y + 1, x) != ' ') || (x - 1 >= 0 && board.getLetterOnBoard(y, x - 1) != ' ') || (y - 1 >= 0 && board.getLetterOnBoard(y - 1, x) != ' ') || turn == 1) {
+            if ((x + 1 < 15 && board.getLetterOnBoard(y,x+ 1)!= ' ') ||
+                    (y + 1 < 15 && board.getLetterOnBoard(y+1, x) != ' ') ||
+                    (x-1 >= 0 && board.getLetterOnBoard(y, x- 1) != ' ') ||
+                    (y-1 >=0 && board.getLetterOnBoard(y-1,x)!= ' ') ||
+                    turn == 1) {
 
                 setLetterOnBoard(y, x, letter, currentPlayer);
-                placedLetters.add(letter);
-                placedPositions.add(new int[]{x, y});
-            }
-            else {
+                placedPositions.add(new int[]{x,y});
+            } else {
                 System.out.println("Your letter must connect to other letters on the board.");
                 continue;
             }
+
             System.out.print("Do you want to place another letter? (yes/no): ");
             String placeAnother = sc.next();
-            if(placeAnother.equalsIgnoreCase("no")) {
-                String formedWord = formWordFromPlacedLetters(placedLetters);
-                if(parser.isValidWord(formedWord)) {
-                    System.out.println(formedWord + " is a valid word!");
+
+            if (placeAnother.equalsIgnoreCase("no")) {
+                String formedWord = checkValidWord(y,x);
+                if (parser.isValidWord(formedWord)) {
+                    System.out.println(formedWord +" is a valid word!");
                     currentPlayer.calculateWordScore(formedWord);
                     turnOver = true;
-                }else {
-                    System.out.println(formedWord + " is not a valid English word!");
-                    for(int[] pos : placedPositions)
-                    {
-                        board.setDeleteLetterFromBoard(pos[1], pos[0], ' ');}
+                } else {
+                    System.out.println(formedWord+ " is not a valid English word!");
 
-                    placedLetters.clear();
+                    for (int[] pos : placedPositions) {
+
+                        board.setDeleteLetterFromBoard(pos[1],pos[0],' ');
+                    }
                     placedPositions.clear();
                     getPlayerHand(currentPlayer);
-                }}}}
-
-
-    public String formWordFromPlacedLetters(List<Character> placedLetters) {
-        StringBuilder word = new StringBuilder();
-        for (char letter : placedLetters) {
-            word.append(letter);
+                }
+            }
         }
+    }
+    public String checkValidWord(int y, int x) {
+
+
+        StringBuilder word = new StringBuilder();
+
+        for(int i =x ;i >=0 &&board.getLetterOnBoard(y,i) != ' ';i--) {
+            word.insert(0,board.getLetterOnBoard(y, i));
+        }
+        for(int i= x+1;i<15 && board.getLetterOnBoard(y,i)!= ' ';i++) {
+            word.append(board.getLetterOnBoard(y,i));
+        }
+        for(int i= y-1;i>=0&& board.getLetterOnBoard(i,x)!= ' '; i--) {
+            word.insert(0,board.getLetterOnBoard(i,x));
+        }
+        for(int i= y+1; i<15 &&board.getLetterOnBoard(i,x)!= ' '; i++) {
+            word.append(board.getLetterOnBoard(i,x));
+        }
+
+
         return word.toString();
     }
+
+
+//    public String formWordFromPlacedLetters(List<Character> placedLetters) {
+//        StringBuilder word = new StringBuilder();
+//        for (char letter : placedLetters) {
+//            word.append(letter);
+//        }
+//        return word.toString();
+//    }
 
     public void play() {
         printIntro();

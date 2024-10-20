@@ -20,14 +20,12 @@ public class Player {
 
     public void calculateWordScore(String word) {
         int wordScore = 0;
-
         for (char letter : word.toCharArray()) {
             Square square = new Square(letter);
             wordScore += square.letterScore(letter);
         }
 
         this.score += wordScore;
-
         this.words.add(word);
     }
 
