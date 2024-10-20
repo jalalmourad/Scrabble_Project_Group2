@@ -9,6 +9,7 @@ public class Game {
     Board board;
     private Parser parser;
     Scanner sc;
+    int turn = 0;
 
     /**
      * Create the game.
@@ -71,6 +72,56 @@ public class Game {
         List<Character> placedLetters = new ArrayList<>();
         boolean turnOver = false;
         while (!turnOver) {
+            turn++;
+
+            System.out.print("Enter the letter to place: ");
+            char letter = sc.next().charAt(0);
+            System.out.print("Enter the X coordinate: ");
+            int x = sc.nextInt();
+            System.out.print("Enter the Y coordinate: ");
+            int y = sc.nextInt();
+
+            if (turn == 1) {
+                if (x != 7 && y != 7) {
+                    int a = 0;
+                    int b = 0;
+                    while (a != 7 && b != 7) {
+                        System.out.println("Illegal move, please start from the board center: (X:7, Y:7)");
+                        System.out.print("Enter the X coordinate: ");
+                        a = sc.nextInt();
+                        System.out.print("Enter the Y coordinate: ");
+                        b = sc.nextInt();
+                    }
+                    x = a;
+                    y = b;
+                }
+            }
+
+            setLetterOnBoard(y, x, letter, currentPlayer);
+            placedLetters.add(letter);
+
+            System.out.print("Do you want to place another letter? (yes/no): ");
+            String placeAnother = sc.next();
+            if (placeAnother.equalsIgnoreCase("no")) {
+                turnOver = true;
+            }
+        }
+
+        String formedWord = formWordFromPlacedLetters(placedLetters);
+
+        if (parser.isValidWord(formedWord)) {
+            System.out.println(formedWord+" is a valid word!");
+        } else {
+            System.out.println(formedWord+" is not a valid English word!");
+        }
+    }
+
+    /**
+    public void playTurn(Player currentPlayer) {
+
+        List<Character> placedLetters = new ArrayList<>();
+        boolean turnOver = false;
+        while (!turnOver) {
             System.out.print("Enter the X coordinate: ");
             int x = sc.nextInt();
             System.out.print("Enter the Y coordinate: ");
@@ -96,6 +147,7 @@ public class Game {
             System.out.println(formedWord+" is not a valid English word!");
         }
     }
+    */
 
     public String formWordFromPlacedLetters(List<Character> placedLetters) {
         StringBuilder word = new StringBuilder();
