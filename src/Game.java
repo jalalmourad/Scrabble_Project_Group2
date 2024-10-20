@@ -80,60 +80,39 @@ public class Game {
             int y = sc.nextInt();
 
             if (turn == 1) {
-                if (x != 7 && y != 7) {
-                    int a = 0;
-                    int b = 0;
-                    while (a != 7 && b != 7) {
-                        System.out.println();
-                        System.out.println("Illegal move, please start from the board center: (X:7, Y:7)");
-                        System.out.print("Enter the X coordinate: ");
-                        a = sc.nextInt();
-                        System.out.print("Enter the Y coordinate: ");
-                        b = sc.nextInt();
-                    }
-                    x = a;
-                    y = b;
-                }
+                if (x != 7 || y != 7) {
+                    System.out.println("Illegal move, you must start from the center (X:7, Y:7)");
+                    continue;}
+            }
+
+            if ((x + 1 < 15 && board.getLetterOnBoard(y, x + 1) != ' ') || (y + 1 < 15 && board.getLetterOnBoard(y + 1, x) != ' ') || (x - 1 >= 0 && board.getLetterOnBoard(y, x - 1) != ' ') || (y - 1 >= 0 && board.getLetterOnBoard(y - 1, x) != ' ') || turn == 1) {
+
                 setLetterOnBoard(y, x, letter, currentPlayer);
                 placedLetters.add(letter);
                 placedPositions.add(new int[]{x, y});
-            } else {
-                if ((x + 1 < 15 && board.getLetterOnBoard(y, x + 1) != ' ') ||
-                        (y + 1 < 15 && board.getLetterOnBoard(y + 1, x) != ' ') ||
-                        (x - 1 >= 0 && board.getLetterOnBoard(y, x - 1) != ' ') ||
-                        (y - 1 >= 0 && board.getLetterOnBoard(y - 1, x) != ' ')) { // || turn == 1
-
-                    setLetterOnBoard(y, x, letter, currentPlayer);
-                    placedLetters.add(letter);
-                    placedPositions.add(new int[]{x, y});
-                } else {
-                    board.printBoard();
-                    System.out.println("Your letter must connect to other letters on the board.");
-                    continue;
-                }
+            }
+            else {
+                System.out.println("Your letter must connect to other letters on the board.");
+                continue;
             }
             System.out.print("Do you want to place another letter? (yes/no): ");
             String placeAnother = sc.next();
-            if (placeAnother.equalsIgnoreCase("no")) {
+            if(placeAnother.equalsIgnoreCase("no")) {
                 String formedWord = formWordFromPlacedLetters(placedLetters);
-                if (parser.isValidWord(formedWord)) {
+                if(parser.isValidWord(formedWord)) {
                     System.out.println(formedWord + " is a valid word!");
                     currentPlayer.calculateWordScore(formedWord);
                     turnOver = true;
-                } else {
+                }else {
                     System.out.println(formedWord + " is not a valid English word!");
                     for(int[] pos : placedPositions)
                     {
-                        board.setDeleteLetterFromBoard(pos[1], pos[0], ' ');
-                    }
+                        board.setDeleteLetterFromBoard(pos[1], pos[0], ' ');}
+
                     placedLetters.clear();
                     placedPositions.clear();
                     getPlayerHand(currentPlayer);
-                    board.printBoard();
-                }
-            }
-        }
-    }
+                }}}}
 
 
     public String formWordFromPlacedLetters(List<Character> placedLetters) {
@@ -151,7 +130,6 @@ public class Game {
         boolean gameOn = true;
         while (gameOn) {
             for (Player currentPlayer : players) {
-                board.printBoard();
                 System.out.println("It's "+currentPlayer.getName()+"'s turn.");
                 getPlayerHand(currentPlayer);
 
