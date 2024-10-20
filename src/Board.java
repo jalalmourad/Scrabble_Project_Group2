@@ -46,6 +46,10 @@ public class Board {
         }
     }
 
+    public void setDeleteLetterFromBoard(int i, int j, char letter) {
+            board[i][j].setLetter(letter);
+    }
+
 
     /**
      * Get a letter on the board
