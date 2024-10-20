@@ -76,12 +76,12 @@ public class Game {
         while (!turnOver) {
 
             turn++;
-            System.out.print("Enter the X coordinate: ");
-            int x = sc.nextInt();
             System.out.print("Enter the Y coordinate: ");
+            int x = sc.nextInt();
+            System.out.print("Enter the X coordinate: ");
             int y = sc.nextInt();
             System.out.print("Enter the letter to place: ");
-            char letter = sc.next().charAt(0);
+            char letter = sc.next().toUpperCase().charAt(0);
 
             if (turn == 1) {
                 if (x != 8 && y != 8) {
@@ -91,23 +91,40 @@ public class Game {
                         System.out.println("Illegal move, Please start from the centre (X:8, Y:8)");
                         System.out.println("Please make sure to start from [8 : 8]");
 
-                        System.out.print("Enter the X coordinate: ");
-                        a = sc.nextInt();
                         System.out.print("Enter the Y coordinate: ");
+                        a = sc.nextInt();
+                        System.out.print("Enter the X coordinate: ");
                         b = sc.nextInt();
                     }
                     x = 8;
                     y = 8;
                 }
+                setLetterOnBoard(y, x , letter, currentPlayer);
+                placedLetters.add(letter);
+
             }
 
-                setLetterOnBoard(y, x, letter, currentPlayer);
-                placedLetters.add(letter);
-                System.out.print("Do you want to place another letter? (yes/no): ");
-                String placeAnother = sc.next();
-                if (placeAnother.equalsIgnoreCase("no")) {
-                    turnOver = true;
+            else {
+                if ((x + 1 < 15 && board.getLetterOnBoard(x + 1, y) != ' ') ||
+                        (y + 1 < 15 && board.getLetterOnBoard(x, y + 1) != ' ') ||
+                        (x - 1 >= 0 && board.getLetterOnBoard(x - 1, y) != ' ') ||
+                        (y - 1 >= 0 && board.getLetterOnBoard(x, y - 1) != ' ')){
 
+                    setLetterOnBoard(y, x , letter, currentPlayer);
+
+                    placedLetters.add(letter);
+                }
+                else {
+                    System.out.println("Your letter should be connected to other letters");
+                    continue;
+                }
+
+            }
+
+            System.out.print("Do you want to place another letter? (yes/no): ");
+            String placeAnother = sc.next();
+            if (placeAnother.equalsIgnoreCase("no")) {
+                turnOver = true;
             }
 
         }
@@ -152,7 +169,8 @@ public class Game {
                     getPlayerHand(currentPlayer);
                 } else if (c.equals("pass")) {
                     continue;
-                } else if (c.equals("quit")) {
+                }
+                else if (c.equals("quit")) {
                     System.out.println("Thanks for playing, goodbye!");
                     gameOn = false;
                     break;
@@ -163,7 +181,7 @@ public class Game {
 
     public void printActions() {
         System.out.println();
-        System.out.println("Your command words are: play | pass | quit");
+        System.out.println("Your command words are: play | pass | quit ");
     }
 
     /**

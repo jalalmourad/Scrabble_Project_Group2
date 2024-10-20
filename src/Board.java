@@ -39,8 +39,8 @@ public class Board {
      */
     public void setLetterOnBoard(int i, int j, char letter) {
 
-        if (board[i][j].getLetter() == ' ') {
-            board[i][j].setLetter(letter);
+        if (board[j][i].getLetter() == ' ') {
+            board[j][i].setLetter(letter);
         } else {
             System.out.println("Invalid Insertion");
         }
