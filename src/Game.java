@@ -99,10 +99,10 @@ public class Game {
                 setLetterOnBoard(y, x, letter, currentPlayer);
                 placedLetters.add(letter);
             } else {
-                if ((x + 1 < 14 && board.getLetterOnBoard(y+1, x) != ' ') ||
-                    (y + 1 < 14 && board.getLetterOnBoard(y-1, x) != ' ') ||
-                    (x - 1 >= 0 && board.getLetterOnBoard(y, x+1) != ' ') ||
-                    (y - 1 >= 0 && board.getLetterOnBoard(y, x-1) != ' ')) {
+                if ((x + 1 < 15 && board.getLetterOnBoard(y, x+1) != ' ') ||
+                    (y + 1 < 15 && board.getLetterOnBoard(y+1, x) != ' ') ||
+                    (x - 1 >= 0 && board.getLetterOnBoard(y, x-1) != ' ') ||
+                    (y - 1 >= 0 && board.getLetterOnBoard(y-1, x) != ' ')) {
                     setLetterOnBoard(y, x, letter, currentPlayer);
                     placedLetters.add(letter);
                 }
