@@ -1,46 +1,30 @@
 Scrabble Game
-__
-
+_____________
 
 Description:
-__
+____________
 
 This project contains 14 java classes, 1 UML diagram, and 1 ReadMe.txt file.
 In this deliverable, we added the main functionalities of the Scrabble game which included: managing the bag of letters, board design and implementation, player handling, assigning hands of letters, word and letter handling, and gameplay logic and implementation.
+To play the game, run the main function in Game class, choose how many players are playing and you're good to go !
 
 The Project is made up of the following files:
 
-
 GameTests.java          A single Java script
-
 Bag,java                A single Java script
-
 Board.java              A single Java script
-
 Command.java            A single Java script
-
 CommandWords.java       A single Java script
-
 Hand.java               A single Java script
-
 Parser.java             A single Java script
-
 Player.java             A single Java script
-
 ScrabbleGame.java       A single Java script
-
 Square.java             A single Java script
-
 ScrabbleBoardFrame.java A single Java script
-
 ScrabbleController.java A single Java script
-
 ScrabbleGame.java       A single Java script
-
 ScrabbleView.java       A single Java script
-
 UML diagram             A single image of a UML diagram
-
 
 
 Installation:
@@ -71,13 +55,11 @@ Parser: this class handles user input throughout the game and checks for the val
 GameTest: This class is made up of the test cases.
 
 
->
+>Iteration1:
 
-Iteration1:
-
-Kareem Kaddoura:
-Jalal Mourad:
-Ishaq Nour:
+Kareem Kaddoura: Board.java, Command.java, CommandWords.java, Parser.java, ScrabbleGame.java, Square.java
+Jalal Mourad: Bag.java, Board.java, Hand.java, Parser.java, Player.java, ScrabbleBoardFrame.java, ScrabbleController.java, ScrabbleGame.java, ScrabbleView.java
+Ishaq Nour: Bag.java, Board.java, GameTest.java, Hand.java, ScrabbleGame.java, README.md, UML diagram
 
 
 Copyright 2024 Jalal Mourad, Kareem Kaddoura, Ishaq Nour
