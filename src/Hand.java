@@ -22,6 +22,9 @@ public class Hand {
         letters.add(letter);
     }
 
+    /**
+     * Refills the hand of the player with 7 letters
+     */
     public void refillHand(){
         while (letters.size()<7){
             addLetter(bag.addRandomChar());
@@ -38,6 +41,9 @@ public class Hand {
     }
 
 
+    /**
+     *Prints the hand of the player
+     */
     public void printHand(String name) {
         System.out.print(name + "'s letters in hand: ");
         for(int i = 0; i<letters.size();i++){
@@ -59,6 +65,9 @@ public class Hand {
         return letters.size();
     }
 
+    /**
+     * Swap method to swap a letter from a players hand with another random letter
+     */
     public void swap(char letter, Bag bag){
 
         if (lettersInHand(letter)){

@@ -98,7 +98,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
     @Override
     public void update(ScrabbleGame game) {
 
-        for (int i = 0; i<game.getHandOfPlayer().size();i++){
+        for (int i = 0; i<game.getCurrentPlayer().getHand().getLetters().size();i++){
             wordsInHandButtons[i].setText(String.valueOf(game.getCurrentPlayer().getHand().getLetters().get(i)));
         }
 

@@ -1,8 +1,8 @@
 import java.util.*;
 
 /**
-
- Player(s) class of Scrabble Game*/
+ Player(s) class of Scrabble Game
+ */
 public class Player {
     private String name;
     private int score;
@@ -18,6 +18,9 @@ public class Player {
     }
 
 
+    /**
+     *Calculates the score of the word
+     */
     public void calculateWordScore(String word) {
         int wordScore = 0;
         for (char letter : word.toCharArray()) {
@@ -41,12 +44,5 @@ public class Player {
         return score;
     }
 
-    public static void main(String[] args) {
-        String s = "HELLO";
-        Player player1 = new Player("Jalal");
-
-        player1.calculateWordScore(s);
-        System.out.println(player1.getPlayerScore());
-    }
 
 }

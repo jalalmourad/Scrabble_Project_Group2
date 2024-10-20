@@ -29,13 +29,16 @@ public class ScrabbleGame {
         parser.loadWordsFromFile("src/Dictionary.txt");
     }
 
+    /**
+     * Add views for MVC
+     */
     public void addView(ScrabbleView view){
         views.add(view);
     }
 
-    public ArrayList<Character> getHandOfPlayer(){
-        return players.get(0).getHand().getLetters();
-    }
+    /**
+     * Updates the views for all the subscribed viewers
+     */
 
     public void updateViews(){
         for (ScrabbleView v : views){
@@ -43,9 +46,6 @@ public class ScrabbleGame {
         }
     }
 
-    public void addPlayers(Player player){
-        players.add(player);
-    }
 
     /**
      * Add players to the game.
@@ -75,6 +75,10 @@ public class ScrabbleGame {
     }
 
 
+
+    /**
+     * Adds players to the game (Compatible for Milestone 2)
+     */
 
     public void MVCparticipants(int n) {
         boolean numPlayers = false;
@@ -119,13 +123,16 @@ public class ScrabbleGame {
     /**
      * Gets the turn of the current player
      */
-
     public Player getCurrentPlayer(){
         return players.get(turn%players.size());
     }
 
 
-
+    /**
+     *Plays the turn of the player, set's the letter, on X and Y axis.
+     * Makes sure that the words should be branched
+     * Makes sure that the inputted word is a valid word
+     */
     public void playTurn(Player currentPlayer) {
         List<int[]> placedPositions = new ArrayList<>();
         boolean turnOver = false;
@@ -195,6 +202,10 @@ public class ScrabbleGame {
             }
         }
     }
+
+    /**
+     *Checks if the word placed is a valid word
+     */
     public String checkValidWord(int y, int x) {
 
         StringBuilder word = new StringBuilder();
@@ -215,6 +226,9 @@ public class ScrabbleGame {
         return word.toString();
     }
 
+    /**
+     * This method defines the commands in the game
+     */
     public void play() {
         printIntro();
         participants();
@@ -251,6 +265,9 @@ public class ScrabbleGame {
         }
     }
 
+    /**
+     * Prints the actions that the player can use
+     */
     public void printActions() {
         System.out.println();
         System.out.println("Your command words are: play | pass | quit");
@@ -258,6 +275,9 @@ public class ScrabbleGame {
     }
 
 
+    /**
+     * Prints the score board
+     */
     public void printScoreboard() {
         for (Player p : players) {
             System.out.println(p.getName() + ": " + p.getPlayerScore() + " pts");

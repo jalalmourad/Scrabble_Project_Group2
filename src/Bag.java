@@ -8,7 +8,9 @@ public class Bag {
 
     private ArrayList<Character> bagChars;
 
-    // Scrabble Letter Distribution (according to official game rules)
+    /**
+     * Scrabble letters distribution according to the rules of the game
+     */
     static {
         addChars('A', 9);
         addChars('B', 3);
@@ -42,6 +44,9 @@ public class Bag {
     bagChars = new ArrayList<>();
     }
 
+    /**
+     * Returns a random set of 7 letters and removes them from the bag
+     */
     public ArrayList<Character> getAlphabet() {
         Random rand = new Random();
         ArrayList<Character> newBagChars = new ArrayList<>();
@@ -55,6 +60,9 @@ public class Bag {
         return newBagChars;
     }
 
+    /**
+     * Adds a random character to the hand
+     */
     public char addRandomChar(){
         Random rand = new Random();
 

@@ -46,6 +46,9 @@ public class Board {
         }
     }
 
+    /**
+     *Used to remove Invalid words
+     */
     public void setDeleteLetterFromBoard(int i, int j, char letter) {
             board[i][j].setLetter(letter);
     }

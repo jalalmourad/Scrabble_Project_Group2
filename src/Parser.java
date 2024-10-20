@@ -17,6 +17,9 @@ public class Parser {
         words = new CommandWords();
     }
 
+    /**
+     *This method loads the dictionary file
+     */
     public void loadWordsFromFile(String filePath) {
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String word;
@@ -32,6 +35,9 @@ public class Parser {
         return englishWords.contains(word.toUpperCase());
     }
 
+    /**
+     *This method gets the current command inputted by the player
+     */
     public Command getCurrentCommand() {
         String input;
 
@@ -50,25 +56,5 @@ public class Parser {
     }
 
 }
-
-
-//    public Command getCurrentCommand() {
-//        String input;
-//
-//        System.out.print("> ");
-//
-//        input = scanner.nextLine();
-//        Scanner commandScanner = new Scanner(input);
-//        if (commandScanner.hasNext()) {
-//            input = commandScanner.next();
-//        }
-//
-//        if (words.isValidCommand(input)) {
-//            return new Command(input);
-//        }
-//        else {
-//            return new Command(null);
-//        }
-//    }
 
 
