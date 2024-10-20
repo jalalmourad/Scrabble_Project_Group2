@@ -42,7 +42,7 @@ public class GameTest {
     @Test
     public void firstLetterPlacement(){
         Player player = new Player("TestPlayer");
-        Game game = new Game();
+        ScrabbleGame game = new ScrabbleGame();
 
         player.getHand().setLetters(new ArrayList<>(List.of('A')));
         game.setLetterOnBoard(7,7,player.getHand().getLetters().get(0),player);

@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Game {
+public class ScrabbleGame {
 
     List<Player> players;
     Bag bag;
@@ -11,17 +11,39 @@ public class Game {
     Scanner sc;
     int turn = 0;
 
+    ArrayList<ScrabbleView> views;
+
     /**
      * Create the game.
      */
-    public Game() {
+    public ScrabbleGame() {
         players = new ArrayList<>();
         bag = new Bag();
         board = new Board();
         parser = new Parser();
         sc = new Scanner(System.in);
 
+        views = new ArrayList<>();
+
         parser.loadWordsFromFile("src/Dictionary.txt");
+    }
+
+    public void addView(ScrabbleView view){
+        views.add(view);
+    }
+
+    public ArrayList<Character> getHandOfPlayer(){
+        return players.get(0).getHand().getLetters();
+    }
+
+    public void updateViews(){
+        for (ScrabbleView v : views){
+            v.update(this);
+        }
+    }
+
+    public void addPlayers(Player player){
+        players.add(player);
     }
 
     /**
@@ -223,7 +245,7 @@ public class Game {
      * Main method to start the game.
      */
     public static void main(String[] args) {
-        Game game = new Game();
+        ScrabbleGame game = new ScrabbleGame();
         game.play();
     }
 }

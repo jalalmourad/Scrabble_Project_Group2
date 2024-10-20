@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ScrabbleBoardFrame extends JFrame {
+public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
     JButton[][] buttons;
 
@@ -9,6 +9,12 @@ public class ScrabbleBoardFrame extends JFrame {
 
     JPanel boardPanel;
     JPanel wordsInHandPanel;
+
+    ScrabbleGame model;
+
+    JTextArea scoreText;
+
+    ScrabbleController controller;
 
     public ScrabbleBoardFrame(){
 
@@ -21,6 +27,13 @@ public class ScrabbleBoardFrame extends JFrame {
         boardPanel.setLayout(new GridLayout(15,15));
         wordsInHandPanel.setLayout(new GridLayout(0,7));
 
+        model = new ScrabbleGame();
+        controller = new ScrabbleController(this, model);
+        model.addView(this);
+
+        scoreText = new JTextArea("SCORES: ");
+        scoreText.setEditable(false);
+
         buttons = new JButton[15][15];
         setLayout(new BorderLayout());
         setSize(500,500);
@@ -30,7 +43,8 @@ public class ScrabbleBoardFrame extends JFrame {
 
                 JButton button = new JButton();
                 buttons[i][j] = button;
-                //buttons[i][j].addActionListener();
+                buttons[i][j].addActionListener(controller);
+                buttons[i][j].setActionCommand("board");
                 boardPanel.add(button);
 
             }
@@ -43,12 +57,14 @@ public class ScrabbleBoardFrame extends JFrame {
             wordsInHandButtons[i] = button;
             wordsInHandButtons[i].setBackground(Color.WHITE);
             wordsInHandButtons[i].setPreferredSize(new Dimension(30, 50));
-
+            wordsInHandButtons[i].addActionListener(controller);
+            wordsInHandButtons[i].setActionCommand("hand");
             wordsInHandPanel.add(wordsInHandButtons[i]);
         }
 
         this.add(boardPanel,BorderLayout.CENTER);
         this.add(wordsInHandPanel,BorderLayout.SOUTH);
+        this.add(scoreText,BorderLayout.EAST);
 
 
         setVisible(true);
@@ -57,5 +73,14 @@ public class ScrabbleBoardFrame extends JFrame {
 
     public static void main(String[] args) {
         ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
+    }
+
+    @Override
+    public void update(ScrabbleGame game) {
+
+        for (int i = 0; i<game.getHandOfPlayer().size();i++){
+            wordsInHandButtons[i].setText(String.valueOf(game.getHandOfPlayer().get(i)));
+        }
+
     }
 }
