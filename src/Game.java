@@ -7,7 +7,7 @@ public class Game {
     List<Player> players;
     Bag bag;
     Board board;
-    private Parser parser;
+    Parser parser;
     Scanner sc;
 
     /**
