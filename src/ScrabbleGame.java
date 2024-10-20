@@ -7,7 +7,7 @@ public class ScrabbleGame {
     List<Player> players;
     Bag bag;
     Board board;
-    private Parser parser;
+    Parser parser;
     Scanner sc;
     int turn = 0;
 
