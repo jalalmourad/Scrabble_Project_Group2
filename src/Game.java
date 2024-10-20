@@ -86,6 +86,7 @@ public class Game {
                     int a = 0;
                     int b = 0;
                     while (a != 7 && b != 7) {
+                        System.out.println();
                         System.out.println("Illegal move, please start from the board center: (X:7, Y:7)");
                         System.out.print("Enter the X coordinate: ");
                         a = sc.nextInt();
@@ -103,17 +104,27 @@ public class Game {
             System.out.print("Do you want to place another letter? (yes/no): ");
             String placeAnother = sc.next();
             if (placeAnother.equalsIgnoreCase("no")) {
-                turnOver = true;
+                String formedWord = formWordFromPlacedLetters(placedLetters);
+                if (parser.isValidWord(formedWord)) {
+                    System.out.println(formedWord+" is a valid word!");
+                    currentPlayer.calculateWordScore(formedWord);
+                    turnOver = true;
+                } else {
+                    System.out.println(formedWord+" is not a valid English word!");
+                    placedLetters.clear();
+                }
+
+                //turnOver = true;
             }
         }
 
-        String formedWord = formWordFromPlacedLetters(placedLetters);
+        //String formedWord = formWordFromPlacedLetters(placedLetters);
 
-        if (parser.isValidWord(formedWord)) {
-            System.out.println(formedWord+" is a valid word!");
-        } else {
-            System.out.println(formedWord+" is not a valid English word!");
-        }
+        //if (parser.isValidWord(formedWord)) {
+        //    System.out.println(formedWord+" is a valid word!");
+        //} else {
+        //    System.out.println(formedWord+" is not a valid English word!");
+        //}
     }
 
     /**

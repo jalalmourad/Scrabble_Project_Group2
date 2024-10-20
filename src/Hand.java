@@ -39,7 +39,7 @@ public class Hand {
 
 
     public void printHand(String name) {
-        System.out.print(name + "'s Letters in hand: ");
+        System.out.print(name + "'s letters in hand: ");
         for(int i = 0; i<letters.size();i++){
 
             System.out.print(letters.get(i)+" ");
