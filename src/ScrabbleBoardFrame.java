@@ -16,12 +16,20 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
     ScrabbleController controller;
 
+    JMenu menu;
+
+    JMenuBar menuBar;
+
+    JMenuItem playMenuItem;
+
     public ScrabbleBoardFrame(){
 
         super("Scrabble!");
 
         wordsInHandPanel = new JPanel();
         wordsInHandButtons = new JButton[7];
+
+
 
         boardPanel = new JPanel();
         boardPanel.setLayout(new GridLayout(15,15));
@@ -62,6 +70,18 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
             wordsInHandPanel.add(wordsInHandButtons[i]);
         }
 
+        menuBar = new JMenuBar();
+        menu = new JMenu("Settings");
+        menuBar.add(menu);
+        playMenuItem = new JMenuItem("Play");
+        playMenuItem.addActionListener(controller);
+        playMenuItem.setActionCommand("play");
+
+        menu.add(playMenuItem);
+
+        setJMenuBar(menuBar);
+
+
         this.add(boardPanel,BorderLayout.CENTER);
         this.add(wordsInHandPanel,BorderLayout.SOUTH);
         this.add(scoreText,BorderLayout.EAST);
@@ -79,8 +99,13 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
     public void update(ScrabbleGame game) {
 
         for (int i = 0; i<game.getHandOfPlayer().size();i++){
-            wordsInHandButtons[i].setText(String.valueOf(game.getHandOfPlayer().get(i)));
+            wordsInHandButtons[i].setText(String.valueOf(game.getCurrentPlayer().getHand().getLetters().get(i)));
         }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Player Name: ").append(model.getCurrentPlayer().getName()).append("\n").append("Score: ").append(String.valueOf(model.getCurrentPlayer().getPlayerScore()));
+
+        scoreText.setText(String.valueOf(sb));
 
     }
 }

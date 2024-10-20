@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -73,6 +74,33 @@ public class ScrabbleGame {
         }
     }
 
+
+
+    public void MVCparticipants(int n) {
+        boolean numPlayers = false;
+
+        while (!numPlayers) {
+
+            if (n < 2) {
+                JOptionPane.showMessageDialog(null,"Not enough players!");
+            } else if (n > 4) {
+                JOptionPane.showMessageDialog(null,"Too many players!");
+            } else {
+                for (int i = 0; i < n; i++) {
+                    int j = i+1;
+                    String playerName = JOptionPane.showInputDialog("Enter player "+ j +" Name: ");
+                    Player player = new Player(playerName);
+                    player.getHand().setLetters(bag.getAlphabet());
+                    players.add(player);
+                }
+                numPlayers = true;
+            }
+        }
+    }
+
+
+
+
     /**
      * Set a letter on the board for a player.
      */
@@ -87,6 +115,16 @@ public class ScrabbleGame {
             System.out.println("The letter "+letter+" is not in your hand!\n");
         }
     }
+
+    /**
+     * Gets the turn of the current player
+     */
+
+    public Player getCurrentPlayer(){
+        return players.get(turn%players.size());
+    }
+
+
 
     public void playTurn(Player currentPlayer) {
         List<int[]> placedPositions = new ArrayList<>();

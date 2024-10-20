@@ -18,8 +18,17 @@ public class ScrabbleController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-        JButton sourceButton = (JButton) e.getSource();
+        //JButton sourceButton = (JButton) e.getSource();
 
+        if (s.equals("play")){
+
+            int playerNumber;
+            playerNumber= Integer.parseInt(JOptionPane.showInputDialog("Select the number of players (2-4)?"));
+            model.MVCparticipants(playerNumber);
+
+            frame.update(model);
+
+        }
 
 //        if (s.equals("hand")){
 //            Player player = new Player("Test");
