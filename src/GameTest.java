@@ -43,7 +43,7 @@ public class GameTest {
     public void firstLetterPlacement(){
         Player player = new Player("TestPlayer");
         Game game = new Game();
-        
+
         player.getHand().setLetters(new ArrayList<>(List.of('A')));
         game.setLetterOnBoard(7,7,player.getHand().getLetters().get(0),player);
         assertEquals('A',game.board.getLetterOnBoard(7,7));
