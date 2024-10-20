@@ -75,7 +75,7 @@ public class Game {
             turn++;
 
             System.out.print("Enter the letter to place: ");
-            char letter = sc.next().charAt(0);
+            char letter = sc.next().toUpperCase().charAt(0);
             System.out.print("Enter the X coordinate: ");
             int x = sc.nextInt();
             System.out.print("Enter the Y coordinate: ");
@@ -96,10 +96,21 @@ public class Game {
                     x = a;
                     y = b;
                 }
+                setLetterOnBoard(y, x, letter, currentPlayer);
+                placedLetters.add(letter);
+            } else {
+                if ((x + 1 < 15 && board.getLetterOnBoard(y+1, x) != ' ') ||
+                    (y + 1 < 15 && board.getLetterOnBoard(y-1, x) != ' ') ||
+                    (x - 1 >= 0 && board.getLetterOnBoard(y, x+1) != ' ') ||
+                    (y - 1 >= 0 && board.getLetterOnBoard(y, x-1) != ' ')) {
+                    setLetterOnBoard(y, x, letter, currentPlayer);
+                    placedLetters.add(letter);
+                }
+                else {
+                    System.out.println("Your letter should be connected to other letters");
+                    continue;
+                }
             }
-
-            setLetterOnBoard(y, x, letter, currentPlayer);
-            placedLetters.add(letter);
 
             System.out.print("Do you want to place another letter? (yes/no): ");
             String placeAnother = sc.next();
@@ -112,53 +123,11 @@ public class Game {
                 } else {
                     System.out.println(formedWord+" is not a valid English word!");
                     placedLetters.clear();
+                    getPlayerHand(currentPlayer);
                 }
-
-                //turnOver = true;
             }
         }
-
-        //String formedWord = formWordFromPlacedLetters(placedLetters);
-
-        //if (parser.isValidWord(formedWord)) {
-        //    System.out.println(formedWord+" is a valid word!");
-        //} else {
-        //    System.out.println(formedWord+" is not a valid English word!");
-        //}
     }
-
-    /**
-    public void playTurn(Player currentPlayer) {
-
-        List<Character> placedLetters = new ArrayList<>();
-        boolean turnOver = false;
-        while (!turnOver) {
-            System.out.print("Enter the X coordinate: ");
-            int x = sc.nextInt();
-            System.out.print("Enter the Y coordinate: ");
-            int y = sc.nextInt();
-            System.out.print("Enter the letter to place: ");
-            char letter = sc.next().charAt(0);
-            setLetterOnBoard(y, x, letter, currentPlayer);
-            placedLetters.add(letter);
-            System.out.print("Do you want to place another letter? (yes/no): ");
-            String placeAnother = sc.next();
-            if (placeAnother.equalsIgnoreCase("no")) {
-                turnOver = true;
-            }
-
-        }
-
-        String formedWord = formWordFromPlacedLetters(placedLetters);
-
-        if (parser.isValidWord(formedWord)) {
-            System.out.println(formedWord+" is a valid word!");
-            currentPlayer.calculateWordScore(formedWord);
-        } else {
-            System.out.println(formedWord+" is not a valid English word!");
-        }
-    }
-    */
 
     public String formWordFromPlacedLetters(List<Character> placedLetters) {
         StringBuilder word = new StringBuilder();
