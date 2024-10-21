@@ -92,9 +92,9 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    public static void main(String[] args) {
-        ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
-    }
+    //public static void main(String[] args) {
+    //    ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
+    //}
 
     @Override
     public void update(ScrabbleGame game) {
