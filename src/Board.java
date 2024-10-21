@@ -61,14 +61,4 @@ public class Board {
         return board[i][j].getLetter();
     }
 
-
-
-    /**
-     * Main method used for testing
-     */
-    public static void main(String[] args) {
-        Board b = new Board();
-        b.printBoard();
-
-    }
 }
