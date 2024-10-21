@@ -18,7 +18,7 @@ public class ScrabbleController implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
-        //JButton sourceButton = (JButton) e.getSource();
+
 
         if (s.equals("play")){
 
@@ -29,30 +29,25 @@ public class ScrabbleController implements ActionListener {
             frame.update(model);
 
         }
+        if (s.equals("hand")){
 
-//        if (s.equals("hand")){
-//            Player player = new Player("Test");
-//            model.addPlayers(player);
-//
-//            str = sourceButton.getText();
-//            selectedHandButton = sourceButton;
-//
-//            sourceButton.setText("");
-//
-//            frame.update(model);
-//        }
-//
-//        if (s.equals("board")){
-//            sourceButton.setText(str);
-//            str = "";
-//
-//            if(selectedHandButton!=null){
-//                selectedHandButton.setText("");
-//                selectedHandButton = null;
-//            }
-            //frame.update(model);
 
-        //}
+            JButton sourceButton = (JButton) e.getSource();
+            String text;
+           text = sourceButton.getText();
+           int x = Integer.parseInt(JOptionPane.showInputDialog("Select the X coordinate: "));
+           int y = Integer.parseInt(JOptionPane.showInputDialog("Select the Y coordinate: "));
+           model.setPlayedChar(text.charAt(0));
+           model.setxCoordinate(x);
+           model.setyCoordinate(y);
+
+           model.MVCplayTurn(model.getCurrentPlayer(),x,y,text.charAt(0));
+           frame.update(model);
+
+           //Only issue for now is the placeAnother = JOptionPane.showInputDialog("Do you want to place another letter? (yes/no): ");
+
+        }
+
 
     }
 }

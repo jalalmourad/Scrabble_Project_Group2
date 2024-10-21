@@ -12,6 +12,10 @@ public class ScrabbleGame {
     Scanner sc;
     int turn = 0;
 
+    char playedChar;
+
+    int xCoordinate;
+    int yCoordinate;
     ArrayList<ScrabbleView> views;
 
     /**
@@ -297,6 +301,113 @@ public class ScrabbleGame {
      */
     public void printIntro() {
         System.out.println("Welcome to the game of Scrabble!");
+    }
+
+
+
+
+
+
+
+    /**
+     *
+     */
+    public void MVCplayTurn(Player currentPlayer, int x, int y, char letter) {
+        List<int[]> placedPositions = new ArrayList<>();
+        boolean turnOver = false;
+
+        while (!turnOver) {
+            turn++;
+
+            if (turn == 1) {
+                if (x != 7 && y != 7) {
+                    int a = 0;
+                    int b = 0;
+                    while (a != 7 && b != 7) {
+                        System.out.println();
+                        JOptionPane.showMessageDialog(null,"Illegal move, please start from the board center: (X:7, Y:7)");
+
+                        a = Integer.parseInt(JOptionPane.showInputDialog("Enter the X coordinate: "));
+                        b = Integer.parseInt(JOptionPane.showInputDialog("Enter the Y coordinate: "));
+
+                    }
+                    x = a;
+                    y = b;
+                }
+                setLetterOnBoard(y, x, letter, currentPlayer);
+                placedPositions.add(new int[]{x,y});
+            } else {
+                if ((x + 1 < 15 && board.getLetterOnBoard(y, x + 1) != ' ') ||
+                        (y + 1 < 15 && board.getLetterOnBoard(y + 1, x) != ' ') ||
+                        (x - 1 >= 0 && board.getLetterOnBoard(y, x - 1) != ' ') ||
+                        (y - 1 >= 0 && board.getLetterOnBoard(y - 1, x) != ' ') ||
+                        turn == 1) {
+
+                    setLetterOnBoard(y, x, letter, currentPlayer);
+                    placedPositions.add(new int[]{x, y});
+                } else {
+                    JOptionPane.showMessageDialog(null,"Your letter must connect to other letters on the board.");
+                    continue;
+                }
+            }
+
+             String placeAnother = JOptionPane.showInputDialog("Do you want to place another letter? (yes/no): ");
+
+            if (placeAnother.equalsIgnoreCase("no")) {
+                String formedWord = checkValidWord(y,x);
+                if (parser.isValidWord(formedWord)) {
+                    JOptionPane.showMessageDialog(null,formedWord +" is a valid word!");
+                    currentPlayer.calculateWordScore(formedWord);
+                    turnOver = true;
+                } else {
+
+
+                    JOptionPane.showMessageDialog(null,formedWord+ " is not a valid English word!");
+
+                    for (int[] pos : placedPositions) {
+
+                        board.setDeleteLetterFromBoard(pos[1],pos[0],' ');
+                    }
+                    placedPositions.clear();
+                    getPlayerHand(currentPlayer);
+                    board.printBoard();
+                }
+            }
+
+
+            else {
+                x = Integer.parseInt(JOptionPane.showInputDialog("Enter the next X coordinate: "));
+                y = Integer.parseInt(JOptionPane.showInputDialog("Enter the next Y coordinate: "));
+                letter = JOptionPane.showInputDialog("Enter the next letter: ").toUpperCase().charAt(0);
+
+                //this might work, do some more testing
+                //MVCplayTurn(getCurrentPlayer(),x,y,letter);
+            }
+
+        }
+    }
+
+    public void setPlayedChar(char playedChar) {
+        this.playedChar = playedChar;
+    }
+
+    public char getPlayedChar() {
+        return playedChar;
+    }
+
+    public void setxCoordinate(int xCoordinate){
+        this.xCoordinate = xCoordinate;
+    }
+
+    public int getxCoordinate() {
+        return xCoordinate;
+    }
+
+    public void setyCoordinate(int yCoordinate) {
+        this.yCoordinate = yCoordinate;
+    }
+    public int getyCoordinate(){
+        return yCoordinate;
     }
 
     /**

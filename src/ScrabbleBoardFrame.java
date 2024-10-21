@@ -52,7 +52,8 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
                 JButton button = new JButton();
                 buttons[i][j] = button;
                 buttons[i][j].addActionListener(controller);
-                buttons[i][j].setActionCommand("board");
+                buttons[i][j].setActionCommand(i + " "+j);
+
                 boardPanel.add(button);
 
             }
@@ -106,6 +107,10 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
         sb.append("Player Name: ").append(model.getCurrentPlayer().getName()).append("\n").append("Score: ").append(String.valueOf(model.getCurrentPlayer().getPlayerScore()));
 
         scoreText.setText(String.valueOf(sb));
+
+        buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getPlayedChar()));
+
+
 
     }
 }
