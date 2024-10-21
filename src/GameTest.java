@@ -216,7 +216,7 @@ public class GameTest {
         game.playTurn(player);
 
         assertEquals('A', game.board.getLetterOnBoard(7, 7));
-        assertEquals(7, player.getHand().getLettersSize(), "Player's hand should have 7 letters after refilling.");
+        assertEquals(7, player.getHand().getLettersSize());
     }
 
     @Test
