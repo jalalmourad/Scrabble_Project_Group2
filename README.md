@@ -11,19 +11,33 @@ To play the game, run the main function in Game class, choose how many players a
 The Project is made up of the following files:
 
 GameTests.java          A single Java script
+
 Bag,java                A single Java script
+
 Board.java              A single Java script
+
 Command.java            A single Java script
+
 CommandWords.java       A single Java script
+
 Hand.java               A single Java script
+
 Parser.java             A single Java script
+
 Player.java             A single Java script
+
 ScrabbleGame.java       A single Java script
+
 Square.java             A single Java script
+
 ScrabbleBoardFrame.java A single Java script
+
 ScrabbleController.java A single Java script
+
 ScrabbleGame.java       A single Java script
+
 ScrabbleView.java       A single Java script
+
 UML diagram             A single image of a UML diagram
 
 
