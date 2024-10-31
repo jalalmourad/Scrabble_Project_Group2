@@ -52,7 +52,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
                 JButton button = new JButton();
                 buttons[i][j] = button;
                 buttons[i][j].addActionListener(controller);
-                buttons[i][j].setActionCommand(i + " "+j);
+                buttons[i][j].setActionCommand(i + ""+j);
 
                 boardPanel.add(button);
 
@@ -92,9 +92,9 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    //public static void main(String[] args) {
-    //    ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
-    //}
+    public static void main(String[] args) {
+        ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
+    }
 
     @Override
     public void update(ScrabbleGame game) {
@@ -108,7 +108,13 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
         scoreText.setText(String.valueOf(sb));
 
-        buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getPlayedChar()));
+        buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
+
+//        for (int i = 0;i<7;i++){
+//            if (wordsInHandButtons[i].equals(model.getTextPlayed())){
+//                wordsInHandButtons[i].setText("");
+//            }
+//        }
 
 
 
