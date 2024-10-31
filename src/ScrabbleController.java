@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class ScrabbleController implements ActionListener {
 
@@ -20,9 +21,12 @@ public class ScrabbleController implements ActionListener {
             int playerNumber = Integer.parseInt(JOptionPane.showInputDialog("Select the number of players (2-4)?"));
             model.MVCparticipants(playerNumber);
             model.updateViews();
-        } else if (s.equals("hand")) {
+        }
+        String[] handlist = s.split("");
+         if (handlist[0].equals("h")) {
             JButton sourceButton = (JButton) e.getSource();
             String text = sourceButton.getText();
+            model.setHandListCoord(handlist[1]);
             model.setTextPlayed(text);
         } else {
             String string = e.getActionCommand();
@@ -65,6 +69,10 @@ public class ScrabbleController implements ActionListener {
                     model.getCurrentPlayer().calculateWordScore(formedWord);
                     model.turn++;
                     model.updateViews();
+                    model.removeCharsFromHand();
+                    model.playerHand.refillHand();
+                    frame.enableHandButtons();
+
                 } else {
                     JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
                 }

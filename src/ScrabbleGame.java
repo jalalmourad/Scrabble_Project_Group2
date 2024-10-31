@@ -11,10 +11,15 @@ public class ScrabbleGame {
     Parser parser;
     Scanner sc;
     int turn = 0;
+    Hand playerHand;
 
     int xCoordinate;
     int yCoordinate;
     ArrayList<ScrabbleView> views;
+
+    List<int[]> removedChars;
+
+    String handListCoord;
 
     String text;
     boolean done;
@@ -24,6 +29,7 @@ public class ScrabbleGame {
      */
     public ScrabbleGame() {
         players = new ArrayList<>();
+        removedChars = new ArrayList<>();
         bag = new Bag();
         board = new Board();
         parser = new Parser();
@@ -54,6 +60,14 @@ public class ScrabbleGame {
         for (ScrabbleView v : views){
             v.update(this);
         }
+    }
+
+    public String getHandListCoord(){
+        return handListCoord;
+    }
+
+    public void setHandListCoord(String handListCoord){
+        this.handListCoord = handListCoord;
     }
 
     public void setTextPlayed(String text) {
@@ -92,21 +106,27 @@ public class ScrabbleGame {
     }
 
 
-
-
     /**
      * Set a letter on the board for a player.
      */
     public void setLetterOnBoard(int y, int x, char letter, Player player) {
-        Hand playerHand = player.getHand();
+          playerHand = player.getHand();
         if (playerHand.getLetters().contains(letter)) {
             System.out.println("Letter Placed is: "+letter+"\n");
             board.setLetterOnBoard(y,x,letter);
-            playerHand.getLetters().remove(playerHand.getLetterPosition(letter));
-            playerHand.refillHand();
+            int letterIndex = playerHand.getLetterPosition(letter);
+            removedChars.add(new int[]{letterIndex, letter});
         } else {
             System.out.println("The letter "+letter+" is not in your hand!\n");
         }
+    }
+
+    public void removeCharsFromHand() {
+        for (int[] indexLetterPair : removedChars) {
+            int index = indexLetterPair[0];
+            playerHand.getLetters().remove(index);
+        }
+        removedChars.clear();
     }
 
     /**

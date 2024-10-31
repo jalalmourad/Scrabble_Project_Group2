@@ -67,7 +67,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
             wordsInHandButtons[i].setBackground(Color.WHITE);
             wordsInHandButtons[i].setPreferredSize(new Dimension(30, 50));
             wordsInHandButtons[i].addActionListener(controller);
-            wordsInHandButtons[i].setActionCommand("hand");
+            wordsInHandButtons[i].setActionCommand("h"+i);
             wordsInHandPanel.add(wordsInHandButtons[i]);
         }
 
@@ -96,6 +96,12 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
         ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
     }
 
+    public void enableHandButtons(){
+        for (int i = 0;i<7;i++){
+            wordsInHandButtons[i].setEnabled(true);
+        }
+    }
+
     @Override
     public void update(ScrabbleGame game) {
 
@@ -110,12 +116,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
         buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
 
-//        for (int i = 0;i<7;i++){
-//            if (wordsInHandButtons[i].equals(model.getTextPlayed())){
-//                wordsInHandButtons[i].setText("");
-//            }
-//        }
-
+        wordsInHandButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
 
 
     }
