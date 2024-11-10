@@ -49,8 +49,6 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
-                //JButton button = new JButton();
-                //buttons[i][j] = button;
                 buttons[i][j] = new JButton();
                 buttons[i][j].addActionListener(controller);
                 buttons[i][j].setActionCommand(i + "" + j);
@@ -66,8 +64,6 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         wordsInHandButtons = new JButton[7];
 
         for (int i = 0; i < wordsInHandButtons.length; i++) {
-            //JButton button = new JButton();
-            //wordsInHandButtons[i] = button;
             wordsInHandButtons[i] = new JButton();
             wordsInHandButtons[i].addActionListener(controller);
             wordsInHandButtons[i].setActionCommand("h" + i);
@@ -77,7 +73,6 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         }
 
         // Score TextArea Initializations
-        //scoreText = new JTextArea("SCORES: ");
         scoreText = new JTextArea("SCORE");
         scoreText.setEditable(false);
         scoreText.setPreferredSize(new Dimension(100,100));
@@ -104,13 +99,15 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         this.add(actionButtons, BorderLayout.NORTH);
 
         // Initially disable everything except the menu bar (to allow the player to trigger the game)
-        //this.disableComponents(boardPanel.getComponents());
-        //this.disableComponents(wordsInHandPanel.getComponents());
-        //this.disableComponents(scoreText.getComponents());
-        //this.disableComponents(actionButtons.getComponents());
+        this.disableComponents(boardPanel.getComponents());
+        this.disableComponents(wordsInHandPanel.getComponents());
+        this.disableComponents(scoreText.getComponents());
+        this.disableComponents(actionButtons.getComponents());
 
+        this.setLocationRelativeTo(null);
         setVisible(true);
 
+        JOptionPane.showMessageDialog(null, "Welcome to the game of Scrabble! Please select Settings to begin the game!");
     }
 
     public static void main(String[] args) {
@@ -123,17 +120,17 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         }
     }
 
-    //public void disableComponents(Component[] comps) {
-    //    for (Component comp : comps) {
-    //        comp.setEnabled(false);
-    //    }
-    //}
+    public void disableComponents(Component[] comps) {
+        for (Component comp : comps) {
+            comp.setEnabled(false);
+        }
+    }
 
-    //public void enableComponents(Component[] comps) {
-    //    for (Component comp : comps) {
-    //        comp.setEnabled(true);
-    //    }
-    //}
+    public void enableComponents(Component[] comps) {
+        for (Component comp : comps) {
+            comp.setEnabled(true);
+        }
+    }
 
     @Override
     public void update(ScrabbleGame game) {
