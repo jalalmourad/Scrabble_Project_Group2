@@ -138,8 +138,6 @@ public class ScrabbleController implements ActionListener {
         }
 
         if (s.equals("pass")){
-            //model.clearInvalidWord();
-            //model.setTextPlayed(" ");
             model.turn++;
             frame.disableComponents(frame.boardPanel.getComponents());
             model.updateViews();

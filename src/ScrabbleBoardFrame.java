@@ -97,10 +97,12 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         submitButton = new JButton("Submit");
         submitButton.setActionCommand("submit");
         submitButton.addActionListener(controller);
+        submitButton.setBackground(Color.WHITE);
 
         passButton = new JButton("Pass");
         passButton.addActionListener(controller);
         passButton.setActionCommand("pass");
+        passButton.setBackground(Color.WHITE);
 
         actionButtons.add(submitButton);
         actionButtons.add(passButton);
