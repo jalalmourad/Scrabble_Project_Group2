@@ -16,8 +16,8 @@ public class ScrabbleController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
 
+        // Menu actions
         if (s.equals("play")) {
-
             if (!model.getGameStarted()) {
                 boolean numPlayers = false;
 
@@ -39,7 +39,6 @@ public class ScrabbleController implements ActionListener {
                 JOptionPane.showMessageDialog(null,"A game is already in progress!");
                 return;
             }
-
         } else if (s.equals("help")) {
             JOptionPane.showMessageDialog(null,"Welcome to the game of Scrabble!\n" +
                     "- Each player has the ability to select letters and place them on the board, but make sure that the letters are connecting to other letters on the board!\n" +
@@ -59,6 +58,7 @@ public class ScrabbleController implements ActionListener {
             return;
         }
 
+        // Letter in hand action
         if (s.startsWith("h")) {
             JButton sourceButton = (JButton) e.getSource();
             String text = sourceButton.getText();
@@ -68,7 +68,7 @@ public class ScrabbleController implements ActionListener {
             frame.enableComponents(frame.boardPanel.getComponents()); // Allow player to place their selected letter
             frame.disableComponents(frame.actionButtons.getComponents());
 
-        } else {
+        } else { // Placing letter action
             int y = -1, x = -1;
 
             if (s.length() == 2) {
@@ -108,6 +108,7 @@ public class ScrabbleController implements ActionListener {
             }
         }
 
+        // Action bar actions
         if (s.equals("submit")) {
             String formedWord = model.checkValidWord(model.getyCoordinate(), model.getxCoordinate());
             if (model.getParser().isValidWord(formedWord)) {
@@ -118,7 +119,6 @@ public class ScrabbleController implements ActionListener {
                 model.InvalidChars.clear();
                 model.turn++;
                 model.updateViews();
-                //frame.enableHandButtons();
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
             } else {
                 JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
@@ -129,21 +129,20 @@ public class ScrabbleController implements ActionListener {
                     model.setTextPlayed(" ");
                     model.turn++;
                     model.updateViews();
-                    //frame.enableHandButtons();
                     frame.enableComponents(frame.wordsInHandPanel.getComponents());
                 }
                 model.setTextPlayed(" ");
                 model.updateViews();
-                //frame.enableHandButtons();
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
             }
         }
 
         if (s.equals("pass")){
+            //model.clearInvalidWord();
+            //model.setTextPlayed(" ");
             model.turn++;
             frame.disableComponents(frame.boardPanel.getComponents());
             model.updateViews();
-            //frame.enableHandButtons();
             frame.enableComponents(frame.wordsInHandPanel.getComponents());
         }
     }

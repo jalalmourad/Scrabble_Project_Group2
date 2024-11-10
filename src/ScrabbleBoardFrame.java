@@ -120,7 +120,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         this.setLocationRelativeTo(null);
         setVisible(true);
 
-        JOptionPane.showMessageDialog(null, "Welcome to the game of Scrabble! Please select Options to begin the game!");
+        JOptionPane.showMessageDialog(null, "Welcome to the game of Scrabble! Please select Options > Play to begin the game!");
     }
 
     public static void main(String[] args) {
