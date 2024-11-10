@@ -92,24 +92,13 @@ public class ScrabbleGame {
      */
 
     public void MVCparticipants(int n) {
-        boolean numPlayers = false;
 
-        while (!numPlayers) {
-
-            if (n < 2) {
-                JOptionPane.showMessageDialog(null,"Not enough players!");
-            } else if (n > 4) {
-                JOptionPane.showMessageDialog(null,"Too many players!");
-            } else {
-                for (int i = 0; i < n; i++) {
-                    int j = i+1;
-                    String playerName = JOptionPane.showInputDialog("Enter player "+ j +" Name: ");
-                    Player player = new Player(playerName);
-                    player.getHand().setLetters(bag.getAlphabet());
-                    players.add(player);
-                }
-                numPlayers = true;
-            }
+        for (int i = 0; i < n; i++) {
+            int j = i + 1;
+            String playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
+            Player player = new Player(playerName);
+            player.getHand().setLetters(bag.getAlphabet());
+            players.add(player);
         }
     }
 
@@ -237,8 +226,8 @@ public class ScrabbleGame {
     /**
      * Main method to start the game.
      */
-    public static void main(String[] args) {
-        ScrabbleGame game = new ScrabbleGame();
+    //public static void main(String[] args) {
+    //    ScrabbleGame game = new ScrabbleGame();
 
-    }
+    //}
 }

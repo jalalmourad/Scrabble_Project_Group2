@@ -17,13 +17,22 @@ public class ScrabbleController implements ActionListener {
         String s = e.getActionCommand();
 
         if (s.equals("play")) {
-            String playerCountInput = JOptionPane.showInputDialog("Select the number of players (2-4)?");
-            if (playerCountInput != null && !playerCountInput.isEmpty()) {
-                int playerNumber = Integer.parseInt(playerCountInput);
-                model.MVCparticipants(playerNumber);
-                model.updateViews();
+            boolean numPlayers = false;
+
+            while (!numPlayers) {
+                int playerCount = Integer.parseInt(JOptionPane.showInputDialog("Select the number of players (2-4)?"));
+                if (playerCount < 2) {
+                    JOptionPane.showMessageDialog(null,"Not enough players!");
+                } else if (playerCount > 4) {
+                    JOptionPane.showMessageDialog(null,"Too many players!");
+                } else {
+                    model.MVCparticipants(playerCount);
+                    frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                    frame.enableComponents(frame.scoreText.getComponents());
+                    model.updateViews();
+                    numPlayers = true;
+                }
             }
-            return;
         }
 
         if (s.startsWith("h")) {
@@ -31,6 +40,9 @@ public class ScrabbleController implements ActionListener {
             String text = sourceButton.getText();
             model.setHandListCoord(s.substring(1));
             model.setTextPlayed(text);
+
+            frame.enableComponents(frame.boardPanel.getComponents()); // Allow player to place their selected letter
+            frame.disableComponents(frame.actionButtons.getComponents());
 
         } else {
             int y = -1, x = -1;
@@ -63,6 +75,10 @@ public class ScrabbleController implements ActionListener {
 
                 model.setxCoordinate(x);
                 model.setyCoordinate(y);
+
+                frame.disableComponents(frame.boardPanel.getComponents());
+                frame.enableComponents(frame.actionButtons.getComponents()); // Allow player to select actions only after placing a letter
+
                 model.MVCplayTurn(model.getCurrentPlayer(), x, y, model.getTextPlayed().charAt(0));
                 model.updateViews();
             }
