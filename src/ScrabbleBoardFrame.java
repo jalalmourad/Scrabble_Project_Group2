@@ -22,6 +22,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     JMenuBar menuBar;
     JMenuItem playMenuItem;
     JMenuItem helpMenuItem;
+    JMenuItem pointsMenuItem;
 
     public ScrabbleBoardFrame() {
         super("Scrabble!");
@@ -40,12 +41,18 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         playMenuItem = new JMenuItem("Play");
         playMenuItem.addActionListener(controller);
         playMenuItem.setActionCommand("play");
+
         helpMenuItem = new JMenuItem("Help");
         helpMenuItem.addActionListener(controller);
         helpMenuItem.setActionCommand("help");
 
+        pointsMenuItem = new JMenuItem("Letter Values");
+        pointsMenuItem.addActionListener(controller);
+        pointsMenuItem.setActionCommand("values");
+
         menu.add(playMenuItem);
         menu.add(helpMenuItem);
+        menu.add(pointsMenuItem);
         setJMenuBar(menuBar);
 
         // Main Board Initializations

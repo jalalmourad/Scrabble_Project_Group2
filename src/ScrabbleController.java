@@ -40,13 +40,22 @@ public class ScrabbleController implements ActionListener {
                 return;
             }
 
-
         } else if (s.equals("help")) {
             JOptionPane.showMessageDialog(null,"Welcome to the game of Scrabble!\n" +
-                    "Each player has the ability to select letters and place them on the board, but make sure that the letters are connecting to other letters on the board!\n" +
-                    "After completing your word, you can click 'Submit' at the top to collect points based on the word you created.\n" +
-                    "Players may also skip their turn by clicking 'Pass' at the top.\n" +
+                    "- Each player has the ability to select letters and place them on the board, but make sure that the letters are connecting to other letters on the board!\n" +
+                    "- After completing your word, you can click 'Submit' at the top to collect points based on the word you created.\n" +
+                    "- Players may also skip their turn by clicking 'Pass' at the top.\n" +
+                    "- Clicking on 'Letter Values' in the menu can show players value of each letter.\n\n" +
                     "Good luck!");
+            return;
+        } else if (s.equals("values")) {
+            JOptionPane.showMessageDialog(null,"1 point: A, E, I, O, U, L, N, S, T, R\n" +
+                    "2 points: D, G\n" +
+                    "3 points: B, C, M, P\n" +
+                    "4 points: F, H, V, W, Y\n" +
+                    "5 points: K\n" +
+                    "8 points: J, X\n" +
+                    "10 points: Q, Z");
             return;
         }
 
