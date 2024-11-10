@@ -206,19 +206,11 @@ public class ScrabbleGame {
 
 
     public void MVCplayTurn(Player currentPlayer, int x, int y, char letter) {
-        if ((x + 1 < 15 && board.getLetterOnBoard(y, x + 1) != ' ') ||
-                (y + 1 < 15 && board.getLetterOnBoard(y + 1, x) != ' ') ||
-                (x - 1 >= 0 && board.getLetterOnBoard(y, x - 1) != ' ') ||
-                (y - 1 >= 0 && board.getLetterOnBoard(y - 1, x) != ' ') ||
-                turn == 0) {
 
-            setLetterOnBoard(y, x, letter, currentPlayer);
-            placedPositions.add(new int[]{x, y});
-            InvalidChars.add(new int[]{x, y});
-
-            board.printBoard();
-
-        }
+        setLetterOnBoard(y, x, letter, currentPlayer);
+        placedPositions.add(new int[]{x, y});
+        InvalidChars.add(new int[]{x, y});
+        board.printBoard();
 
     }
 

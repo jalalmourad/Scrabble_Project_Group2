@@ -43,7 +43,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         buttons = new JButton[15][15];
         setLayout(new BorderLayout());
-        setSize(500, 500);
+        setSize(600, 600);
 
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
@@ -129,6 +129,9 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         scoreText.setText(sb.toString());
 
         buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
-        wordsInHandButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
+
+        if(model.getHandListCoord()!= null) {
+            wordsInHandButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
+        }
     }
 }
