@@ -18,9 +18,7 @@ public class ScrabbleGame {
     ArrayList<ScrabbleView> views;
 
     List<int[]> placedPositions;
-
     List<int[]> removedChars;
-
     List<int[]> InvalidChars;
 
     String handListCoord;
@@ -30,7 +28,7 @@ public class ScrabbleGame {
     boolean gameStarted = false;
 
     /**
-     * Create the game.
+     * Creates the game, initializes players, board, bag, views, etc.
      */
     public ScrabbleGame() {
         players = new ArrayList<>();
@@ -55,10 +53,6 @@ public class ScrabbleGame {
         views.add(view);
     }
 
-    public int getTurn(){
-        return turn;
-    }
-
     /**
      * Updates the views for all the subscribed viewers
      */
@@ -69,29 +63,11 @@ public class ScrabbleGame {
         }
     }
 
-    public String getHandListCoord(){
-        return handListCoord;
-    }
-
-    public void setHandListCoord(String handListCoord){
-        this.handListCoord = handListCoord;
-    }
-
-    public void setTextPlayed(String text) {
-        this.text = text;
-    }
-
-    public String getTextPlayed() {
-        return text;
-    }
-
-
     /**
-     * Adds players to the game (Compatible for Milestone 2)
+     * Adds players to the game, used by Controller, changes seen in Frame
      */
 
     public void MVCparticipants(int n) {
-
         for (int i = 0; i < n; i++) {
             int j = i + 1;
             String playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
@@ -102,6 +78,16 @@ public class ScrabbleGame {
         gameStarted = true;
     }
 
+    /**
+     * Plays the player's turn, used by other classes
+     */
+    public void MVCplayTurn(Player currentPlayer, int x, int y, char letter) {
+
+        setLetterOnBoard(y, x, letter, currentPlayer);
+        placedPositions.add(new int[]{x, y});
+        InvalidChars.add(new int[]{x, y});
+        board.printBoard();
+    }
 
     /**
      * Set a letter on the board for a player.
@@ -119,6 +105,9 @@ public class ScrabbleGame {
         }
     }
 
+    /**
+     * Remove chars from Player's hand
+     */
     public void removeCharsFromHand() {
         for (int[] indexLetterPair : removedChars) {
             char letter = (char) indexLetterPair[1];
@@ -127,7 +116,6 @@ public class ScrabbleGame {
                 playerHand.getLetters().remove((Character) letter);
             }
         }
-
         removedChars.clear();
     }
 
@@ -157,10 +145,12 @@ public class ScrabbleGame {
         for(int i= y+1; i<15 &&board.getLetterOnBoard(i,x)!= ' '; i++) {
             word.append(board.getLetterOnBoard(i,x));
         }
-
         return word.toString();
     }
 
+    /**
+     * Clears the invalid word placed by Player
+     */
     public void clearInvalidWord() {
         for (int[] pos : InvalidChars) {
             int x = pos[0];
@@ -168,12 +158,31 @@ public class ScrabbleGame {
             char letter = board.getLetterOnBoard(y, x);
 
             board.setDeleteLetterFromBoard(y, x, ' ');
-
             getCurrentPlayer().getHand().addLetter(letter);
         }
         InvalidChars.clear();
         invalidFlag = true;
         updateViews();
+    }
+
+    /**
+     * Following miscellaneous methods are used throughout the program as getters, setters, etc.
+     */
+
+    public String getHandListCoord(){
+        return handListCoord;
+    }
+
+    public void setHandListCoord(String handListCoord){
+        this.handListCoord = handListCoord;
+    }
+
+    public void setTextPlayed(String text) {
+        this.text = text;
+    }
+
+    public String getTextPlayed() {
+        return text;
     }
 
     public boolean invalidFlag() {
@@ -184,19 +193,8 @@ public class ScrabbleGame {
         invalidFlag = false;
     }
 
-
     Parser getParser(){
         return parser;
-    }
-
-
-    public void MVCplayTurn(Player currentPlayer, int x, int y, char letter) {
-
-        setLetterOnBoard(y, x, letter, currentPlayer);
-        placedPositions.add(new int[]{x, y});
-        InvalidChars.add(new int[]{x, y});
-        board.printBoard();
-
     }
 
     public boolean getGameStarted() {
@@ -218,11 +216,7 @@ public class ScrabbleGame {
         return yCoordinate;
     }
 
-    /**
-     * Main method to start the game.
-     */
-    //public static void main(String[] args) {
-    //    ScrabbleGame game = new ScrabbleGame();
-
-    //}
+    public int getTurn(){
+        return turn;
+    }
 }
