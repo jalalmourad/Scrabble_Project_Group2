@@ -136,8 +136,6 @@ public class ScrabbleGame {
 
             if (playerHand.getLetters().contains(letter)) {
                 playerHand.getLetters().remove((Character) letter);
-            } else {
-                System.out.println("Warning: Attempted to remove a letter that doesn't exist in the hand.");
             }
         }
 
@@ -180,15 +178,13 @@ public class ScrabbleGame {
             int y = pos[1];
             char letter = board.getLetterOnBoard(y, x);
 
-            // Clear only the current turn's letters on the board
             board.setDeleteLetterFromBoard(y, x, ' ');
 
-            // Return the letter to the player's hand
             getCurrentPlayer().getHand().addLetter(letter);
         }
-        InvalidChars.clear();  // Clear after handling the invalid word
+        InvalidChars.clear();
         invalidFlag = true;
-        updateViews();  // Update the view to show the cleared letters
+        updateViews();
     }
 
     public boolean invalidFlag() {

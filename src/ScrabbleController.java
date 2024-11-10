@@ -89,7 +89,6 @@ public class ScrabbleController implements ActionListener {
                 JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
 
                 model.clearInvalidWord();
-                frame.enableHandButtons();
                 String question = JOptionPane.showInputDialog("Are you done with your turn? (yes/no)");
 
                 if (question != null && question.equalsIgnoreCase("yes")) {
@@ -102,9 +101,9 @@ public class ScrabbleController implements ActionListener {
                     frame.enableHandButtons();
                 }
 
-//                model.setTextPlayed(" ");
-//                model.updateViews();
-
+                model.setTextPlayed(" ");
+                model.updateViews();
+                frame.enableHandButtons();
             }
         }
     }
