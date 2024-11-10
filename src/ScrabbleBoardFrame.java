@@ -3,93 +3,79 @@ import java.awt.*;
 
 public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
+    public static final int SIZE = 15;
     JButton[][] buttons;
-
-    JButton [] wordsInHandButtons;
-
-    JPanel boardPanel;
-    JPanel wordsInHandPanel;
+    JButton[] handButtons;
 
     ScrabbleGame model;
-
-    JTextArea scoreText;
-
     ScrabbleController controller;
 
+    JPanel boardPanel;
+    JPanel handPanel;
+    JTextArea scoreText;
+
     JMenu menu;
-
     JMenuBar menuBar;
-
     JMenuItem playMenuItem;
 
     public ScrabbleBoardFrame(){
-
         super("Scrabble!");
-
-        wordsInHandPanel = new JPanel();
-        wordsInHandButtons = new JButton[7];
-
-
-
-        boardPanel = new JPanel();
-        boardPanel.setLayout(new GridLayout(15,15));
-        wordsInHandPanel.setLayout(new GridLayout(0,7));
+        this.setLayout(new BorderLayout());
+        this.setSize(1000,1000);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         model = new ScrabbleGame();
         controller = new ScrabbleController(this, model);
         model.addView(this);
 
-        scoreText = new JTextArea("SCORES: ");
-        scoreText.setEditable(false);
-
-        buttons = new JButton[15][15];
-        setLayout(new BorderLayout());
-        setSize(500,500);
-
-        for (int i = 0; i<15;i++){
-            for (int j = 0;j<15;j++){
-
-                JButton button = new JButton();
-                buttons[i][j] = button;
-                buttons[i][j].addActionListener(controller);
-                buttons[i][j].setActionCommand(i + ""+j);
-
-                boardPanel.add(button);
-
-            }
-
-        }
-        buttons[7][7].setBackground(Color.RED);
-
-        for (int i = 0; i< wordsInHandButtons.length;i++){
-            JButton button = new JButton();
-            wordsInHandButtons[i] = button;
-            wordsInHandButtons[i].setBackground(Color.WHITE);
-            wordsInHandButtons[i].setPreferredSize(new Dimension(30, 50));
-            wordsInHandButtons[i].addActionListener(controller);
-            wordsInHandButtons[i].setActionCommand("h"+i);
-            wordsInHandPanel.add(wordsInHandButtons[i]);
-        }
-
+        // Menu Bar Initializations
         menuBar = new JMenuBar();
-        menu = new JMenu("Settings");
+        menu = new JMenu("Options");
         menuBar.add(menu);
         playMenuItem = new JMenuItem("Play");
         playMenuItem.addActionListener(controller);
         playMenuItem.setActionCommand("play");
-
         menu.add(playMenuItem);
-
         setJMenuBar(menuBar);
 
+        // Main Board Initializations
+        boardPanel = new JPanel();
+        boardPanel.setLayout(new GridLayout(SIZE,SIZE));
+        buttons = new JButton[SIZE][SIZE];
+        for (int i = 0; i < SIZE; i++){
+            for (int j = 0; j < SIZE; j++){
+                buttons[i][j] = new JButton();
+                buttons[i][j].addActionListener(controller);
+                buttons[i][j].setActionCommand(i + "" + j);
+                buttons[i][j].setBackground(Color.WHITE);
+                boardPanel.add(buttons[i][j]);
+            }
+        }
+        buttons[7][7].setBackground(Color.RED);
+
+        // Hand Panel Initializations
+        handPanel = new JPanel();
+        handPanel.setLayout(new GridLayout(0,7));
+        handButtons = new JButton[7];
+        for (int i = 0; i < 7; i++){
+            handButtons[i] = new JButton();
+            handButtons[i].addActionListener(controller);
+            handButtons[i].setActionCommand("h" + i);
+            handButtons[i].setBackground(Color.WHITE);
+            handButtons[i].setPreferredSize(new Dimension(50,50));
+            handPanel.add(handButtons[i]);
+        }
+
+        // Score TextArea Initializations
+        scoreText = new JTextArea("Scores");
+        scoreText.setEditable(false);
+        scoreText.setPreferredSize(new Dimension(100,100));
 
         this.add(boardPanel,BorderLayout.CENTER);
-        this.add(wordsInHandPanel,BorderLayout.SOUTH);
+        this.add(handPanel,BorderLayout.SOUTH);
         this.add(scoreText,BorderLayout.EAST);
 
-
-        setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setVisible(true);
     }
 
     public static void main(String[] args) {
@@ -98,7 +84,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
     public void enableHandButtons(){
         for (int i = 0;i<7;i++){
-            wordsInHandButtons[i].setEnabled(true);
+            handButtons[i].setEnabled(true);
         }
     }
 
@@ -106,7 +92,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
     public void update(ScrabbleGame game) {
 
         for (int i = 0; i<game.getCurrentPlayer().getHand().getLetters().size();i++){
-            wordsInHandButtons[i].setText(String.valueOf(game.getCurrentPlayer().getHand().getLetters().get(i)));
+            handButtons[i].setText(String.valueOf(game.getCurrentPlayer().getHand().getLetters().get(i)));
         }
 
         StringBuilder sb = new StringBuilder();
@@ -116,7 +102,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
         buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
 
-        wordsInHandButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
+        handButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
 
 
     }

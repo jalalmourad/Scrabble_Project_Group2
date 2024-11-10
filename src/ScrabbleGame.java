@@ -10,17 +10,15 @@ public class ScrabbleGame {
     Board board;
     Parser parser;
     Scanner sc;
+
     int turn = 0;
     Hand playerHand;
-
     int xCoordinate;
     int yCoordinate;
+
     ArrayList<ScrabbleView> views;
-
     List<int[]> removedChars;
-
     String handListCoord;
-
     String text;
     boolean done;
 
