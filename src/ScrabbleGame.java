@@ -17,11 +17,14 @@ public class ScrabbleGame {
     int yCoordinate;
     ArrayList<ScrabbleView> views;
 
+    List<int[]> placedPositions;
+
     List<int[]> removedChars;
 
     String handListCoord;
 
     String text;
+    private boolean invalidFlag = false;
     boolean done;
 
     /**
@@ -36,6 +39,8 @@ public class ScrabbleGame {
         sc = new Scanner(System.in);
 
         views = new ArrayList<>();
+
+        placedPositions = new ArrayList<>();
 
         parser.loadWordsFromFile("src/Dictionary.txt");
         done = true;
@@ -110,12 +115,13 @@ public class ScrabbleGame {
      * Set a letter on the board for a player.
      */
     public void setLetterOnBoard(int y, int x, char letter, Player player) {
-          playerHand = player.getHand();
+        playerHand = player.getHand();
         if (playerHand.getLetters().contains(letter)) {
             System.out.println("Letter Placed is: "+letter+"\n");
             board.setLetterOnBoard(y,x,letter);
             int letterIndex = playerHand.getLetterPosition(letter);
             removedChars.add(new int[]{letterIndex, letter});
+            placedPositions.add(new int[]{x, y});
         } else {
             System.out.println("The letter "+letter+" is not in your hand!\n");
         }
@@ -159,6 +165,29 @@ public class ScrabbleGame {
         return word.toString();
     }
 
+    public void clearInvalidWord() {
+        for (int[] pos : placedPositions) {
+            int x = pos[0];
+            int y = pos[1];
+            char letter = board.getLetterOnBoard(y, x);
+
+            board.setDeleteLetterFromBoard(y, x, ' ');
+
+            getCurrentPlayer().getHand().addLetter(letter);
+        }
+        placedPositions.clear();
+        invalidFlag = true;
+        updateViews();
+    }
+
+    public boolean invalidFlag() {
+        return invalidFlag;
+    }
+
+    public void resetInvalidFlag() {
+        invalidFlag = false;
+    }
+
 
     Parser getParser(){
         return parser;
@@ -166,8 +195,6 @@ public class ScrabbleGame {
 
 
     public void MVCplayTurn(Player currentPlayer, int x, int y, char letter) {
-        List<int[]> placedPositions = new ArrayList<>();
-
         if ((x + 1 < 15 && board.getLetterOnBoard(y, x + 1) != ' ') ||
                 (y + 1 < 15 && board.getLetterOnBoard(y + 1, x) != ' ') ||
                 (x - 1 >= 0 && board.getLetterOnBoard(y, x - 1) != ' ') ||

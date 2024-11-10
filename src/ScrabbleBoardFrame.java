@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
@@ -104,6 +105,30 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
     @Override
     public void update(ScrabbleGame game) {
+        for (int i = 0; i < buttons.length; i++) {
+            for (int j = 0; j < buttons[i].length; j++) {
+                char letterOnBoard = game.board.getLetterOnBoard(i, j);
+                if (letterOnBoard == ' ') {
+                    buttons[i][j].setText("");
+                } else {
+                    buttons[i][j].setText(String.valueOf(letterOnBoard));
+                }
+            }
+        }
+
+        ArrayList<Character> lettersInHand = game.getCurrentPlayer().getHand().getLetters();
+        for (int i = 0; i < wordsInHandButtons.length; i++) {
+            if (i < lettersInHand.size()) {
+                wordsInHandButtons[i].setText(String.valueOf(lettersInHand.get(i)));
+            } else {
+                wordsInHandButtons[i].setText("");
+            }
+        }
+
+        if (game.invalidFlag()) {
+            enableHandButtons();
+            game.resetInvalidFlag();
+        }
 
         for (int i = 0; i<game.getCurrentPlayer().getHand().getLetters().size();i++){
             wordsInHandButtons[i].setText(String.valueOf(game.getCurrentPlayer().getHand().getLetters().get(i)));
