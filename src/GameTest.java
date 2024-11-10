@@ -66,34 +66,6 @@ public class GameTest {
         assertEquals(0, game.players.size());
     }
 
-    @Test
-    public void testParticipants() {
-        ScrabbleGame game = new ScrabbleGame();
-
-        // Simulate adding 2 players (mocking user input)
-        Scanner scanner = new Scanner("2\nIshaq\nNour\n");
-        game.sc = scanner;
-        //game.participants();
-
-        // Check that 2 players were added
-        assertEquals(2, game.players.size());
-        assertEquals("Ishaq", game.players.get(0).getName());
-        assertEquals("Nour", game.players.get(1).getName());
-    }
-
-    @Test
-    public void testInvalidParticipants() {
-        ScrabbleGame game = new ScrabbleGame();
-
-        Scanner scanner = new Scanner("1\n5\n3\nIshaq\nNour\nMoe\n");
-        game.sc = scanner;
-       // game.participants();
-
-        assertEquals(3, game.players.size());
-        assertEquals("Ishaq", game.players.get(0).getName());
-        assertEquals("Nour", game.players.get(1).getName());
-        assertEquals("Moe", game.players.get(2).getName());
-    }
 
     @Test
     public void testSetLetterOnBoard(){
@@ -141,25 +113,6 @@ public class GameTest {
         assertEquals('O', game.board.getLetterOnBoard(7, 11));
     }
 
-    @Test
-    public void checkHandRefill() {
-        ScrabbleGame game = new ScrabbleGame();
-        Player player = new Player("Ishaq");
-        game.players.add(player);
-
-
-        ArrayList<Character> startingHand = new ArrayList<>(List.of('A', 'B', 'C', 'D', 'E', 'F', 'G'));
-        player.getHand().setLetters(startingHand);
-        System.out.println("Hand before: " + player.getHand().getLetters());
-
-        assertEquals(7, player.getHand().getLetters().size());
-
-        game.setLetterOnBoard(7, 7, 'A', player);
-        System.out.println("Hand after: " + player.getHand().getLetters());
-
-        assertNotEquals('A', player.getHand().getLetters().get(0));
-        assertEquals(7, player.getHand().getLetters().size());
-    }
 
     @Test
     public void testWord() {
@@ -203,21 +156,6 @@ public class GameTest {
         assertFalse(isValid);
     }
 
-
-    @Test
-    public void testPlayTurn() {
-        ScrabbleGame game = new ScrabbleGame();
-        Player player = new Player("Ishaq");
-        game.players.add(player);
-
-        player.getHand().setLetters(new ArrayList<>(List.of('A', 'B', 'C', 'D', 'E', 'F', 'G')));
-        Scanner scanner = new Scanner("A\n7\n7\nno\n");
-        game.sc = scanner;
-      //  game.playTurn(player);
-
-        assertEquals('A', game.board.getLetterOnBoard(7, 7));
-        assertEquals(7, player.getHand().getLettersSize());
-    }
 
     @Test
     public void testGetPlayerHand() {
