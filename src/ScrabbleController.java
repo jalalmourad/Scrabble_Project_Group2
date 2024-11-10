@@ -19,11 +19,15 @@ public class ScrabbleController implements ActionListener {
 
         if (s.equals("play")) {
             int playerNumber = Integer.parseInt(JOptionPane.showInputDialog("Select the number of players (2-4)?"));
-            model.MVCparticipants(playerNumber);
+            frame.enableComponents(frame.boardPanel.getComponents());
+            frame.enableComponents(frame.handPanel.getComponents());
+            frame.enableComponents(frame.scoreText.getComponents());
+            model.participants(playerNumber);
             model.updateViews();
         }
+
         String[] handlist = s.split("");
-         if (handlist[0].equals("h")) {
+        if (handlist[0].equals("h")) {
             JButton sourceButton = (JButton) e.getSource();
             String text = sourceButton.getText();
             model.setHandListCoord(handlist[1]);
@@ -46,10 +50,10 @@ public class ScrabbleController implements ActionListener {
                     model.setDone(false);
                 }
 
-                model.setxCoordinate(x);
-                model.setyCoordinate(y);
+                model.setX(x);
+                model.setY(y);
 
-                model.MVCplayTurn(model.getCurrentPlayer(), x, y, model.getTextPlayed().charAt(0));
+                model.playTurn(model.getCurrentPlayer(), x, y, model.getTextPlayed().charAt(0));
                 model.updateViews();
 
                 String place = JOptionPane.showInputDialog("Do you want to continue playing?");
@@ -59,7 +63,7 @@ public class ScrabbleController implements ActionListener {
                     if (place.equals("yes")){
                         return;
                     }
-                    model.MVCplayTurn(model.getCurrentPlayer(), x, y, model.getTextPlayed().charAt(0));
+                    model.playTurn(model.getCurrentPlayer(), x, y, model.getTextPlayed().charAt(0));
                     model.updateViews();
                 }
 

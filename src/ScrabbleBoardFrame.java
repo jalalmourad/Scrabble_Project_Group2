@@ -75,6 +75,10 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
         this.add(handPanel,BorderLayout.SOUTH);
         this.add(scoreText,BorderLayout.EAST);
 
+        this.disableComponents(boardPanel.getComponents());
+        this.disableComponents(handPanel.getComponents());
+        this.disableComponents(scoreText.getComponents());
+
         this.setVisible(true);
     }
 
@@ -100,10 +104,20 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView{
 
         scoreText.setText(String.valueOf(sb));
 
-        buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
+        buttons[model.getY()][model.getX()].setText(String.valueOf(model.getTextPlayed()));
 
         handButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
+    }
 
+    public void disableComponents(Component[] comps) {
+        for (Component comp : comps) {
+            comp.setEnabled(false);
+        }
+    }
 
+    public void enableComponents(Component[] comps) {
+        for (Component comp : comps) {
+            comp.setEnabled(true);
+        }
     }
 }

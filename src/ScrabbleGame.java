@@ -13,12 +13,15 @@ public class ScrabbleGame {
 
     int turn = 0;
     Hand playerHand;
+
     int xCoordinate;
     int yCoordinate;
 
     ArrayList<ScrabbleView> views;
+
     List<int[]> removedChars;
     String handListCoord;
+
     String text;
     boolean done;
 
@@ -39,6 +42,10 @@ public class ScrabbleGame {
         done = true;
     }
 
+    public int getTurn(){
+        return turn;
+    }
+
     /**
      * Add views for MVC
      */
@@ -46,16 +53,12 @@ public class ScrabbleGame {
         views.add(view);
     }
 
-    public int getTurn(){
-        return turn;
-    }
-
     /**
      * Updates the views for all the subscribed viewers
      */
 
     public void updateViews(){
-        for (ScrabbleView v : views){
+        for (ScrabbleView v : views) {
             v.update(this);
         }
     }
@@ -80,16 +83,15 @@ public class ScrabbleGame {
     /**
      * Adds players to the game (Compatible for Milestone 2)
      */
-
-    public void MVCparticipants(int n) {
+    public void participants(int n) {
         boolean numPlayers = false;
 
         while (!numPlayers) {
 
             if (n < 2) {
-                JOptionPane.showMessageDialog(null,"Not enough players!");
+                JOptionPane.showMessageDialog(null,"Not enough players!", "Error", JOptionPane.ERROR_MESSAGE);
             } else if (n > 4) {
-                JOptionPane.showMessageDialog(null,"Too many players!");
+                JOptionPane.showMessageDialog(null,"Too many players!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 for (int i = 0; i < n; i++) {
                     int j = i+1;
@@ -108,7 +110,7 @@ public class ScrabbleGame {
      * Set a letter on the board for a player.
      */
     public void setLetterOnBoard(int y, int x, char letter, Player player) {
-          playerHand = player.getHand();
+        playerHand = player.getHand();
         if (playerHand.getLetters().contains(letter)) {
             System.out.println("Letter Placed is: "+letter+"\n");
             board.setLetterOnBoard(y,x,letter);
@@ -163,7 +165,7 @@ public class ScrabbleGame {
     }
 
 
-    public void MVCplayTurn(Player currentPlayer, int x, int y, char letter) {
+    public void playTurn(Player currentPlayer, int x, int y, char letter) {
         List<int[]> placedPositions = new ArrayList<>();
 
         if ((x + 1 < 15 && board.getLetterOnBoard(y, x + 1) != ' ') ||
@@ -184,32 +186,25 @@ public class ScrabbleGame {
     public void setDone(boolean done){
         this.done = done;
     }
+    public boolean getDone(){ return done; }
 
-    public boolean getDone(){
-        return done;
-    }
-
-
-    public void setxCoordinate(int xCoordinate){
+    public void setX(int xCoordinate){
         this.xCoordinate = xCoordinate;
     }
-
-    public int getxCoordinate() {
-        return xCoordinate;
-    }
-
-    public void setyCoordinate(int yCoordinate) {
+    public void setY(int yCoordinate) {
         this.yCoordinate = yCoordinate;
     }
-    public int getyCoordinate(){
+
+    public int getX() { return xCoordinate; }
+    public int getY(){
         return yCoordinate;
     }
 
     /**
      * Main method to start the game.
      */
-    public static void main(String[] args) {
-        ScrabbleGame game = new ScrabbleGame();
+    //public static void main(String[] args) {
+     //   ScrabbleGame game = new ScrabbleGame();
 
-    }
+    //}
 }
