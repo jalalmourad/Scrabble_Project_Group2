@@ -21,6 +21,8 @@ public class ScrabbleGame {
 
     List<int[]> removedChars;
 
+    List<int[]> InvalidChars;
+
     String handListCoord;
 
     String text;
@@ -33,6 +35,7 @@ public class ScrabbleGame {
     public ScrabbleGame() {
         players = new ArrayList<>();
         removedChars = new ArrayList<>();
+        InvalidChars = new ArrayList<>();
         bag = new Bag();
         board = new Board();
         parser = new Parser();
@@ -129,9 +132,15 @@ public class ScrabbleGame {
 
     public void removeCharsFromHand() {
         for (int[] indexLetterPair : removedChars) {
-            int index = indexLetterPair[0];
-            playerHand.getLetters().remove(index);
+            char letter = (char) indexLetterPair[1];
+
+            if (playerHand.getLetters().contains(letter)) {
+                playerHand.getLetters().remove((Character) letter);
+            } else {
+                System.out.println("Warning: Attempted to remove a letter that doesn't exist in the hand.");
+            }
         }
+
         removedChars.clear();
     }
 
@@ -166,18 +175,20 @@ public class ScrabbleGame {
     }
 
     public void clearInvalidWord() {
-        for (int[] pos : placedPositions) {
+        for (int[] pos : InvalidChars) {
             int x = pos[0];
             int y = pos[1];
             char letter = board.getLetterOnBoard(y, x);
 
+            // Clear only the current turn's letters on the board
             board.setDeleteLetterFromBoard(y, x, ' ');
 
+            // Return the letter to the player's hand
             getCurrentPlayer().getHand().addLetter(letter);
         }
-        placedPositions.clear();
+        InvalidChars.clear();  // Clear after handling the invalid word
         invalidFlag = true;
-        updateViews();
+        updateViews();  // Update the view to show the cleared letters
     }
 
     public boolean invalidFlag() {
@@ -203,6 +214,7 @@ public class ScrabbleGame {
 
             setLetterOnBoard(y, x, letter, currentPlayer);
             placedPositions.add(new int[]{x, y});
+            InvalidChars.add(new int[]{x, y});
 
             board.printBoard();
 

@@ -1,12 +1,11 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class ScrabbleController implements ActionListener {
 
-    ScrabbleBoardFrame frame;
-    ScrabbleGame model;
+    private final ScrabbleBoardFrame frame;
+    private final ScrabbleGame model;
 
     public ScrabbleController(ScrabbleBoardFrame frame, ScrabbleGame model) {
         this.frame = frame;
@@ -18,17 +17,24 @@ public class ScrabbleController implements ActionListener {
         String s = e.getActionCommand();
 
         if (s.equals("play")) {
-            int playerNumber = Integer.parseInt(JOptionPane.showInputDialog("Select the number of players (2-4)?"));
-            model.MVCparticipants(playerNumber);
-            model.updateViews();
+            String playerCountInput = JOptionPane.showInputDialog("Select the number of players (2-4)?");
+            if (playerCountInput != null && !playerCountInput.isEmpty()) {
+                int playerNumber = Integer.parseInt(playerCountInput);
+                model.MVCparticipants(playerNumber);
+                model.updateViews();
+            }
+            return;
         }
-        String[] handlist = s.split("");
-        if (handlist[0].equals("h")) {
+
+        if (s.startsWith("h")) {
             JButton sourceButton = (JButton) e.getSource();
             String text = sourceButton.getText();
-            model.setHandListCoord(handlist[1]);
+            model.setHandListCoord(s.substring(1));
             model.setTextPlayed(text);
-        } else {
+
+        }
+
+        else {
             int y = -1, x = -1;
 
             if (s.length() == 2) {
@@ -46,12 +52,6 @@ public class ScrabbleController implements ActionListener {
                         x = Integer.parseInt(s.substring(1, 3));
                     }
                 }
-            } else if (s.length() == 4) {
-                if (Character.isDigit(s.charAt(0)) && Character.isDigit(s.charAt(1)) &&
-                        Character.isDigit(s.charAt(2)) && Character.isDigit(s.charAt(3))) {
-                    y = Integer.parseInt(s.substring(0, 2));
-                    x = Integer.parseInt(s.substring(2, 4));
-                }
             }
 
             if (y >= 0 && y < 15 && x >= 0 && x < 15) {
@@ -67,33 +67,39 @@ public class ScrabbleController implements ActionListener {
                 model.setyCoordinate(y);
                 model.MVCplayTurn(model.getCurrentPlayer(), x, y, model.getTextPlayed().charAt(0));
                 model.updateViews();
+            }
+        }
 
-                String place = JOptionPane.showInputDialog("Do you want to continue playing?");
-                while (place.equalsIgnoreCase("yes")) {
-                    place = JOptionPane.showInputDialog("Do you want to place another character? (yes/no)");
-                    if (place.equals("yes")) {
-                        return;
-                    }
-                    model.MVCplayTurn(model.getCurrentPlayer(), x, y, model.getTextPlayed().charAt(0));
-                    model.updateViews();
-                }
+        if (s.equals("submit")) {
+            String formedWord = model.checkValidWord(model.getyCoordinate(), model.getxCoordinate());
+            if (model.getParser().isValidWord(formedWord)) {
+                JOptionPane.showMessageDialog(null, formedWord + " is a valid word!");
+                model.getCurrentPlayer().calculateWordScore(formedWord);
+                model.removeCharsFromHand();
+                model.getCurrentPlayer().getHand().refillHand();
 
-                String formedWord = model.checkValidWord(y, x);
-                if (model.getParser().isValidWord(formedWord)) {
-                    JOptionPane.showMessageDialog(null, formedWord + " is a valid word!");
-                    model.getCurrentPlayer().calculateWordScore(formedWord);
-                    model.removeCharsFromHand();
-                    model.getCurrentPlayer().getHand().refillHand();
-                    model.turn++;
-                    model.updateViews();
-                    frame.enableHandButtons();
-                } else {
-                    JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
-                    model.clearInvalidWord();
-                    frame.enableHandButtons();
-                }
+                model.InvalidChars.clear();
+
+                model.turn++;
+                model.updateViews();
+                frame.enableHandButtons();
             } else {
-                System.out.println("Invalid coordinates: (" + y + ", " + x + ")");
+                JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
+
+                model.clearInvalidWord();
+                frame.enableHandButtons();
+                String question = JOptionPane.showInputDialog("Are you done with your turn? (yes/no)");
+
+                if (question != null && question.equalsIgnoreCase("yes")) {
+
+                    model.turn++;
+                    model.clearInvalidWord();
+                    model.setTextPlayed(" ");
+                    model.updateViews();
+                    frame.enableHandButtons();
+                }
+
+
             }
         }
     }
