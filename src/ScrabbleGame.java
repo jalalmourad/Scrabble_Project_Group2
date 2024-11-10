@@ -27,7 +27,7 @@ public class ScrabbleGame {
 
     String text;
     private boolean invalidFlag = false;
-    boolean done;
+    boolean gameStarted = false;
 
     /**
      * Create the game.
@@ -46,7 +46,6 @@ public class ScrabbleGame {
         placedPositions = new ArrayList<>();
 
         parser.loadWordsFromFile("src/Dictionary.txt");
-        done = true;
     }
 
     /**
@@ -100,6 +99,7 @@ public class ScrabbleGame {
             player.getHand().setLetters(bag.getAlphabet());
             players.add(player);
         }
+        gameStarted = true;
     }
 
 
@@ -199,14 +199,9 @@ public class ScrabbleGame {
 
     }
 
-    public void setDone(boolean done){
-        this.done = done;
+    public boolean getGameStarted() {
+        return gameStarted;
     }
-
-    public boolean getDone(){
-        return done;
-    }
-
 
     public void setxCoordinate(int xCoordinate){
         this.xCoordinate = xCoordinate;

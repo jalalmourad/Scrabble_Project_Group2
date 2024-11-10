@@ -21,6 +21,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     JMenu menu;
     JMenuBar menuBar;
     JMenuItem playMenuItem;
+    JMenuItem helpMenuItem;
 
     public ScrabbleBoardFrame() {
         super("Scrabble!");
@@ -34,12 +35,17 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         // Menu Bar Initializations
         menuBar = new JMenuBar();
-        menu = new JMenu("Settings");
+        menu = new JMenu("Options");
         menuBar.add(menu);
         playMenuItem = new JMenuItem("Play");
         playMenuItem.addActionListener(controller);
         playMenuItem.setActionCommand("play");
+        helpMenuItem = new JMenuItem("Help");
+        helpMenuItem.addActionListener(controller);
+        helpMenuItem.setActionCommand("help");
+
         menu.add(playMenuItem);
+        menu.add(helpMenuItem);
         setJMenuBar(menuBar);
 
         // Main Board Initializations
@@ -107,17 +113,11 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         this.setLocationRelativeTo(null);
         setVisible(true);
 
-        JOptionPane.showMessageDialog(null, "Welcome to the game of Scrabble! Please select Settings to begin the game!");
+        JOptionPane.showMessageDialog(null, "Welcome to the game of Scrabble! Please select Options to begin the game!");
     }
 
     public static void main(String[] args) {
         ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
-    }
-
-    public void enableHandButtons() {
-        for (int i = 0; i < 7; i++) {
-            wordsInHandButtons[i].setEnabled(true);
-        }
     }
 
     public void disableComponents(Component[] comps) {
@@ -155,7 +155,8 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         }
 
         if (game.invalidFlag()) {
-            enableHandButtons();
+            //enableHandButtons();
+            enableComponents(wordsInHandPanel.getComponents());
             game.resetInvalidFlag();
         }
 

@@ -17,22 +17,37 @@ public class ScrabbleController implements ActionListener {
         String s = e.getActionCommand();
 
         if (s.equals("play")) {
-            boolean numPlayers = false;
 
-            while (!numPlayers) {
-                int playerCount = Integer.parseInt(JOptionPane.showInputDialog("Select the number of players (2-4)?"));
-                if (playerCount < 2) {
-                    JOptionPane.showMessageDialog(null,"Not enough players!");
-                } else if (playerCount > 4) {
-                    JOptionPane.showMessageDialog(null,"Too many players!");
-                } else {
-                    model.MVCparticipants(playerCount);
-                    frame.enableComponents(frame.wordsInHandPanel.getComponents());
-                    frame.enableComponents(frame.scoreText.getComponents());
-                    model.updateViews();
-                    numPlayers = true;
+            if (!model.getGameStarted()) {
+                boolean numPlayers = false;
+
+                while (!numPlayers) {
+                    int playerCount = Integer.parseInt(JOptionPane.showInputDialog("Select the number of players (2-4)?"));
+                    if (playerCount < 2) {
+                        JOptionPane.showMessageDialog(null,"Not enough players!");
+                    } else if (playerCount > 4) {
+                        JOptionPane.showMessageDialog(null,"Too many players!");
+                    } else {
+                        model.MVCparticipants(playerCount);
+                        frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                        frame.enableComponents(frame.scoreText.getComponents());
+                        model.updateViews();
+                        numPlayers = true;
+                    }
                 }
+            } else {
+                JOptionPane.showMessageDialog(null,"A game is already in progress!");
+                return;
             }
+
+
+        } else if (s.equals("help")) {
+            JOptionPane.showMessageDialog(null,"Welcome to the game of Scrabble!\n" +
+                    "Each player has the ability to select letters and place them on the board, but make sure that the letters are connecting to other letters on the board!\n" +
+                    "After completing your word, you can click 'Submit' at the top to collect points based on the word you created.\n" +
+                    "Players may also skip their turn by clicking 'Pass' at the top.\n" +
+                    "Good luck!");
+            return;
         }
 
         if (s.startsWith("h")) {
@@ -94,7 +109,8 @@ public class ScrabbleController implements ActionListener {
                 model.InvalidChars.clear();
                 model.turn++;
                 model.updateViews();
-                frame.enableHandButtons();
+                //frame.enableHandButtons();
+                frame.enableComponents(frame.wordsInHandPanel.getComponents());
             } else {
                 JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
                 model.clearInvalidWord();
@@ -104,18 +120,22 @@ public class ScrabbleController implements ActionListener {
                     model.setTextPlayed(" ");
                     model.turn++;
                     model.updateViews();
-                    frame.enableHandButtons();
+                    //frame.enableHandButtons();
+                    frame.enableComponents(frame.wordsInHandPanel.getComponents());
                 }
                 model.setTextPlayed(" ");
                 model.updateViews();
-                frame.enableHandButtons();
+                //frame.enableHandButtons();
+                frame.enableComponents(frame.wordsInHandPanel.getComponents());
             }
         }
 
         if (s.equals("pass")){
             model.turn++;
+            frame.disableComponents(frame.boardPanel.getComponents());
             model.updateViews();
-            frame.enableHandButtons();
+            //frame.enableHandButtons();
+            frame.enableComponents(frame.wordsInHandPanel.getComponents());
         }
     }
 
