@@ -176,14 +176,13 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         }
 
         if (game.invalidFlag()) {
-            //enableHandButtons();
             enableComponents(wordsInHandPanel.getComponents());
             game.resetInvalidFlag();
         }
 
         StringBuilder sb = new StringBuilder();
         sb.append("Player Name: ").append(model.getCurrentPlayer().getName()).append("\n")
-                .append("Score: ").append(String.valueOf(model.getCurrentPlayer().getPlayerScore()));
+                .append("Score: ").append(model.getCurrentPlayer().getPlayerScore());
 
         scoreText.setText(sb.toString());
 
