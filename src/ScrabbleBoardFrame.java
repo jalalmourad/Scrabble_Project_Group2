@@ -125,22 +125,34 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         JOptionPane.showMessageDialog(null, "Welcome to the game of Scrabble! Please select Options > Play to begin the game!");
     }
 
+    /**
+     * Begin game
+     */
     public static void main(String[] args) {
         ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
     }
 
+    /**
+     * Disables selected components, useful for preventing player mis-input
+     */
     public void disableComponents(Component[] comps) {
         for (Component comp : comps) {
             comp.setEnabled(false);
         }
     }
 
+    /**
+     * Enables selected components, useful for allowing player input
+     */
     public void enableComponents(Component[] comps) {
         for (Component comp : comps) {
             comp.setEnabled(true);
         }
     }
 
+    /**
+     * Updates game view(s)
+     */
     @Override
     public void update(ScrabbleGame game) {
         for (int i = 0; i < buttons.length; i++) {

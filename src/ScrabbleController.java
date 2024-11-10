@@ -12,6 +12,9 @@ public class ScrabbleController implements ActionListener {
         this.model = model;
     }
 
+    /**
+     * Accounts for all possible actions performed by the user(s)
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
@@ -123,17 +126,18 @@ public class ScrabbleController implements ActionListener {
             } else {
                 JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
                 model.clearInvalidWord();
-                String question = JOptionPane.showInputDialog("Are you done with your turn? (yes/no)");
-                if (question != null && question.equalsIgnoreCase("yes")) {
+                int question = JOptionPane.showConfirmDialog(null, "Would you like to continue your turn?", "", JOptionPane.YES_NO_OPTION);
+                if (question == JOptionPane.YES_OPTION) {
+                    model.setTextPlayed(" ");
+                    model.updateViews();
+                    frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                } else if (question == JOptionPane.NO_OPTION) {
                     model.clearInvalidWord();
                     model.setTextPlayed(" ");
                     model.turn++;
                     model.updateViews();
                     frame.enableComponents(frame.wordsInHandPanel.getComponents());
                 }
-                model.setTextPlayed(" ");
-                model.updateViews();
-                frame.enableComponents(frame.wordsInHandPanel.getComponents());
             }
         }
 
@@ -145,6 +149,10 @@ public class ScrabbleController implements ActionListener {
         }
     }
 
+    /**
+     * Checks to ensure that a placed letter is connected to another letter that has already been placed on the board
+     * Complicit with Scrabble rules
+     */
     private boolean isConnectedToOtherLetters(int y, int x) {
         return (y > 0 && model.board.getLetterOnBoard(y - 1, x) != ' ') ||
                 (y < 14 && model.board.getLetterOnBoard(y + 1, x) != ' ') ||
