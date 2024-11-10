@@ -22,9 +22,6 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         wordsInHandPanel = new JPanel();
         wordsInHandButtons = new JButton[7];
 
-        // Initialize the submit button
-
-
         boardPanel = new JPanel();
         boardPanel.setLayout(new GridLayout(15, 15));
         wordsInHandPanel.setLayout(new GridLayout(0, 7));
@@ -43,7 +40,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         buttons = new JButton[15][15];
         setLayout(new BorderLayout());
-        setSize(600, 600);
+        setSize(800, 580);
 
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
