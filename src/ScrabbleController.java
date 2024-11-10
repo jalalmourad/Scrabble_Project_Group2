@@ -49,12 +49,11 @@ public class ScrabbleController implements ActionListener {
             }
 
             if (y >= 0 && y < 15 && x >= 0 && x < 15) {
-                if (model.getDone()) {
+                if (model.board.getLetterOnBoard(7,7) == ' ') {
                     if (x != 7 || y != 7) {
                         JOptionPane.showMessageDialog(null, "Illegal move, please start from the board center: (Y:7, X:7)");
                         return;
                     }
-                    model.setDone(false);
                 } else {
                     if (!isConnectedToOtherLetters(y, x)) {
                         JOptionPane.showMessageDialog(null, "Each letter must be connected to another letter on the board.");
@@ -95,6 +94,12 @@ public class ScrabbleController implements ActionListener {
                 model.updateViews();
                 frame.enableHandButtons();
             }
+        }
+
+        if (s.equals("pass")){
+            model.turn++;
+            model.updateViews();
+            frame.enableHandButtons();
         }
     }
 

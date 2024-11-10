@@ -9,12 +9,15 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     JPanel boardPanel;
     JPanel wordsInHandPanel;
     JButton submitButton;
+    JButton passButton;
     ScrabbleGame model;
     JTextArea scoreText;
     ScrabbleController controller;
     JMenu menu;
     JMenuBar menuBar;
     JMenuItem playMenuItem;
+
+    JPanel actionButtons;
 
     public ScrabbleBoardFrame() {
         super("Scrabble!");
@@ -25,6 +28,9 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         boardPanel = new JPanel();
         boardPanel.setLayout(new GridLayout(15, 15));
         wordsInHandPanel.setLayout(new GridLayout(0, 7));
+
+        actionButtons = new JPanel();
+        actionButtons.setLayout(new GridLayout(0,2));
 
         model = new ScrabbleGame();
         controller = new ScrabbleController(this, model);
@@ -37,6 +43,10 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         submitButton = new JButton("Submit");
         submitButton.setActionCommand("submit");
         submitButton.addActionListener(controller);
+
+        passButton = new JButton("Pass");
+        passButton.addActionListener(controller);
+        passButton.setActionCommand("pass");
 
         buttons = new JButton[15][15];
         setLayout(new BorderLayout());
@@ -73,10 +83,14 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         setJMenuBar(menuBar);
 
+        actionButtons.add(submitButton);
+        actionButtons.add(passButton);
+
+
         this.add(boardPanel, BorderLayout.CENTER);
         this.add(wordsInHandPanel, BorderLayout.SOUTH);
         this.add(scoreText, BorderLayout.EAST);
-        this.add(submitButton, BorderLayout.NORTH);
+        this.add(actionButtons, BorderLayout.NORTH);
 
         setVisible(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
