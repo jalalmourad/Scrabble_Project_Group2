@@ -8,10 +8,10 @@ This project contains 13 java classes, 2 UML diagrams, 1 Dictionary.txt file, an
 
 Milestone 1:
 In this deliverable, we added the main functionalities of the Scrabble game which included: managing the bag of letters, board design and implementation, player handling, assigning hands of letters, word and letter handling, and gameplay logic and implementation.
-To play the game, run the main function in Game class, choose how many players are playing and you're good to go !
+To play the game, run the main function in Game class, choose how many players are playing, and you're good to go !
 
 Milestone 2:
-In this deliverable, the Model-View-Controller design pattern was implemented into the exisiting program to create a greater user-friendly visual experience. With the changes implemented, users can now interact with the Scrabble board through mouse-click inputs to play the game. Letters are now easier to place, as users can simply click on their desired square rather than input coordinates in contrast to the previous milestone. To play the game, run the 'main' method in the ScrabbleBoardFrame.java class and follow the instructions!
+In this deliverable, the Model-View-Controller design pattern was implemented into the existing program to create a greater user-friendly visual experience. With the changes implemented, users can now interact with the Scrabble board through mouse-click inputs to play the game. Letters are now easier to place, as users can simply click on their desired square rather than input coordinates in contrast to the previous milestone. To play the game, run the 'main' method in the ScrabbleBoardFrame.java class and follow the instructions!
 
 The Project is made up of the following files:
 
@@ -72,9 +72,9 @@ ScrabbleGame: This class implements the overall gameplay functionality and logic
 
 Square: This class represents the individual squares that form the scrabble board. Each square can be either empty or used to hold the user inputted letter which gets assigned a score by the provided letter score mechanism.
 
-ScrabbleBoardFrame: This class is reponsible for the creation of the JFrame that users will be visually seeing upon running the game. The board and its clickable buttons are initialized through here.
+ScrabbleBoardFrame: This class is responsible for the creation of the JFrame that users will be visually seeing upon running the game. The board and its clickable buttons are initialized through here.
 
-ScrabbleController: This class is responsible for the communicaiton between the Model and the Controller, and processes user input(s) accordingly.
+ScrabbleController: This class is responsible for the communication between the Model and the Controller, and processes user input(s) accordingly.
 
 ScrabbleView: This class is used by the Model to update the views seen throughout the game's length.
 
