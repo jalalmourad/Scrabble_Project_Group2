@@ -22,22 +22,14 @@ public class ScrabbleController implements ActionListener {
         // Menu actions
         if (s.equals("play")) {
             if (!model.getGameStarted()) {
-                boolean numPlayers = false;
+                Integer[] numPlayers = {2, 3, 4}; // Player count options
+                int playerCount = JOptionPane.showOptionDialog(null, "Select the number of players:", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, numPlayers, numPlayers[0]);
+                int selectedPlayers = numPlayers[playerCount];
 
-                while (!numPlayers) {
-                    int playerCount = Integer.parseInt(JOptionPane.showInputDialog("Select the number of players (2-4)?"));
-                    if (playerCount < 2) {
-                        JOptionPane.showMessageDialog(null,"Not enough players!");
-                    } else if (playerCount > 4) {
-                        JOptionPane.showMessageDialog(null,"Too many players!");
-                    } else {
-                        model.MVCparticipants(playerCount);
-                        frame.enableComponents(frame.wordsInHandPanel.getComponents());
-                        frame.enableComponents(frame.scoreText.getComponents());
-                        model.updateViews();
-                        numPlayers = true;
-                    }
-                }
+                model.MVCparticipants(selectedPlayers);
+                frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                frame.enableComponents(frame.scoreText.getComponents());
+                model.updateViews();
             } else {
                 JOptionPane.showMessageDialog(null,"A game is already in progress!");
                 return;
