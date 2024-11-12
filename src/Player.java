@@ -44,26 +44,43 @@ public class Player {
             if (squareTypes.get(i).equals("DoubleLetterSquare")) {
                 DoubleLetterSquare square = new DoubleLetterSquare(word.charAt(i));
                 wordScore += square.letterScore(word.charAt(i));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("TripleLetterSquare")) {
                 TripleLetterSquare square = new TripleLetterSquare(word.charAt(i));
                 wordScore += square.letterScore(word.charAt(i));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("DoubleWordSquare")) {
                 DoubleWordSquare square = new DoubleWordSquare(word.charAt(i));
                 wordScore += square.letterScore(word.charAt(i));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("TripleWordSquare")) {
                 TripleWordSquare square = new TripleWordSquare(word.charAt(i));
                 wordScore += square.letterScore(word.charAt(i));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
 
             } else {
                 Square square = new Square(word.charAt(i));
                 wordScore += square.letterScore(word.charAt(i));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
             }
         }
-        this.score += wordScore;
-        this.words.add(word);
+        if (squareTypes.contains("DoubleWordSquare")) {
+            wordScore *= 2;
+            this.score += wordScore;
+            this.words.add(word);
+        } else if (squareTypes.contains("TripleWordSquare")) {
+            wordScore *= 3;
+            this.score += wordScore;
+            this.words.add(word);
+        } else {
+            this.score += wordScore;
+            this.words.add(word);
+        }
+        //System.out.println("Word Score: " + wordScore);
+        //System.out.println("Player Score: " + this.score);
     }
 
     public Hand getHand() {
