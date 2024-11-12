@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class ScrabbleController implements ActionListener {
 
@@ -39,7 +40,11 @@ public class ScrabbleController implements ActionListener {
                     "- Each player has the ability to select letters and place them on the board, but make sure that the letters are connecting to other letters on the board!\n" +
                     "- After completing your word, you can click 'Submit' at the top to collect points based on the word you created.\n" +
                     "- Players may also skip their turn by clicking 'Pass' at the top.\n" +
-                    "- Clicking on 'Letter Values' in the menu can show players value of each letter.\n\n" +
+                    "- Clicking on 'Letter Values' in the menu can show players value of each letter.\n" +
+                    "- Letters placed on CYAN-colored squares are worth DOUBLE.\n" +
+                    "- Letters placed on BLUE-colored squares are worth TRIPLE.\n" +
+                    "- Any word placed on a PINK-colored square becomes worth DOUBLE.\n" +
+                    "- Any word placed on a RED-colored square becomes worth TRIPLE.\n\n" +
                     "Good luck!");
             return;
         } else if (s.equals("values")) {
@@ -106,9 +111,12 @@ public class ScrabbleController implements ActionListener {
         // Action bar actions
         if (s.equals("submit")) {
             String formedWord = model.checkValidWord(model.getyCoordinate(), model.getxCoordinate());
+            List<String> formedSquares = model.checkSquareTypes(model.getyCoordinate(), model.getxCoordinate());
+
             if (model.getParser().isValidWord(formedWord)) {
                 JOptionPane.showMessageDialog(null, formedWord + " is a valid word!");
-                model.getCurrentPlayer().calculateWordScore(formedWord);
+                //model.getCurrentPlayer().calculateWordScore(formedWord);
+                model.getCurrentPlayer().calculateWordScore(formedWord, formedSquares);
                 model.removeCharsFromHand();
                 model.getCurrentPlayer().getHand().refillHand();
                 model.InvalidChars.clear();

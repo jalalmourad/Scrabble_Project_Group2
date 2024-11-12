@@ -86,8 +86,10 @@ public class Board {
         return board[i][j].getLetter();
     }
 
-    public static void main(String[] args) {
-        Board board = new Board();
-        board.printBoard();
+    /**
+     * Get type of square, premium or normal
+     */
+    public String getSquareType(int i, int j) {
+        return board[i][j].getClass().getName();
     }
 }

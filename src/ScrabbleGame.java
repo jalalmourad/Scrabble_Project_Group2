@@ -127,25 +127,46 @@ public class ScrabbleGame {
     }
 
     /**
-     *Checks if the word placed is a valid word
+     * Checks if the word placed is a valid word
      */
     public String checkValidWord(int y, int x) {
 
         StringBuilder word = new StringBuilder();
 
-        for(int i =x ;i >=0 &&board.getLetterOnBoard(y,i) != ' ';i--) {
+        for(int i = x; i >= 0 && board.getLetterOnBoard(y,i) != ' '; i--) {
             word.insert(0,board.getLetterOnBoard(y, i));
         }
-        for(int i= x+1;i<15 && board.getLetterOnBoard(y,i)!= ' ';i++) {
+        for(int i = x + 1; i < 15 && board.getLetterOnBoard(y,i) != ' '; i++) {
             word.append(board.getLetterOnBoard(y,i));
         }
-        for(int i= y-1;i>=0&& board.getLetterOnBoard(i,x)!= ' '; i--) {
+        for(int i = y - 1; i >= 0 && board.getLetterOnBoard(i,x) != ' '; i--) {
             word.insert(0,board.getLetterOnBoard(i,x));
         }
-        for(int i= y+1; i<15 &&board.getLetterOnBoard(i,x)!= ' '; i++) {
+        for(int i = y + 1; i < 15 && board.getLetterOnBoard(i,x) != ' '; i++) {
             word.append(board.getLetterOnBoard(i,x));
         }
         return word.toString();
+    }
+
+    /**
+     * Checks type of square for each letter placed
+     */
+    public List<String> checkSquareTypes(int y, int x) {
+        ArrayList<String> squareTypes = new ArrayList<>();
+
+        for(int i = x; i >= 0 && board.getLetterOnBoard(y,i) != ' '; i--) {
+            squareTypes.add(0, board.getSquareType(y, i));
+        }
+        for(int i = x + 1; i < 15 && board.getLetterOnBoard(y,i) != ' '; i++) {
+            squareTypes.add(board.getSquareType(y,i));
+        }
+        for(int i= y - 1; i >= 0 && board.getLetterOnBoard(i,x) != ' '; i--) {
+            squareTypes.add(0,board.getSquareType(i,x));
+        }
+        for(int i = y + 1; i < 15 && board.getLetterOnBoard(i,x) != ' '; i++) {
+            squareTypes.add(board.getSquareType(i,x));
+        }
+        return squareTypes;
     }
 
     /**
