@@ -4,14 +4,39 @@
 public class Board {
     private static final int SIZE = 15;
     private Square[][] board = new Square[SIZE][SIZE];
+    public static int[][][] premiumTiles = {DoubleLetterSquare.dlsCoords, TripleLetterSquare.tlsCoords, DoubleWordSquare.dwsCoords, TripleWordSquare.twsCoords};
 
     /**
      * Create empty board.
      */
     public Board() {
         for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                board[i][j] = new Square(' ');
+            for (int j = 0; j < SIZE; j++) { // Looping through board
+                boolean isPremium = false;
+
+                for (int[][] premiumType : premiumTiles) { // Looping through premium tile types
+                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
+                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
+                            if (premiumType == DoubleLetterSquare.dlsCoords) {
+                                board[i][j] = new DoubleLetterSquare(' '); // Create Double Letter Square
+                            } else if (premiumType == TripleLetterSquare.tlsCoords) {
+                                board[i][j] = new TripleLetterSquare(' '); // Create Triple Letter Square
+                            } else if (premiumType == DoubleWordSquare.dwsCoords) {
+                                board[i][j] = new DoubleWordSquare(' '); // Create Double Word Square
+                            } else if (premiumType == TripleWordSquare.twsCoords) {
+                                board[i][j] = new TripleWordSquare(' '); // Create Triple Word Square
+                            }
+                            isPremium = true;
+                            break;
+                        }
+                    }
+                    if (isPremium) {
+                        break;
+                    }
+                }
+                if (!isPremium) {
+                    board[i][j] = new Square(' '); // Create normal Square
+                }
             }
         }
     }
@@ -61,4 +86,8 @@ public class Board {
         return board[i][j].getLetter();
     }
 
+    public static void main(String[] args) {
+        Board board = new Board();
+        board.printBoard();
+    }
 }

@@ -61,6 +61,58 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         buttons = new JButton[SIZE][SIZE];
 
         for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) { // Looping through board
+                boolean isPremium = false;
+
+                for (int[][] premiumType : Board.premiumTiles) { // Looping through premium tile types
+                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
+                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
+                            if (premiumType == DoubleLetterSquare.dlsCoords) { // Create Double Letter Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.CYAN);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == TripleLetterSquare.tlsCoords) { // Create Triple Letter Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.BLUE);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == DoubleWordSquare.dwsCoords) { // Create Double Word Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.MAGENTA);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == TripleWordSquare.twsCoords) { // Create Triple Word Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.RED);
+                                boardPanel.add(buttons[i][j]);
+                            }
+                            isPremium = true;
+                            break;
+                        }
+                    }
+                    if (isPremium) {
+                        break;
+                    }
+                }
+                if (!isPremium) { // Create normal square
+                    buttons[i][j] = new JButton();
+                    buttons[i][j].addActionListener(controller);
+                    buttons[i][j].setActionCommand(i + "" + j);
+                    buttons[i][j].setBackground(Color.WHITE);
+                    boardPanel.add(buttons[i][j]);
+                }
+            }
+        }
+        buttons[7][7].setBackground(Color.PINK);
+
+        /**
+        for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) {
                 buttons[i][j] = new JButton();
                 buttons[i][j].addActionListener(controller);
@@ -70,6 +122,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
             }
         }
         buttons[7][7].setBackground(Color.RED);
+         */
 
         // WordsInHand Panel Initializations
         wordsInHandPanel = new JPanel();
