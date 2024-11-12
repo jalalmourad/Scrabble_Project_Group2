@@ -51,8 +51,11 @@ public class Square {
         else if (l == 'J' || l == 'X') {
             score = 8;
         }
-        else { // Q, Z
+        else if (l == 'Q' || l == 'Z') {
             score = 10;
+        }
+        else { // Blank tile
+            score = 0;
         }
         return score;
     }

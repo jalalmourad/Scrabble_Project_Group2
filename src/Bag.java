@@ -13,8 +13,8 @@ public class Bag {
      */
     static {
         addChars('A', 9);
-        addChars('B', 3);
-        addChars('C', 3);
+        addChars('B', 2); // addChars('B', 3);
+        addChars('C', 2); // addChars('C', 3);
         addChars('D', 4);
         addChars('E', 12);
         addChars('F', 2);
@@ -38,6 +38,7 @@ public class Bag {
         addChars('X', 1);
         addChars('Y', 2);
         addChars('Z', 1);
+        addChars(' ', 2); // Blank tiles
     }
 
     public Bag(){

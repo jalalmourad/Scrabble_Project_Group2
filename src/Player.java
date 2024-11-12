@@ -42,28 +42,23 @@ public class Player {
 
         for (int i = 0; i < squareTypes.size(); i++) {
             if (squareTypes.get(i).equals("DoubleLetterSquare")) {
-                DoubleLetterSquare square = new DoubleLetterSquare(word.charAt(i));
-                wordScore += square.letterScore(word.charAt(i));
+                wordScore += new DoubleLetterSquare(word.charAt(i)).letterScore(word.charAt(i));
                 //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("TripleLetterSquare")) {
-                TripleLetterSquare square = new TripleLetterSquare(word.charAt(i));
-                wordScore += square.letterScore(word.charAt(i));
+                wordScore += new TripleLetterSquare(word.charAt(i)).letterScore(word.charAt(i));
                 //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("DoubleWordSquare")) {
-                DoubleWordSquare square = new DoubleWordSquare(word.charAt(i));
-                wordScore += square.letterScore(word.charAt(i));
+                wordScore += new DoubleWordSquare(word.charAt(i)).letterScore(word.charAt(i));
                 //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("TripleWordSquare")) {
-                TripleWordSquare square = new TripleWordSquare(word.charAt(i));
-                wordScore += square.letterScore(word.charAt(i));
+                wordScore += new TripleWordSquare(word.charAt(i)).letterScore(word.charAt(i));
                 //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
 
             } else {
-                Square square = new Square(word.charAt(i));
-                wordScore += square.letterScore(word.charAt(i));
+                wordScore += new Square(word.charAt(i)).letterScore(word.charAt(i));
                 //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
             }
         }
