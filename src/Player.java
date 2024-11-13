@@ -43,34 +43,38 @@ public class Player {
         for (int i = 0; i < squareTypes.size(); i++) {
             if (squareTypes.get(i).equals("DoubleLetterSquare")) {
                 wordScore += new DoubleLetterSquare(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("TripleLetterSquare")) {
                 wordScore += new TripleLetterSquare(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("DoubleWordSquare")) {
                 wordScore += new DoubleWordSquare(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("TripleWordSquare")) {
                 wordScore += new TripleWordSquare(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
 
             } else {
                 wordScore += new Square(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + square.letterScore(word.charAt(i)));
+                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
             }
         }
         if (squareTypes.contains("DoubleWordSquare")) {
-            wordScore *= 2;
+            int dwsCount = Collections.frequency(squareTypes, "DoubleWordSquare");
+            wordScore *= 2 * dwsCount;
             this.score += wordScore;
             this.words.add(word);
-        } else if (squareTypes.contains("TripleWordSquare")) {
-            wordScore *= 3;
+        }
+        if (squareTypes.contains("TripleWordSquare")) {
+            int twsCount = Collections.frequency(squareTypes, "TripleWordSquare");
+            wordScore *= 3 * twsCount;
             this.score += wordScore;
             this.words.add(word);
-        } else {
+        }
+        if (!(squareTypes.contains("DoubleWordSquare") || squareTypes.contains("TripleWordSquare"))) {
             this.score += wordScore;
             this.words.add(word);
         }
