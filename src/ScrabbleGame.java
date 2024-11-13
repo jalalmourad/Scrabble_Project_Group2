@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Scanner;
 
@@ -24,6 +25,7 @@ public class ScrabbleGame {
     String handListCoord;
 
     String text;
+    private HashMap<String, Boolean> blankTileLetters;
     private boolean invalidFlag = false;
     boolean gameStarted = false;
 
@@ -42,6 +44,8 @@ public class ScrabbleGame {
         views = new ArrayList<>();
 
         placedPositions = new ArrayList<>();
+
+        blankTileLetters = new HashMap<>();
 
         parser.loadWordsFromFile("src/Dictionary.txt");
     }
@@ -94,15 +98,20 @@ public class ScrabbleGame {
      */
     public void setLetterOnBoard(int y, int x, char letter, Player player) {
         playerHand = player.getHand();
-        if (playerHand.getLetters().contains(letter)) {
-            System.out.println("Letter Placed is: "+letter+"\n");
-            board.setLetterOnBoard(y,x,letter);
-            int letterIndex = playerHand.getLetterPosition(letter);
-            removedChars.add(new int[]{letterIndex, letter});
-            placedPositions.add(new int[]{x, y});
-        } else {
-            System.out.println("The letter "+letter+" is not in your hand!\n");
-        }
+        System.out.println("Letter Placed is: "+letter+"\n");
+        board.setLetterOnBoard(y,x,letter);
+        int letterIndex = playerHand.getLetterPosition(letter);
+        removedChars.add(new int[]{letterIndex, letter});
+        placedPositions.add(new int[]{x, y});
+        //if (playerHand.getLetters().contains(letter)) {
+        //    System.out.println("Letter Placed is: "+letter+"\n");
+        //    board.setLetterOnBoard(y,x,letter);
+        //    int letterIndex = playerHand.getLetterPosition(letter);
+        //    removedChars.add(new int[]{letterIndex, letter});
+        //    placedPositions.add(new int[]{x, y});
+        //} else {
+        //    System.out.println("The letter "+letter+" is not in your hand!\n");
+        //}
     }
 
     /**
@@ -204,6 +213,14 @@ public class ScrabbleGame {
 
     public String getTextPlayed() {
         return text;
+    }
+
+    public void addBlankTileLetters(String text, boolean bool) {
+        blankTileLetters.put(text, bool);
+    }
+
+    public boolean isBlankTileLetter(String text) {
+        return blankTileLetters.get(text);
     }
 
     public boolean invalidFlag() {

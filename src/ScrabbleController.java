@@ -54,7 +54,8 @@ public class ScrabbleController implements ActionListener {
                     "4 points: F, H, V, W, Y\n" +
                     "5 points: K\n" +
                     "8 points: J, X\n" +
-                    "10 points: Q, Z");
+                    "10 points: Q, Z\n" +
+                    "0 points: Blank Tiles");
             return;
         }
 
@@ -63,7 +64,19 @@ public class ScrabbleController implements ActionListener {
             JButton sourceButton = (JButton) e.getSource();
             String text = sourceButton.getText();
             model.setHandListCoord(s.substring(1));
-            model.setTextPlayed(text);
+            //model.setTextPlayed(text);
+
+            if (text.equals(" ")) { // Blank tile has been selected
+                Character[] blankTileOptions = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'}; // Letter options to replace a blank tile
+                int blankTileLetter = JOptionPane.showOptionDialog(null, "What letter would you like your blank tile to represent?", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, blankTileOptions, blankTileOptions[0]);
+                char selectedBlankTileLetter = blankTileOptions[blankTileLetter];
+
+                model.setTextPlayed(String.valueOf(selectedBlankTileLetter));
+                model.addBlankTileLetters(String.valueOf(selectedBlankTileLetter), true);
+            } else { // Regular tile has been selected
+                model.setTextPlayed(text);
+                model.addBlankTileLetters(text, false);
+            }
 
             frame.enableComponents(frame.boardPanel.getComponents()); // Allow player to place their selected letter
             frame.disableComponents(frame.actionButtons.getComponents());
@@ -113,10 +126,18 @@ public class ScrabbleController implements ActionListener {
             String formedWord = model.checkValidWord(model.getyCoordinate(), model.getxCoordinate());
             List<String> formedSquares = model.checkSquareTypes(model.getyCoordinate(), model.getxCoordinate());
 
-            if (model.getParser().isValidWord(formedWord)) {
+            // Check to see if the formedWord actually contains any blank tiles, stored in tempWord
+            String tempWord = formedWord;
+            for (int i = 0; i < formedWord.length(); i++) {
+                if (model.isBlankTileLetter(String.valueOf(formedWord.charAt(i)))) {
+                    tempWord = tempWord.replace(formedWord.charAt(i), ' ');
+                }
+                // Otherwise leave AS IS
+            }
+
+            if (model.getParser().isValidWord(formedWord)) { // Original version of the word (no blank tiles)
                 JOptionPane.showMessageDialog(null, formedWord + " is a valid word!");
-                //model.getCurrentPlayer().calculateWordScore(formedWord);
-                model.getCurrentPlayer().calculateWordScore(formedWord, formedSquares);
+                model.getCurrentPlayer().calculateWordScore(tempWord, formedSquares);
                 model.removeCharsFromHand();
                 model.getCurrentPlayer().getHand().refillHand();
                 model.InvalidChars.clear();
