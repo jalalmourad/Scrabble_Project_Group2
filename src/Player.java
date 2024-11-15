@@ -8,6 +8,7 @@ public class Player {
     private int score;
     ArrayList<String> words;
     private Hand hand;
+    private boolean isAI;
 
     public Player(String name) {
         this.name = name;
@@ -15,6 +16,19 @@ public class Player {
 
         this.words = new ArrayList<>();
         this.hand = new Hand();
+    }
+
+    public void removeLettersFromHand(String word) {
+        for (char letter : word.toCharArray()) {
+            getHand().removeLetter(letter);  // Remove the letter from the hand
+        }
+    }
+    public void setAI(boolean isAI) {
+        this.isAI = isAI;
+    }
+
+    public boolean isAI() {
+        return isAI;
     }
 
     /**
@@ -82,6 +96,28 @@ public class Player {
         //System.out.println("Player Score: " + this.score);
     }
 
+
+
+    public int getWordScore(String word) {
+        int wordScore = 0;
+        for (char letter : word.toCharArray()) {
+            Square square = new Square(letter);
+            wordScore += square.letterScore(letter);
+        }
+        return wordScore;
+    }
+
+    public void calcWordScore(String word) {
+        int wordScore = 0;
+        for (char letter : word.toCharArray()) {
+            Square square = new Square(letter);
+            wordScore += square.letterScore(letter);
+        }
+
+        this.score += wordScore;
+        this.words.add(word);
+    }
+
     public Hand getHand() {
         return this.hand;
     }
@@ -93,6 +129,7 @@ public class Player {
     public int getPlayerScore() {
         return score;
     }
+
 
 
 }

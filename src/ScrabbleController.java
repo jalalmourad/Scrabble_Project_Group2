@@ -20,22 +20,45 @@ public class ScrabbleController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String s = e.getActionCommand();
 
-        // Menu actions
+
         if (s.equals("play")) {
             if (!model.getGameStarted()) {
-                Integer[] numPlayers = {2, 3, 4}; // Player count options
-                int playerCount = JOptionPane.showOptionDialog(null, "Select the number of players:", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, numPlayers, numPlayers[0]);
-                int selectedPlayers = numPlayers[playerCount];
 
-                model.MVCparticipants(selectedPlayers);
+                Integer[] numPlayers = {2, 3, 4};
+                int playerCount = JOptionPane.showOptionDialog(
+                        null,
+                        "Select the number of players:",
+                        "Scrabble!",
+                        JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        numPlayers,
+                        numPlayers[0]
+                );
+
+                int selectedPlayers = numPlayers[playerCount];
+                String[] playerTypes = new String[selectedPlayers];
+                for (int i = 0; i < selectedPlayers; i++) {
+                    int response = JOptionPane.showConfirmDialog(
+                            null,
+                            "Is Player " + (i + 1) + " an AI?",
+                            "Player Type",
+                            JOptionPane.YES_NO_OPTION
+                    );
+                    playerTypes[i] = (response == JOptionPane.YES_OPTION) ? "AI" : "Human";
+                }
+
+
+                model.MVCparticipants(selectedPlayers, playerTypes);
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
                 frame.enableComponents(frame.scoreText.getComponents());
                 model.updateViews();
             } else {
-                JOptionPane.showMessageDialog(null,"A game is already in progress!");
-                return;
+                JOptionPane.showMessageDialog(null, "A game is already in progress!");
             }
-        } else if (s.equals("help")) {
+            return;
+        }
+        else if (s.equals("help")) {
             JOptionPane.showMessageDialog(null,"Welcome to the game of Scrabble!\n" +
                     "- Each player has the ability to select letters and place them on the board, but make sure that the letters are connecting to other letters on the board!\n" +
                     "- After completing your word, you can click 'Submit' at the top to collect points based on the word you created.\n" +
@@ -59,29 +82,29 @@ public class ScrabbleController implements ActionListener {
             return;
         }
 
-        // Letter in hand action
+
         if (s.startsWith("h")) {
             JButton sourceButton = (JButton) e.getSource();
             String text = sourceButton.getText();
             model.setHandListCoord(s.substring(1));
             //model.setTextPlayed(text);
 
-            if (text.equals(" ")) { // Blank tile has been selected
-                Character[] blankTileOptions = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'}; // Letter options to replace a blank tile
+            if (text.equals(" ")) {
+                Character[] blankTileOptions = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'};
                 int blankTileLetter = JOptionPane.showOptionDialog(null, "What letter would you like your blank tile to represent?", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, blankTileOptions, blankTileOptions[0]);
                 char selectedBlankTileLetter = blankTileOptions[blankTileLetter];
 
                 model.setTextPlayed(String.valueOf(selectedBlankTileLetter));
                 model.addBlankTileLetters(String.valueOf(selectedBlankTileLetter), true);
-            } else { // Regular tile has been selected
+            } else {
                 model.setTextPlayed(text);
                 model.addBlankTileLetters(text, false);
             }
 
-            frame.enableComponents(frame.boardPanel.getComponents()); // Allow player to place their selected letter
+            frame.enableComponents(frame.boardPanel.getComponents());
             frame.disableComponents(frame.actionButtons.getComponents());
 
-        } else { // Placing letter action
+        } else {
             int y = -1, x = -1;
 
             if (s.length() == 2) {
@@ -114,50 +137,71 @@ public class ScrabbleController implements ActionListener {
                 model.setyCoordinate(y);
 
                 frame.disableComponents(frame.boardPanel.getComponents());
-                frame.enableComponents(frame.actionButtons.getComponents()); // Allow player to select actions only after placing a letter
+                frame.enableComponents(frame.actionButtons.getComponents());
 
                 model.MVCplayTurn(model.getCurrentPlayer(), x, y, model.getTextPlayed().charAt(0));
                 model.updateViews();
             }
         }
 
-        // Action bar actions
+
+
+
         if (s.equals("submit")) {
+
             String formedWord = model.checkValidWord(model.getyCoordinate(), model.getxCoordinate());
-            List<String> formedSquares = model.checkSquareTypes(model.getyCoordinate(), model.getxCoordinate());
+//            List<String> formedSquares = model.checkSquareTypes(model.getyCoordinate(), model.getxCoordinate());
+//
+//            String tempWord = formedWord;
+//            for (int i = 0; i < formedWord.length(); i++) {
+//                if (model.isBlankTileLetter(String.valueOf(formedWord.charAt(i)))) {
+//                    tempWord = tempWord.replace(formedWord.charAt(i), ' ');
+//                }
+//            }
 
-            // Check to see if the formedWord actually contains any blank tiles, stored in tempWord
-            String tempWord = formedWord;
-            for (int i = 0; i < formedWord.length(); i++) {
-                if (model.isBlankTileLetter(String.valueOf(formedWord.charAt(i)))) {
-                    tempWord = tempWord.replace(formedWord.charAt(i), ' ');
-                }
-                // Otherwise leave AS IS
-            }
 
-            if (model.getParser().isValidWord(formedWord)) { // Original version of the word (no blank tiles)
-                JOptionPane.showMessageDialog(null, formedWord + " is a valid word!");
-                model.getCurrentPlayer().calculateWordScore(tempWord, formedSquares);
-                model.removeCharsFromHand();
-                model.getCurrentPlayer().getHand().refillHand();
-                model.InvalidChars.clear();
-                model.turn++;
-                model.updateViews();
-                frame.enableComponents(frame.wordsInHandPanel.getComponents());
-            } else {
-                JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
-                model.clearInvalidWord();
-                int question = JOptionPane.showConfirmDialog(null, "Would you like to continue your turn?", "", JOptionPane.YES_NO_OPTION);
-                if (question == JOptionPane.YES_OPTION) {
-                    model.setTextPlayed(" ");
-                    model.updateViews();
-                    frame.enableComponents(frame.wordsInHandPanel.getComponents());
-                } else if (question == JOptionPane.NO_OPTION) {
-                    model.clearInvalidWord();
-                    model.setTextPlayed(" ");
+            if (model.getCurrentPlayer().isAI()) {
+
+                model.aiPlayerHighestScoringWord();
+                if (!model.getBestAIWord().isEmpty()) {
+                    model.getCurrentPlayer().calcWordScore(model.getBestAIWord());
+
                     model.turn++;
                     model.updateViews();
                     frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                } else {
+                    model.turn++;
+                    model.updateViews();
+                    frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                }
+            }
+            else {
+                if (model.getParser().isValidWord(formedWord)) {
+                    JOptionPane.showMessageDialog(null, formedWord + " is a valid word!");
+                    model.getCurrentPlayer().calcWordScore(formedWord);
+                    model.removeCharsFromHand();
+                    model.getCurrentPlayer().getHand().refillHand();
+                    model.InvalidChars.clear();
+                    model.turn++;
+
+                    model.updateViews();
+
+                    frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                } else {
+                    JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
+                    model.clearInvalidWord();
+                    int question = JOptionPane.showConfirmDialog(null, "Would you like to continue your turn?", "", JOptionPane.YES_NO_OPTION);
+                    if (question == JOptionPane.YES_OPTION) {
+                        model.setTextPlayed(" ");
+                        model.updateViews();
+                        frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                    } else if (question == JOptionPane.NO_OPTION) {
+                        model.clearInvalidWord();
+                        model.setTextPlayed(" ");
+                        model.turn++;
+                        model.updateViews();
+                        frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                    }
                 }
             }
         }
