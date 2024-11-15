@@ -36,9 +36,13 @@ public class ScrabbleController implements ActionListener {
                         numPlayers[0]
                 );
 
+
                 int selectedPlayers = numPlayers[playerCount];
                 String[] playerTypes = new String[selectedPlayers];
-                for (int i = 0; i < selectedPlayers; i++) {
+
+                playerTypes[0] ="Human";
+
+                for (int i = 1; i < selectedPlayers; i++) {
                     int response = JOptionPane.showConfirmDialog(
                             null,
                             "Is Player " + (i + 1) + " an AI?",
