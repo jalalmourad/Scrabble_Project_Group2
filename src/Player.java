@@ -8,6 +8,7 @@ public class Player {
     private int score;
     ArrayList<String> words;
     private Hand hand;
+    boolean isAi;
 
     public Player(String name) {
         this.name = name;
@@ -94,5 +95,12 @@ public class Player {
         return score;
     }
 
+    public void setAI(boolean isAI) {
+        this.isAi = isAI;
+    }
+
+    public boolean isAI() {
+        return isAi;
+    }
 
 }

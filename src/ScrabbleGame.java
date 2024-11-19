@@ -71,11 +71,23 @@ public class ScrabbleGame {
      * Adds players to the game, used by Controller, changes seen in Frame
      */
 
-    public void MVCparticipants(int n) {
+    public void MVCparticipants(int n, String[] playerTypes) {
         for (int i = 0; i < n; i++) {
             int j = i + 1;
-            String playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
+            //String playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
+            //Player player = new Player(playerName);
+            //player.getHand().setLetters(bag.getAlphabet());
+            //players.add(player);
+            String playerName;
+            if (playerTypes[i].equals("Human")) {
+                playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
+            } else {
+                playerName = "AI " + j;
+            }
             Player player = new Player(playerName);
+            if (playerTypes[i].equals("AI")) {
+                player.setAI(true);
+            }
             player.getHand().setLetters(bag.getAlphabet());
             players.add(player);
         }

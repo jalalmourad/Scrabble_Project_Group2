@@ -27,7 +27,13 @@ public class ScrabbleController implements ActionListener {
                 int playerCount = JOptionPane.showOptionDialog(null, "Select the number of players:", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, numPlayers, numPlayers[0]);
                 int selectedPlayers = numPlayers[playerCount];
 
-                model.MVCparticipants(selectedPlayers);
+                String[] playerTypes = new String[selectedPlayers];
+                for (int i = 0; i < selectedPlayers; i++) {
+                    int response = JOptionPane.showConfirmDialog(null, "Is Player " + (i + 1) + " an AI?", "Player Type", JOptionPane.YES_NO_OPTION);
+                    playerTypes[i] = (response == JOptionPane.YES_OPTION) ? "AI" : "Human";
+                }
+
+                model.MVCparticipants(selectedPlayers, playerTypes);
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
                 frame.enableComponents(frame.scoreText.getComponents());
                 model.updateViews();
