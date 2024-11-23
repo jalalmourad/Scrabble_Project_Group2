@@ -243,26 +243,32 @@ public class ScrabbleGame {
                 iterator.remove();
             }
         }
-
+        System.out.println("Valid AI words: " + combinations);
         return combinations;
     }
 
-    private void placeWordOnBoard(String word,int startY, int startX, boolean isVertical) {
+    private List<String> placeWordOnBoard(String word, int startY, int startX, boolean isVertical) {
+        List<String> squareTypes = new ArrayList<>();
+
         for (int i = 0; i < word.length(); i++) {
             int y;
             int x;
             if (isVertical) {
                 y = startY + i;
                 x = startX;
-            }else{
+            } else {
                 y = startY;
                 x = startX + i;
             }
 
-            board.setDeleteLetterFromBoard(y,x,word.charAt(i));
+            board.setDeleteLetterFromBoard(y, x, word.charAt(i));
+            squareTypes.add(board.getSquareType(y, x));
         }
-        System.out.println("AI placed the word: " +word );
+
+        System.out.println("AI placed the word: " + word);
+        return squareTypes;
     }
+
 
     private boolean isHorizontalCrossWordValid(char letter, int y, int x) {
         StringBuilder crossWord = new StringBuilder();
@@ -379,13 +385,11 @@ public class ScrabbleGame {
         }
 
         if (!bestWord.isEmpty()) {
-            List<String> formedSquares =checkSquareTypes(bestY, bestX);
-            placeWordOnBoard(bestWord,bestY, bestX,bestIsVertical);
-            getCurrentPlayer().removeLettersFromHand(bestWord);
+            List<String> formedSquares = placeWordOnBoard(bestWord, bestY, bestX, bestIsVertical);
+            getCurrentPlayer().removeLettersFromHand(getBestAIWord());
             getCurrentPlayer().getHand().refillHand();
 
             playAiTurn(getBestAIWord(), formedSquares);
-
             //turn++;
         } else {
             // turn++;
@@ -426,7 +430,7 @@ public class ScrabbleGame {
     }
 
     public boolean isBlankTileLetter(String text) {
-        return blankTileLetters.get(text);
+        return blankTileLetters.getOrDefault(text, false);
     }
 
     public boolean invalidFlag() {

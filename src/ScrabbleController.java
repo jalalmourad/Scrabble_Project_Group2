@@ -43,6 +43,8 @@ public class ScrabbleController implements ActionListener {
 
                 //model.MVCparticipants(selectedPlayers);
                 model.MVCparticipants(selectedPlayers, playerTypes);
+
+                model.updateViews();
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
                 frame.enableComponents(frame.scoreText.getComponents());
                 model.updateViews();
@@ -138,13 +140,16 @@ public class ScrabbleController implements ActionListener {
 
         // Action bar actions
         if (s.equals("submit")) {
-
             if (model.getCurrentPlayer().isAI()) {
+
                 model.aiHighestScoreWord();
                 model.turn++;
                 model.updateViews();
+                //updateButtonState();
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                //return;
             } else {
+                //frame.enableComponents(frame.wordsInHandPanel.getComponents());
                 String formedWord = model.checkValidWord(model.getyCoordinate(), model.getxCoordinate());
                 List<String> formedSquares = model.checkSquareTypes(model.getyCoordinate(), model.getxCoordinate());
 
@@ -164,8 +169,11 @@ public class ScrabbleController implements ActionListener {
                     model.getCurrentPlayer().getHand().refillHand();
                     model.InvalidChars.clear();
                     model.turn++;
+                    //updateButtonState();
                     model.updateViews();
-                    frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                    frame.disableComponents(frame.wordsInHandPanel.getComponents());
+                    //model.updateViews();
+                    //frame.enableComponents(frame.wordsInHandPanel.getComponents());
                 } else {
                     JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
                     model.clearInvalidWord();
@@ -179,7 +187,9 @@ public class ScrabbleController implements ActionListener {
                         model.setTextPlayed(" ");
                         model.turn++;
                         model.updateViews();
-                        frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                        //frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                        //updateButtonState();
+                        frame.disableComponents(frame.wordsInHandPanel.getComponents());
                     }
                 }
             }
@@ -191,7 +201,12 @@ public class ScrabbleController implements ActionListener {
             model.turn++;
             frame.disableComponents(frame.boardPanel.getComponents());
             model.updateViews();
-            frame.enableComponents(frame.wordsInHandPanel.getComponents());
+            if (model.getCurrentPlayer().isAI()) {
+                frame.disableComponents(frame.wordsInHandPanel.getComponents()); // Disable hand buttons for AI turn
+            } else {
+                frame.enableComponents(frame.wordsInHandPanel.getComponents()); // Enable hand buttons for human turn
+            }
+            //frame.enableComponents(frame.wordsInHandPanel.getComponents());
         }
     }
 
@@ -205,4 +220,5 @@ public class ScrabbleController implements ActionListener {
                 (x > 0 && model.board.getLetterOnBoard(y, x - 1) != ' ') ||
                 (x < 14 && model.board.getLetterOnBoard(y, x + 1) != ' ');
     }
+
 }
