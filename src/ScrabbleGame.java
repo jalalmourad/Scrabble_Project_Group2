@@ -1,8 +1,5 @@
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ScrabbleGame {
 
@@ -21,6 +18,8 @@ public class ScrabbleGame {
     List<int[]> placedPositions;
     List<int[]> removedChars;
     List<int[]> InvalidChars;
+
+    private String bestAIWord = "";
 
     String handListCoord;
 
@@ -71,13 +70,30 @@ public class ScrabbleGame {
      * Adds players to the game, used by Controller, changes seen in Frame
      */
 
-    public void MVCparticipants(int n) {
+    public void MVCparticipants(int n, String[] playerTypes) {
         for (int i = 0; i < n; i++) {
             int j = i + 1;
-            String playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
+            String playerName;
+
+            if (playerTypes[i].equals("Human")) {
+                playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
+            } else {
+                playerName = "AI " + j;
+            }
+
             Player player = new Player(playerName);
+
+            if (playerTypes[i].equals("AI")) {
+                player.setAI(true);
+            }
+
             player.getHand().setLetters(bag.getAlphabet());
             players.add(player);
+
+            //String playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
+            //Player player = new Player(playerName);
+            //player.getHand().setLetters(bag.getAlphabet());
+            //players.add(player);
         }
         gameStarted = true;
     }
@@ -196,6 +212,200 @@ public class ScrabbleGame {
     }
 
     /**
+     * Generate all possible combinations of letters from AI's hand
+     */
+    public ArrayList<String> generateAiCombinations(List<Character> letters, int index, StringBuilder current) {
+        ArrayList<String> combinations = new ArrayList<>();
+
+        if (current.length() > 0) {
+            combinations.add(current.toString());
+        }
+
+        for (int i = index; i < letters.size(); i++) {
+            current.append(letters.get(i));
+            combinations.addAll(generateAiCombinations(letters, i + 1, current));
+            current.deleteCharAt(current.length() - 1);
+
+        }
+
+        return combinations;
+    }
+
+    /**
+     * Filter out invalid words from all possible combinations of letters from AI's hand
+     */
+    public ArrayList<String> checkAiCombinations(ArrayList<String> combinations) {
+
+        Iterator<String> iterator = combinations.iterator();
+        while (iterator.hasNext()) {
+            String combination = iterator.next();
+            if (!parser.isValidWord(combination)) {
+                iterator.remove();
+            }
+        }
+        System.out.println("Valid AI words: " + combinations);
+        return combinations;
+    }
+
+    private List<String> placeWordOnBoard(String word, int startY, int startX, boolean isVertical) {
+        List<String> squareTypes = new ArrayList<>();
+
+        for (int i = 0; i < word.length(); i++) {
+            int y;
+            int x;
+            if (isVertical) {
+                y = startY + i;
+                x = startX;
+            } else {
+                y = startY;
+                x = startX + i;
+            }
+
+            board.setDeleteLetterFromBoard(y, x, word.charAt(i));
+            squareTypes.add(board.getSquareType(y, x));
+        }
+
+        System.out.println("AI placed the word: " + word);
+        return squareTypes;
+    }
+
+
+    private boolean isHorizontalCrossWordValid(char letter, int y, int x) {
+        StringBuilder crossWord = new StringBuilder();
+        for (int i = x; i >= 0 && board.getLetterOnBoard(y, i)!= ' ';i--) {
+            crossWord.insert(0, board.getLetterOnBoard(y,i));
+        }
+        for (int i = x + 1; i < 15 && board.getLetterOnBoard(y, i) != ' ';i++) {
+            crossWord.append(board.getLetterOnBoard(y, i));
+        }
+        return crossWord.length() <=1 ||parser.isValidWord(crossWord.toString());
+    }
+
+    private boolean isVerticalCrossWordValid(char letter, int y, int x) {
+        StringBuilder crossWord = new StringBuilder();
+
+        for (int i= y;i >= 0 && board.getLetterOnBoard(i,x) != ' ';i--) {
+            crossWord.insert(0, board.getLetterOnBoard(i, x));
+        }
+        for (int i= y +1;i< 15 && board.getLetterOnBoard(i,x) != ' ';i++) {
+            crossWord.append(board.getLetterOnBoard(i, x));
+        }
+        return crossWord.length() <= 1 || parser.isValidWord(crossWord.toString());
+    }
+
+    private boolean canPlaceWordOnBoard(String word,int startY,int startX, boolean isVertical) {
+
+        int length = word.length();
+        if (isVertical){
+            if (startY +length > 15) return false;
+        } else {
+            if (startX + length> 15) return false;
+        }
+        boolean isConnected = false;
+        for (int i = 0; i < length; i++) {
+
+            int x, y;
+            if (isVertical){
+                x = startX;
+                y = startY+ i;
+            } else {
+                x = startX + i;
+                y = startY;
+            }
+            char existingLetter = board.getLetterOnBoard(y, x);
+            if (existingLetter != ' ' && existingLetter != word.charAt(i)) {
+                return false;
+            }
+            if (existingLetter != ' '){
+                isConnected = true;
+            }
+            if (!isVertical){
+                if (!isHorizontalCrossWordValid(word.charAt(i), y,x)){
+                    return false;
+                }
+            }
+            else {
+                if(!isVerticalCrossWordValid(word.charAt(i), y, x)){
+                    return false;
+                }
+            }
+        }
+        return isConnected || isBoardEmpty();
+    }
+
+    private boolean isBoardEmpty(){
+        for (int y = 0; y < 15; y++) {
+            for (int x = 0; x < 15; x++) {
+                if (board.getLetterOnBoard(y, x) != ' ') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check for the highest scoring word
+     */
+    public void aiHighestScoreWord() {
+        List<String> aiWords = checkAiCombinations(generateAiCombinations(getCurrentPlayer().getHand().getLetters(), 0, new StringBuilder()));
+
+        int maxScore = 0;
+        String bestWord = "";
+        int bestY = -1, bestX = -1;
+        boolean bestIsVertical = false;
+
+        for (String word : aiWords) {
+            for (int y = 0; y < 15; y++) {
+                for (int x = 0; x < 15; x++) {
+                    if (canPlaceWordOnBoard(word, y, x, false)) {
+                        int score = getCurrentPlayer().getWordScore(word); //, checkSquareTypes(y, x));
+                        if (score > maxScore) {
+                            maxScore = score;
+                            bestWord = word;
+                            bestAIWord = word;
+                            bestY = y;
+                            bestX = x;
+                            bestIsVertical = false;
+                        }
+                    }
+                    if (canPlaceWordOnBoard(word,y, x,true)) {
+                        int score = getCurrentPlayer().getWordScore(word); //checkSquareTypes(y, x));
+                        if (score > maxScore) {
+                            maxScore = score;
+                            bestWord = word;
+                            bestAIWord = word;
+                            bestY = y;
+                            bestX = x;
+                            bestIsVertical = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        if (!bestWord.isEmpty()) {
+            List<String> formedSquares = placeWordOnBoard(bestWord, bestY, bestX, bestIsVertical);
+            getCurrentPlayer().removeLettersFromHand(getBestAIWord());
+            getCurrentPlayer().getHand().refillHand();
+
+            playAiTurn(getBestAIWord(), formedSquares);
+            //turn++;
+        } else {
+            // turn++;
+            JOptionPane.showMessageDialog(null, "Passing turn since the AI could not find a valid position to place any word.");
+            //System.out.println("Passing turn since the AI could not find a valid position to place any word.");
+        }
+
+    }
+
+    public void playAiTurn(String bestAIWord, List<String> aiSquares) {
+        if (!getBestAIWord().isEmpty()) {
+            getCurrentPlayer().calculateWordScore(bestAIWord, aiSquares);
+        }
+    }
+
+    /**
      * Following miscellaneous methods are used throughout the program as getters, setters, etc.
      */
 
@@ -220,7 +430,7 @@ public class ScrabbleGame {
     }
 
     public boolean isBlankTileLetter(String text) {
-        return blankTileLetters.get(text);
+        return blankTileLetters.getOrDefault(text, false);
     }
 
     public boolean invalidFlag() {
@@ -256,5 +466,9 @@ public class ScrabbleGame {
 
     public int getTurn(){
         return turn;
+    }
+
+    public String getBestAIWord() {
+        return bestAIWord;
     }
 }
