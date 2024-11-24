@@ -4,7 +4,7 @@ Scrabble! Game
 Description:
 ----------------
 
-This project contains 13 java classes, 2 UML diagrams, 1 Dictionary.txt file, and 1 ReadMe.txt file.
+This project contains 13 java classes, 3 UML diagrams, 1 Dictionary.txt file, and 1 ReadMe.txt file.
 
 Milestone 1:
 In this deliverable, we added the main functionalities of the Scrabble game which included: managing the bag of letters, board design and implementation, player handling, assigning hands of letters, word and letter handling, and gameplay logic and implementation.
