@@ -3,7 +3,6 @@
  */
 public class Square {
     private char letter;
-    private boolean isEmpty;
     int score;
 
     public Square(char letter) {
@@ -17,19 +16,6 @@ public class Square {
     public char getLetter() {
         return letter;
     }
-
-    public void setIsEmpty(boolean isEmpty) {
-        this.isEmpty = isEmpty;
-    }
-
-    public boolean getIsEmpty() {
-        return isEmpty;
-    }
-
-    public int getScore() {
-        return score;
-    }
-
 
     public int letterScore(char l) {
         if (l == 'A' || l == 'E' || l == 'I' || l == 'O' || l == 'U'

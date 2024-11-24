@@ -6,7 +6,6 @@ public class Bag {
 
     private static final List<Character> alphabet = new ArrayList<>();
 
-    private ArrayList<Character> bagChars;
 
     /**
      * Scrabble letters distribution according to the rules of the game
@@ -42,7 +41,7 @@ public class Bag {
     }
 
     public Bag(){
-    bagChars = new ArrayList<>();
+
     }
 
     /**

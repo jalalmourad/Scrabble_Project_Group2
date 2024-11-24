@@ -18,21 +18,6 @@ public class Player {
         this.hand = new Hand();
     }
 
-    /**
-     *Calculates the score of the word depending on the letters placed in each tile
-     */
-    /**
-    public void calculateWordScore(String word) {
-        int wordScore = 0;
-        for (char letter : word.toCharArray()) {
-            Square square = new Square(letter);
-            wordScore += square.letterScore(letter);
-        }
-
-        this.score += wordScore;
-        this.words.add(word);
-    }
-     */
 
     /**
      * Calculates the score of the word depending on the letters placed in each tile
@@ -48,23 +33,18 @@ public class Player {
         for (int i = 0; i < squareTypes.size(); i++) {
             if (squareTypes.get(i).equals("DoubleLetterSquare")) {
                 wordScore += new DoubleLetterSquare(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("TripleLetterSquare")) {
                 wordScore += new TripleLetterSquare(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("DoubleWordSquare")) {
                 wordScore += new DoubleWordSquare(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
 
             } else if (squareTypes.get(i).equals("TripleWordSquare")) {
                 wordScore += new TripleWordSquare(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
 
             } else {
                 wordScore += new Square(word.charAt(i)).letterScore(word.charAt(i));
-                //System.out.println(squareTypes.get(i) + " " + word.charAt(i) + " " + new Square(word.charAt(i)).letterScore(word.charAt(i)));
             }
         }
         if (squareTypes.contains("DoubleWordSquare")) {
@@ -83,8 +63,6 @@ public class Player {
             this.score += wordScore;
             this.words.add(word);
         }
-        //System.out.println("Word Score: " + wordScore);
-        //System.out.println("Player Score: " + this.score);
     }
 
     public int getWordScore(String word) {

@@ -9,9 +9,6 @@ public class Command {
         command = c;
     }
 
-    public String getCommand() {
-        return command;
-    }
 
     public boolean isCommand() {
         return (command != null);

@@ -457,10 +457,6 @@ public class ScrabbleGame {
         return yCoordinate;
     }
 
-    public int getTurn(){
-        return turn;
-    }
-
     public String getBestAIWord() {
         return bestAIWord;
     }
