@@ -114,15 +114,6 @@ public class ScrabbleGame {
         int letterIndex = playerHand.getLetterPosition(letter);
         removedChars.add(new int[]{letterIndex, letter});
         placedPositions.add(new int[]{x, y});
-        //if (playerHand.getLetters().contains(letter)) {
-        //    System.out.println("Letter Placed is: "+letter+"\n");
-        //    board.setLetterOnBoard(y,x,letter);
-        //    int letterIndex = playerHand.getLetterPosition(letter);
-        //    removedChars.add(new int[]{letterIndex, letter});
-        //    placedPositions.add(new int[]{x, y});
-        //} else {
-        //    System.out.println("The letter "+letter+" is not in your hand!\n");
-        //}
     }
 
     /**
@@ -288,6 +279,7 @@ public class ScrabbleGame {
         return crossWord.length() <= 1 || parser.isValidWord(crossWord.toString());
     }
 
+    //This method checks if the word can be placed on board
     private boolean canPlaceWordOnBoard(String word,int startY,int startX, boolean isVertical) {
 
         int length = word.length();
@@ -315,12 +307,12 @@ public class ScrabbleGame {
                 isConnected = true;
             }
             if (!isVertical){
-                if (!isHorizontalCrossWordValid(word.charAt(i), y,x)){
+                if (!isHorizontalCrossWordValid(word.charAt(i), y,x)){ //Checks if the letter is connected to another letter horizontally
                     return false;
                 }
             }
             else {
-                if(!isVerticalCrossWordValid(word.charAt(i), y, x)){
+                if(!isVerticalCrossWordValid(word.charAt(i), y, x)){ //Checks if the letter is connected to another letter vertically
                     return false;
                 }
             }
@@ -328,7 +320,7 @@ public class ScrabbleGame {
         return isConnected || isBoardEmpty();
     }
 
-    private boolean isBoardEmpty(){
+    private boolean isBoardEmpty(){ //Checks if the board is empty
         for (int y = 0; y < 15; y++) {
             for (int x = 0; x < 15; x++) {
                 if (board.getLetterOnBoard(y, x) != ' ') {
@@ -342,8 +334,10 @@ public class ScrabbleGame {
     /**
      * Check for the highest scoring word
      */
-    public void aiHighestScoreWord() {
-        List<String> aiWords = checkAiCombinations(generateAiCombinations(getCurrentPlayer().getHand().getLetters(), 0, new StringBuilder()));
+    public void aiHighestScoreWord() { //This method returns the highest AI scoring word
+
+
+        List<String> aiWords = checkAiCombinations(generateAiCombinations(getCurrentPlayer().getHand().getLetters(), 0, new StringBuilder())); //Generate a list of all possible hand combinations
 
         int maxScore = 0;
         String bestWord = "";
@@ -379,7 +373,8 @@ public class ScrabbleGame {
             }
         }
 
-        if (!bestWord.isEmpty()) {
+
+        if (!bestWord.isEmpty()) { //checks if the highest scoring word is empty
             List<String> formedSquares = placeWordOnBoard(bestWord, bestY, bestX, bestIsVertical);
             getCurrentPlayer().removeLettersFromHand(getBestAIWord());
             getCurrentPlayer().getHand().refillHand();
@@ -387,6 +382,7 @@ public class ScrabbleGame {
             playAiTurn(getBestAIWord(), formedSquares);
             JOptionPane.showMessageDialog(null, "AI has placed: " + getBestAIWord());
         } else {
+
             JOptionPane.showMessageDialog(null, "Passing turn since the AI could not find a valid position to place any word.");
         }
 

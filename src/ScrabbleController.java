@@ -40,8 +40,6 @@ public class ScrabbleController implements ActionListener {
                     );
                     playerTypes[i] = (response == JOptionPane.YES_OPTION) ? "AI" : "Human";
                 }
-
-                //model.MVCparticipants(selectedPlayers);
                 model.MVCparticipants(selectedPlayers, playerTypes);
 
                 model.updateViews();
@@ -77,7 +75,6 @@ public class ScrabbleController implements ActionListener {
             return;
         }
 
-        // Letter in hand action
         if (s.startsWith("h")) {
             JButton sourceButton = (JButton) e.getSource();
             String text = sourceButton.getText();
@@ -181,8 +178,6 @@ public class ScrabbleController implements ActionListener {
         }
 
         if (s.equals("pass")) {
-            //model.clearInvalidWord();
-            //model.setTextPlayed(" ");
             model.turn++;
             frame.disableComponents(frame.boardPanel.getComponents());
             model.updateViews();

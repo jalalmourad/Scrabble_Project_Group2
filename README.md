@@ -13,6 +13,9 @@ To play the game, run the main function in Game class, choose how many players a
 Milestone 2:
 In this deliverable, the Model-View-Controller design pattern was implemented into the existing program to create a greater user-friendly visual experience. With the changes implemented, users can now interact with the Scrabble board through mouse-click inputs to play the game. Letters are now easier to place, as users can simply click on their desired square rather than input coordinates in contrast to the previous milestone. To play the game, run the 'main' method in the ScrabbleBoardFrame.java class and follow the instructions!
 
+Milestone3: 
+In this deliverable, we added blank tiles, premium squares, and the ability to use any number of “AI” players.
+
 The Project is made up of the following files:
 
 Bag,java                A single Java script
@@ -89,6 +92,12 @@ Ishaq Nour: Bag.java, Board.java, GameTest.java, Hand.java, ScrabbleGame.java, R
 
 Kareem Kaddoura: ScrabbleGame.java, ScrabbleView.java, ScrabbleController.java, ScrabbleBoardFrame.java, Refactoring changes
 Jalal Mourad: ScrabbleGame.java, ScrabbleView.java, ScrabbleController.java, ScrabbleBoardFrame.java, Sequence diagram
+Ishaq Nour: ScrabbleGame.java, ScrabbleView.java, ScrabbleController.java, ScrabbleBoardFrame.java, UML diagram
+
+> Iteration 3:
+
+Kareem Kaddoura: ScrabbleGame.java, ScrabbleController.java, ScrabbleBoardFrame.java
+Jalal Mourad: ScrabbleGame.java, ScrabbleController.java, ScrabbleBoardFrame.java, README.txt
 Ishaq Nour: ScrabbleGame.java, ScrabbleView.java, ScrabbleController.java, ScrabbleBoardFrame.java, UML diagram
 
 Copyright 2024 Jalal Mourad, Kareem Kaddoura, Ishaq Nour
