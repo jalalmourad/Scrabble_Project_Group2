@@ -14,6 +14,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     JPanel wordsInHandPanel;
     JPanel actionButtons;
     JTextArea scoreText;
+    JTextArea playerTurnText;
 
     ScrabbleGame model;
     ScrabbleController controller;
@@ -27,7 +28,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     public ScrabbleBoardFrame() {
         super("Scrabble!");
         setLayout(new BorderLayout());
-        setSize(800,800);
+        setSize(850,850);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         model = new ScrabbleGame();
@@ -160,6 +161,9 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         actionButtons.add(submitButton);
         actionButtons.add(passButton);
 
+        playerTurnText = new JTextArea();
+        playerTurnText.setEditable(false);
+        actionButtons.add(playerTurnText);
 
         this.add(boardPanel, BorderLayout.CENTER);
         this.add(wordsInHandPanel, BorderLayout.SOUTH);
@@ -204,6 +208,13 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     }
 
     /**
+     * Specific disabler for the Submit button to ensure turn separation
+     */
+    public void disableSubmitButton(Component comp) {
+        comp.setEnabled(false);
+    }
+
+    /**
      * Updates game view(s)
      */
     @Override
@@ -234,8 +245,11 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         }
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Player Name: ").append(model.getCurrentPlayer().getName()).append("\n")
-                .append("Score: ").append(model.getCurrentPlayer().getPlayerScore());
+        sb.append("SCORE\n\n");
+        for (Player p : model.players) {
+            sb.append("Player " + p.getName() + ": " + p.getPlayerScore() + " pts\n\n");
+        }
+        playerTurnText.setText("Player " + model.getCurrentPlayer().getName() + "'s Turn");
 
         scoreText.setText(sb.toString());
 

@@ -89,11 +89,6 @@ public class ScrabbleGame {
 
             player.getHand().setLetters(bag.getAlphabet());
             players.add(player);
-
-            //String playerName = JOptionPane.showInputDialog("Enter player " + j + " Name: ");
-            //Player player = new Player(playerName);
-            //player.getHand().setLetters(bag.getAlphabet());
-            //players.add(player);
         }
         gameStarted = true;
     }
@@ -390,11 +385,9 @@ public class ScrabbleGame {
             getCurrentPlayer().getHand().refillHand();
 
             playAiTurn(getBestAIWord(), formedSquares);
-            //turn++;
+            JOptionPane.showMessageDialog(null, "AI has placed: " + getBestAIWord());
         } else {
-            // turn++;
             JOptionPane.showMessageDialog(null, "Passing turn since the AI could not find a valid position to place any word.");
-            //System.out.println("Passing turn since the AI could not find a valid position to place any word.");
         }
 
     }
