@@ -4,7 +4,7 @@ Scrabble! Game
 Description:
 ----------------
 
-This project contains 13 java classes, 3 UML diagrams, 1 Dictionary.txt file, and 1 ReadMe.txt file.
+This project contains 17 java classes, 3 UML diagrams, 1 Dictionary.txt file, and 1 ReadMe.txt file.
 
 Milestone 1:
 In this deliverable, we added the main functionalities of the Scrabble game which included: managing the bag of letters, board design and implementation, player handling, assigning hands of letters, word and letter handling, and gameplay logic and implementation.
@@ -44,6 +44,14 @@ ScrabbleController.java A single Java script
 
 ScrabbleView.java       A single Java script
 
+DoubleLetterSquare      A single Java script
+
+DoubleWordSquare        A single Java script
+
+TripleLetterSquare      A single Java script
+
+TripleWordSquare        A single Java script
+
 UML_M1.png              A single image of a UML diagram for Milestone 1
 
 UML_M2.png              A single image of a UML diagram for Milestone 2
@@ -80,6 +88,14 @@ ScrabbleBoardFrame: This class is responsible for the creation of the JFrame tha
 ScrabbleController: This class is responsible for the communication between the Model and the Controller, and processes user input(s) accordingly.
 
 ScrabbleView: This class is used by the Model to update the views seen throughout the game's length.
+
+DoubleLetterSquare: This class is used for implementing premium squares that double the score of the letter placed
+
+DoubleWordSquare: This class is used for implementing doubling the score of the word placed using the premium double word squares found on the board.
+
+TripleLetterSquare: This class is used for implementing premium squares that triple the score of the letter placed
+
+TripleWordSquare: This class is used for implementing tripling the score of the word placed using the premium triple word squares found on the board.                    
 
 
 > Iteration 1:
