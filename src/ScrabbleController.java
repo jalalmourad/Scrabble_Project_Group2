@@ -73,6 +73,14 @@ public class ScrabbleController implements ActionListener {
                     "10 points: Q, Z\n" +
                     "0 points: Blank Tiles");
             return;
+        } else if (s.equals("save")) {
+            model.save(JOptionPane.showInputDialog(null, "Save As:"));
+        } else if (s.equals("load")) {
+            frame.loadGame(model.load(JOptionPane.showInputDialog(null, "File Name:")));
+        } else if (s.equals("undo")) {
+            //
+        } else if (s.equals("redo")) {
+            //
         }
 
         if (s.startsWith("h")) {
