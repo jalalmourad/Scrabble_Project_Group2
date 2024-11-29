@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.io.*;
 import java.util.*;
 
 public class ScrabbleGame {
@@ -27,6 +28,8 @@ public class ScrabbleGame {
     private HashMap<String, Boolean> blankTileLetters;
     private boolean invalidFlag = false;
     boolean gameStarted = false;
+
+    //List<Object> game =
 
     /**
      * Creates the game, initializes players, board, bag, views, etc.
@@ -392,6 +395,44 @@ public class ScrabbleGame {
         if (!getBestAIWord().isEmpty()) {
             getCurrentPlayer().calculateWordScore(bestAIWord, aiSquares);
         }
+    }
+
+    /**
+     * Save and export the game via serialization
+     * [Milestone 4]
+     */
+    public void save(String filename) {
+        FileOutputStream fileOutput = null;
+        ObjectOutputStream objectOutput = null;
+        try {
+            fileOutput = new FileOutputStream(filename);
+            objectOutput = new ObjectOutputStream(fileOutput);
+            objectOutput.writeObject(views);
+            objectOutput.flush();
+            objectOutput.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Load and import a game via serialization
+     * [Milestone 4]
+     */
+    public ScrabbleGame load(String filename) {
+        ScrabbleGame game = new ScrabbleGame();
+        FileInputStream fileInput = null;
+        ObjectInputStream objectInput = null;
+        try {
+            fileInput = new FileInputStream(filename);
+            objectInput = new ObjectInputStream(fileInput);
+            game.views = (ArrayList<ScrabbleView>) objectInput.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return game;
     }
 
     /**

@@ -9,6 +9,8 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     JButton[] wordsInHandButtons;
     JButton submitButton;
     JButton passButton;
+    JButton undoButton;
+    JButton redoButton;
 
     JPanel boardPanel;
     JPanel wordsInHandPanel;
@@ -19,11 +21,14 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     ScrabbleGame model;
     ScrabbleController controller;
 
-    JMenu menu;
     JMenuBar menuBar;
+    JMenu optionMenu;
     JMenuItem playMenuItem;
     JMenuItem helpMenuItem;
     JMenuItem pointsMenuItem;
+    JMenu saveMenu;
+    JMenuItem saveItem;
+    JMenuItem loadItem;
 
     public ScrabbleBoardFrame() {
         super("Scrabble!");
@@ -37,23 +42,38 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         // Menu Bar Initializations
         menuBar = new JMenuBar();
-        menu = new JMenu("Options");
-        menuBar.add(menu);
+
+        optionMenu = new JMenu("Options");
+        menuBar.add(optionMenu);
+
         playMenuItem = new JMenuItem("Play");
         playMenuItem.addActionListener(controller);
         playMenuItem.setActionCommand("play");
+        optionMenu.add(playMenuItem);
 
         helpMenuItem = new JMenuItem("Help");
         helpMenuItem.addActionListener(controller);
         helpMenuItem.setActionCommand("help");
+        optionMenu.add(helpMenuItem);
 
         pointsMenuItem = new JMenuItem("Letter Values");
         pointsMenuItem.addActionListener(controller);
         pointsMenuItem.setActionCommand("values");
+        optionMenu.add(pointsMenuItem);
 
-        menu.add(playMenuItem);
-        menu.add(helpMenuItem);
-        menu.add(pointsMenuItem);
+        saveMenu = new JMenu("Save/Load");
+        menuBar.add(saveMenu);
+
+        saveItem = new JMenuItem("Save");
+        saveItem.addActionListener(controller);
+        saveItem.setActionCommand("save");
+        saveMenu.add(saveItem);
+
+        loadItem = new JMenuItem("Load");
+        loadItem.addActionListener(controller);
+        loadItem.setActionCommand("load");
+        saveMenu.add(loadItem);
+
         setJMenuBar(menuBar);
 
         // Main Board Initializations
@@ -112,19 +132,6 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         }
         buttons[7][7].setBackground(Color.PINK);
 
-        /**
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) {
-                buttons[i][j] = new JButton();
-                buttons[i][j].addActionListener(controller);
-                buttons[i][j].setActionCommand(i + "" + j);
-                buttons[i][j].setBackground(Color.WHITE);
-                boardPanel.add(buttons[i][j]);
-            }
-        }
-        buttons[7][7].setBackground(Color.RED);
-         */
-
         // WordsInHand Panel Initializations
         wordsInHandPanel = new JPanel();
         wordsInHandPanel.setLayout(new GridLayout(0, 7));
@@ -146,7 +153,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         // Action Panel Initializations
         actionButtons = new JPanel();
-        actionButtons.setLayout(new GridLayout(0,2));
+        actionButtons.setLayout(new GridLayout(0,4));
 
         submitButton = new JButton("Submit");
         submitButton.setActionCommand("submit");
@@ -158,8 +165,20 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         passButton.setActionCommand("pass");
         passButton.setBackground(Color.WHITE);
 
+        undoButton = new JButton("Undo");
+        undoButton.addActionListener(controller);
+        undoButton.setActionCommand("undo");
+        undoButton.setBackground(Color.WHITE);
+
+        redoButton = new JButton("Redo");
+        redoButton.addActionListener(controller);
+        redoButton.setActionCommand("redo");
+        redoButton.setBackground(Color.WHITE);
+
         actionButtons.add(submitButton);
         actionButtons.add(passButton);
+        actionButtons.add(undoButton);
+        actionButtons.add(redoButton);
 
         playerTurnText = new JTextArea();
         playerTurnText.setEditable(false);
@@ -258,5 +277,13 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         if(model.getHandListCoord()!= null) {
             wordsInHandButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
         }
+    }
+
+    /**
+     * Updates the frame with model imported, used with ScrabbleGame.load() method
+     * [Milestone 4]
+     */
+    public void loadGame(ScrabbleGame game) {
+        this.model = game;
     }
 }
