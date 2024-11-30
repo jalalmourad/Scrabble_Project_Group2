@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Square class of Scrabble Game
  */
-public class Square {
+public class Square implements Serializable {
     private char letter;
     int score;
 

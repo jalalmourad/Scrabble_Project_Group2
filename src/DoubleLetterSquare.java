@@ -1,8 +1,9 @@
+import java.io.Serializable;
 
 /**
  * Premium Square class of Scrabble Game, doubles the score of the letter placed
  */
-public class DoubleLetterSquare extends Square{
+public class DoubleLetterSquare extends Square implements Serializable {
 
     // x,y coordinates of the premium double letter squares found on the board
     public static int[][] dlsCoords = {{0,3},{0,11},

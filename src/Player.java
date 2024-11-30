@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.*;
 
 /**
  Player(s) class of Scrabble Game
  */
-public class Player {
+public class Player implements Serializable {
     private String name;
     private int score;
     ArrayList<String> words;

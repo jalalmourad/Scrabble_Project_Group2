@@ -279,11 +279,4 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         }
     }
 
-    /**
-     * Updates the frame with model imported, used with ScrabbleGame.load() method
-     * [Milestone 4]
-     */
-    public void loadGame(ScrabbleGame game) {
-        this.model = game;
-    }
 }

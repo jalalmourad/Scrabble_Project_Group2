@@ -1,9 +1,11 @@
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
-public class ScrabbleController implements ActionListener {
+public class ScrabbleController implements ActionListener, Serializable {
 
     private final ScrabbleBoardFrame frame;
     private final ScrabbleGame model;
@@ -74,10 +76,20 @@ public class ScrabbleController implements ActionListener {
                     "0 points: Blank Tiles");
             return;
         } else if (s.equals("save")) {
-            model.save(JOptionPane.showInputDialog(null, "Save As:"));
-        } else if (s.equals("load")) {
-            frame.loadGame(model.load(JOptionPane.showInputDialog(null, "File Name:")));
-        } else if (s.equals("undo")) {
+            String filename= JOptionPane.showInputDialog(null, "Save As:");
+            try {
+                model.save(filename);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        else if (s.equals("load")) {
+            String filename= (JOptionPane.showInputDialog(null, "File Name:"));
+            model.load(filename);
+            model.updateViews();
+            frame.boardPanel.repaint();
+        }
+        else if (s.equals("undo")) {
             //
         } else if (s.equals("redo")) {
             //

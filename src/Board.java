@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Board class of Scrabble Game
  */
-public class Board {
+public class Board implements Serializable {
     private static final int SIZE = 15;
     private Square[][] board = new Square[SIZE][SIZE];
     public static int[][][] premiumTiles = {DoubleLetterSquare.dlsCoords, TripleLetterSquare.tlsCoords, DoubleWordSquare.dwsCoords, TripleWordSquare.twsCoords};

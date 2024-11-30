@@ -2,13 +2,12 @@ import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
-public class ScrabbleGame {
+public class ScrabbleGame implements Serializable{
 
     List<Player> players;
     Bag bag;
     Board board;
     Parser parser;
-    Scanner sc;
     int turn = 0;
     Hand playerHand;
 
@@ -41,7 +40,6 @@ public class ScrabbleGame {
         bag = new Bag();
         board = new Board();
         parser = new Parser();
-        sc = new Scanner(System.in);
 
         views = new ArrayList<>();
 
@@ -401,17 +399,17 @@ public class ScrabbleGame {
      * Save and export the game via serialization
      * [Milestone 4]
      */
-    public void save(String filename) {
-        FileOutputStream fileOutput = null;
-        ObjectOutputStream objectOutput = null;
-        try {
-            fileOutput = new FileOutputStream(filename);
-            objectOutput = new ObjectOutputStream(fileOutput);
-            objectOutput.writeObject(views);
-            objectOutput.flush();
-            objectOutput.close();
+    public void save(String filename) throws IOException {
+
+        try (FileOutputStream fileOutput = new FileOutputStream(filename);
+             ObjectOutputStream objectOutput = new ObjectOutputStream(fileOutput)) {
+
+            objectOutput.writeObject(this);
+
+            System.out.println("Game Saved Successfully!");
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error saving game:" + e.getMessage());
+            throw e;
         }
     }
 
@@ -419,20 +417,41 @@ public class ScrabbleGame {
      * Load and import a game via serialization
      * [Milestone 4]
      */
-    public ScrabbleGame load(String filename) {
-        ScrabbleGame game = new ScrabbleGame();
-        FileInputStream fileInput = null;
-        ObjectInputStream objectInput = null;
-        try {
-            fileInput = new FileInputStream(filename);
-            objectInput = new ObjectInputStream(fileInput);
-            game.views = (ArrayList<ScrabbleView>) objectInput.readObject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
+    /**
+     * Load and import a game via serialization
+     * [Milestone 4]
+     */
+    public void load(String filename) {
+        try (FileInputStream fileInput = new FileInputStream(filename);
+             ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
+
+            ScrabbleGame loadedGame = (ScrabbleGame) objectInput.readObject();
+
+            this.players = loadedGame.players;
+            this.bag = loadedGame.bag;
+            this.board = loadedGame.board;
+            this.parser = loadedGame.parser;
+            this.turn = loadedGame.turn;
+            this.playerHand = loadedGame.playerHand;
+            this.xCoordinate = loadedGame.xCoordinate;
+            this.yCoordinate = loadedGame.yCoordinate;
+            this.views = loadedGame.views;
+            this.placedPositions = loadedGame.placedPositions;
+            this.removedChars = loadedGame.removedChars;
+            this.InvalidChars = loadedGame.InvalidChars;
+            this.bestAIWord = loadedGame.bestAIWord;
+            this.handListCoord = loadedGame.handListCoord;
+            this.text = loadedGame.text;
+            this.blankTileLetters = loadedGame.blankTileLetters;
+            this.invalidFlag = loadedGame.invalidFlag;
+            this.gameStarted = loadedGame.gameStarted;
+            updateViews();
+
+
+            System.out.println("Game Loaded Successfully!");
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error loading game: " + e.getMessage());
         }
-        return game;
     }
 
     /**

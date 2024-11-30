@@ -1,7 +1,9 @@
+import java.io.Serializable;
+
 /**
  * Class to maintain known and accepted commands in the Scrabble game.
  */
-public class CommandWords {
+public class CommandWords implements Serializable {
 
     private static final String[] commandWords = {"play", "pass", "quit"};
 

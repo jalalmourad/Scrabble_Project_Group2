@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Bag {
+public class Bag implements Serializable {
 
     private static final List<Character> alphabet = new ArrayList<>();
 

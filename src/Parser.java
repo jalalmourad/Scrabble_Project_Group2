@@ -1,14 +1,12 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
-public class Parser {
+public class Parser implements Serializable {
 
     private Set<String> englishWords;
-    private Scanner scanner;
+    private transient Scanner scanner;
     private CommandWords words;
 
     public Parser() {

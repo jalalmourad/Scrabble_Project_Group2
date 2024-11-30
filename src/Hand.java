@@ -1,8 +1,9 @@
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Hand {
+public class Hand implements Serializable {
 
     private ArrayList<Character> letters;
 
