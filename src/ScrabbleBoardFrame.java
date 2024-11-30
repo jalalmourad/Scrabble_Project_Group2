@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
@@ -276,6 +277,29 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         if(model.getHandListCoord()!= null) {
             wordsInHandButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
+        }
+    }
+
+
+    public void saveGame() {
+        try (ObjectOutputStream out =new ObjectOutputStream(new FileOutputStream("scrabble_game.ser"))) {
+            out.writeObject(model);
+            JOptionPane.showMessageDialog(this, "Game saved successfully!");
+        } catch (IOException e){
+            JOptionPane.showMessageDialog(this, "Error saving the game: "+ e.getMessage());
+        }
+    }
+    
+    public void loadGame() {
+        try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("scrabble_game.ser"))) {
+            ScrabbleGame loadedGame =(ScrabbleGame) in.readObject();
+            model =loadedGame;
+            controller =new ScrabbleController(this, model);
+            model.addView(this);
+            update(model);
+            JOptionPane.showMessageDialog(this, "Game loaded successfully!");
+        } catch (IOException |ClassNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "Error loading the game: " +e.getMessage());
         }
     }
 

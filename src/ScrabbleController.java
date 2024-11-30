@@ -66,7 +66,7 @@ public class ScrabbleController implements ActionListener, Serializable {
                     "Good luck!");
             return;
         } else if (s.equals("values")) {
-            JOptionPane.showMessageDialog(null,"1 point: A, E, I, O, U, L, N, S, T, R\n" +
+            JOptionPane.showMessageDialog(null, "1 point: A, E, I, O, U, L, N, S, T, R\n" +
                     "2 points: D, G\n" +
                     "3 points: B, C, M, P\n" +
                     "4 points: F, H, V, W, Y\n" +
@@ -75,20 +75,28 @@ public class ScrabbleController implements ActionListener, Serializable {
                     "10 points: Q, Z\n" +
                     "0 points: Blank Tiles");
             return;
-        } else if (s.equals("save")) {
-            String filename= JOptionPane.showInputDialog(null, "Save As:");
+
+        }
+            else if (s.equals("save")) {
+               // String filename= JOptionPane.showInputDialog(null, "Save As:");
             try {
-                model.save(filename);
+                model.save("scrabble_game.ser");
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-        }
-        else if (s.equals("load")) {
-            String filename= (JOptionPane.showInputDialog(null, "File Name:"));
-            model.load(filename);
-            model.updateViews();
-            frame.boardPanel.repaint();
-        }
+            frame.saveGame();
+
+            }
+            else if (s.equals("load")) {
+               // String filename= (JOptionPane.showInputDialog(null, "File Name:"));
+                model.load("scrabble_game.ser");
+                frame.loadGame();
+                 frame.enableComponents(frame.boardPanel.getComponents());
+                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                frame.enableComponents(frame.submitButton.getComponents());
+                model.updateViews();
+
+            }
         else if (s.equals("undo")) {
             //
         } else if (s.equals("redo")) {
