@@ -18,6 +18,8 @@ public class ScrabbleGame implements Serializable{
     List<int[]> placedPositions;
     List<int[]> removedChars;
     List<int[]> InvalidChars;
+    Stack<int[]> undoStack;
+    Stack<int[]> redoStack;
 
     private String bestAIWord = "";
 
@@ -44,6 +46,9 @@ public class ScrabbleGame implements Serializable{
         views = new ArrayList<>();
 
         placedPositions = new ArrayList<>();
+
+        undoStack = new Stack<>();
+        redoStack = new Stack<>();
 
         blankTileLetters = new HashMap<>();
 
@@ -115,6 +120,9 @@ public class ScrabbleGame implements Serializable{
         int letterIndex = playerHand.getLetterPosition(letter);
         removedChars.add(new int[]{letterIndex, letter});
         placedPositions.add(new int[]{x, y});
+
+        undoStack.push(new int[]{x, y, letter});
+        redoStack.clear();
     }
 
     /**
@@ -453,6 +461,72 @@ public class ScrabbleGame implements Serializable{
             System.err.println("Error loading game: " + e.getMessage());
         }
     }
+
+    public void importScrabbleGame(ScrabbleGame loadedGame) {
+        this.players = loadedGame.players;
+        this.bag = loadedGame.bag;
+        this.board = loadedGame.board;
+        this.parser = loadedGame.parser;
+        this.turn = loadedGame.turn;
+        this.playerHand = loadedGame.playerHand;
+        this.xCoordinate = loadedGame.xCoordinate;
+        this.yCoordinate = loadedGame.yCoordinate;
+        this.placedPositions = loadedGame.placedPositions;
+        this.removedChars = loadedGame.removedChars;
+        this.InvalidChars = loadedGame.InvalidChars;
+        this.bestAIWord = loadedGame.bestAIWord;
+        this.handListCoord = loadedGame.handListCoord;
+        this.text = loadedGame.text;
+        this.blankTileLetters = loadedGame.blankTileLetters;
+        this.invalidFlag = loadedGame.invalidFlag;
+        this.gameStarted = loadedGame.gameStarted;
+
+        this.views.clear();
+        this.views.addAll(loadedGame.views);
+        updateViews();
+    }
+
+    public void undo() {
+        if (undoStack.isEmpty()) {
+            System.out.println("No actions to undo.");
+            return;
+        }
+        System.out.println("Undo done!");
+
+        int[] previousMove = undoStack.pop();
+        redoStack.push(previousMove);
+
+        int x = previousMove[0];
+        int y = previousMove[1];
+        char letter = (char) previousMove[2];
+
+        board.setDeleteLetterFromBoard(y, x, ' ');
+
+        updateViews();
+        board.printBoard();
+    }
+
+    public void redo() {
+        if (redoStack.isEmpty()) {
+            System.out.println("No actions to redo.");
+            return;
+        }
+        System.out.println("Undo done!");
+
+        int[] previousMove = redoStack.pop();
+        undoStack.push(previousMove);
+
+        int x = previousMove[0];
+        int y = previousMove[1];
+        char letter = (char) previousMove[2];
+
+        board.setLetterOnBoard(y, x, letter);
+        getCurrentPlayer().getHand().removeLetter(letter);
+
+        updateViews();
+        board.printBoard();
+    }
+
 
     /**
      * Following miscellaneous methods are used throughout the program as getters, setters, etc.

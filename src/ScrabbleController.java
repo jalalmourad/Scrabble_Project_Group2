@@ -88,19 +88,23 @@ public class ScrabbleController implements ActionListener, Serializable {
 
             }
             else if (s.equals("load")) {
-               // String filename= (JOptionPane.showInputDialog(null, "File Name:"));
+                // String filename= (JOptionPane.showInputDialog(null, "File Name:"));
                 model.load("scrabble_game.ser");
                 frame.loadGame();
-                 frame.enableComponents(frame.boardPanel.getComponents());
-                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
-                frame.enableComponents(frame.submitButton.getComponents());
                 model.updateViews();
+                frame.enableComponents(frame.boardPanel.getComponents());
+                frame.enableComponents(frame.wordsInHandPanel.getComponents());
+                frame.enableComponents(frame.submitButton.getComponents());
+                //model.updateViews();
 
             }
         else if (s.equals("undo")) {
-            //
+            model.undo();
+            model.updateViews();
+
         } else if (s.equals("redo")) {
-            //
+            model.redo();
+            model.updateViews();
         }
 
         if (s.startsWith("h")) {
@@ -183,6 +187,8 @@ public class ScrabbleController implements ActionListener, Serializable {
                 model.removeCharsFromHand();
                 model.getCurrentPlayer().getHand().refillHand();
                 model.InvalidChars.clear();
+                model.undoStack.clear();
+                model.redoStack.clear();
                 model.turn++;
                 model.updateViews();
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());

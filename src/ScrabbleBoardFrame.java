@@ -293,10 +293,12 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     public void loadGame() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("scrabble_game.ser"))) {
             ScrabbleGame loadedGame =(ScrabbleGame) in.readObject();
-            model =loadedGame;
+            //model =loadedGame;
+            model.importScrabbleGame(loadedGame);
             controller =new ScrabbleController(this, model);
             model.addView(this);
             update(model);
+            model.updateViews();
             JOptionPane.showMessageDialog(this, "Game loaded successfully!");
         } catch (IOException |ClassNotFoundException e) {
             JOptionPane.showMessageDialog(this, "Error loading the game: " +e.getMessage());
