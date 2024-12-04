@@ -40,7 +40,8 @@ public class ScrabbleGame implements Serializable{
         removedChars = new ArrayList<>();
         InvalidChars = new ArrayList<>();
         bag = new Bag();
-        board = new Board();
+        chooseBoard("Normal Board"); // Default Choice
+        //board = new Board();
         parser = new Parser();
 
         views = new ArrayList<>();
@@ -526,6 +527,19 @@ public class ScrabbleGame implements Serializable{
         updateViews();
         board.printBoard();
     }
+
+    /**
+     * Create a board depending on user selection
+     */
+    public void chooseBoard(String selection) {
+        switch (selection) {
+            case "Normal Mode" -> board = new Board("Normal Mode");
+            case "Fun Mode" -> board = new Board("Fun Mode");
+            case "Spiral Mode" -> board =  new Board("Spiral Mode");
+            case "Boring Mode" -> board = new Board("Boring Mode");
+        }
+    }
+
 
 
     /**
