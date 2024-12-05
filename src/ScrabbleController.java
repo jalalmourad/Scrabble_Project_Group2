@@ -44,8 +44,8 @@ public class ScrabbleController implements ActionListener, Serializable {
                 }
                 model.MVCparticipants(selectedPlayers, playerTypes);
 
-                String[] boardOptions = {"Normal Mode", "Fun Mode", "Spiral Mode", "Boring Mode"};
-                int boardSelection = JOptionPane.showOptionDialog(null, "Select which board you would like to play on:", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, boardOptions, boardOptions[0]);
+                String[] boardOptions = {"Normal", "Target", "Spiral", "Boring"};
+                int boardSelection = JOptionPane.showOptionDialog(null, "Which board you would like to play on:", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, boardOptions, boardOptions[0]);
                 String selectedBoard = boardOptions[boardSelection];
 
                 frame.boardSelection(selectedBoard);

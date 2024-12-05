@@ -261,7 +261,9 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         scoreText.setText(sb.toString());
 
-        buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
+        if (model.turn != 0) {
+            buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
+        }
 
         if(model.getHandListCoord()!= null) {
             wordsInHandButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
@@ -300,10 +302,10 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         boardPanel.removeAll();
 
         switch (selection) {
-            case "Normal Mode" -> NormalModeBoard();
-            case "Fun Mode" -> FunModeBoard();
-            case "Spiral Mode" -> SpiralModeBoard();
-            case "Boring Mode" -> BoringModeBoard();
+            case "Normal" -> NormalModeBoard();
+            case "Target" -> TargetModeBoard();
+            case "Spiral" -> SpiralModeBoard();
+            case "Boring" -> BoringModeBoard();
         }
         buttons[7][7].setBackground(Color.PINK);
         disableComponents(boardPanel.getComponents());
@@ -369,7 +371,7 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     /**
      * Fun Mode Board (Custom 1)
      */
-    public void FunModeBoard() {
+    public void TargetModeBoard() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) { // Looping through board
                 boolean isPremium = false;

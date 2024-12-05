@@ -508,9 +508,7 @@ public class ScrabbleGame implements Serializable{
             System.out.println("No actions to redo.");
             return;
         }
-        for (int[] element : redoStack) {
-            System.out.println( (char) element[2]);
-        }
+
         int[] previousMove = redoStack.pop();
         undoStack.push(previousMove);
 
@@ -520,7 +518,6 @@ public class ScrabbleGame implements Serializable{
 
         board.setLetterOnBoard(y, x, letter);
         setTextPlayed(String.valueOf(letter));
-        //getCurrentPlayer().getHand().removeLetter(letter);
 
         System.out.println("Redo done!");
         board.printBoard();
@@ -531,10 +528,10 @@ public class ScrabbleGame implements Serializable{
      */
     public void chooseBoard(String selection) {
         switch (selection) {
-            case "Normal Mode" -> board = new Board("Normal Mode");
-            case "Fun Mode" -> board = new Board("Fun Mode");
-            case "Spiral Mode" -> board =  new Board("Spiral Mode");
-            case "Boring Mode" -> board = new Board("Boring Mode");
+            case "Normal" -> board = new Board("Normal");
+            case "Target" -> board = new Board("Target");
+            case "Spiral" -> board =  new Board("Spiral");
+            case "Boring" -> board = new Board("Boring");
         }
     }
 

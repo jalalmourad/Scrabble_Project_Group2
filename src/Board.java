@@ -17,10 +17,10 @@ public class Board implements Serializable {
      */
     public Board(String selection) {
         switch (selection) {
-            case "Normal Mode" -> NormalModeBoard();
-            case "Fun Mode" -> FunModeBoard();
-            case "Spiral Mode" -> SpiralModeBoard();
-            case "Boring Mode" -> BoringModeBoard();
+            case "Normal" -> NormalModeBoard();
+            case "Target" -> TargetModeBoard();
+            case "Spiral" -> SpiralModeBoard();
+            case "Boring" -> BoringModeBoard();
         }
     }
 
@@ -63,7 +63,7 @@ public class Board implements Serializable {
      * Create Fun Mode Board (Custom 1)
      * New format of Premium Tiles
      */
-    public void FunModeBoard() {
+    public void TargetModeBoard() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) { // Looping through board
                 boolean isPremium = false;
