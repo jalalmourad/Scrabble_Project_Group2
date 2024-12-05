@@ -16,6 +16,9 @@ In this deliverable, the Model-View-Controller design pattern was implemented in
 Milestone3: 
 In this deliverable, we added blank tiles, premium squares, and the ability to use any number of “AI” players.
 
+Milestone4:
+In this deliverable, we added save/load feature, undo/redo feature, and added 3 custom boards.
+
 The Project is made up of the following files:
 
 Bag,java                A single Java script
@@ -115,5 +118,11 @@ Ishaq Nour: ScrabbleGame.java, ScrabbleView.java, ScrabbleController.java, Scrab
 Kareem Kaddoura: ScrabbleGame.java, ScrabbleController.java, ScrabbleBoardFrame.java
 Jalal Mourad: ScrabbleGame.java, ScrabbleController.java, ScrabbleBoardFrame.java, README.txt
 Ishaq Nour: ScrabbleGame.java, ScrabbleView.java, ScrabbleController.java, ScrabbleBoardFrame.java, UML diagram
+
+> Iteration 4:
+
+Kareem Kaddoura: ScrabbleGame.java, ScrabbleController.java, ScrabbleBoardFrame.java
+Jalal Mourad: ScrabbleGame.java, ScrabbleController.java, ScrabbleBoardFrame.java, README.txt
+Ishaq Nour: ScrabbleGame.java, ScrabbleController.java, ScrabbleBoardFrame.java, UML diagram
 
 Copyright 2024 Jalal Mourad, Kareem Kaddoura, Ishaq Nour
