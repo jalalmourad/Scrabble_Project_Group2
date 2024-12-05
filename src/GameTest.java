@@ -256,7 +256,17 @@ public class GameTest {
         Board spiralBoard = new Board("Spiral");
         Board boringBoard = new Board("Boring");
 
+        normalBoard.setLetterOnBoard(0,0, 'A');
+        assertEquals(normalBoard.getLetterOnBoard(0,0),'A');
 
+        targetBoard.setLetterOnBoard(0,0, 'A');
+        assertEquals(targetBoard.getLetterOnBoard(0,0),'A');
+
+        spiralBoard.setLetterOnBoard(0,0, 'A');
+        assertEquals(spiralBoard.getLetterOnBoard(0,0),'A');
+
+        boringBoard.setLetterOnBoard(0,0, 'A');
+        assertEquals(boringBoard.getLetterOnBoard(0,0),'A');
 
     }
 
