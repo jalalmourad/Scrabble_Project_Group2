@@ -162,6 +162,45 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
     }
 
+    public void gameSetup() {
+        JPanel setupPanel = new JPanel();
+        setupPanel.setLayout(new BoxLayout(setupPanel,BoxLayout.Y_AXIS));
+
+        Integer[] numPlayers = {2, 3, 4}; // Player count options
+        JComboBox<Integer> playerBox = new JComboBox<>(numPlayers);
+
+        String[] boardOptions = {"Normal", "Target", "Spiral", "Boring"}; // Board options
+        JComboBox<String> boardBox = new JComboBox<>(boardOptions);
+
+        setupPanel.add(new JLabel("Players"));
+        setupPanel.add(playerBox);
+        setupPanel.add(Box.createVerticalStrut(10));
+        setupPanel.add(new JLabel("Board"));
+        setupPanel.add(boardBox);
+        setupPanel.add(Box.createVerticalStrut(10));
+
+        int option = JOptionPane.showConfirmDialog(null, setupPanel, "Scrabble!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (option == JOptionPane.OK_OPTION) {
+            int selectedPlayers = (Integer) playerBox.getSelectedItem();
+            String[] playerTypes = new String[selectedPlayers];
+            String selectedBoard = boardBox.getSelectedItem().toString();
+
+            playerTypes[0] ="Human";
+            for (int i = 1; i < selectedPlayers; i++) {
+                int response = JOptionPane.showConfirmDialog(
+                        null,
+                        "Is Player " + (i + 1) + " an AI?",
+                        "Player Type",
+                        JOptionPane.YES_NO_OPTION
+                );
+                playerTypes[i] = (response == JOptionPane.YES_OPTION) ? "AI" : "Human";
+            }
+            model.MVCparticipants(selectedPlayers, playerTypes);
+            boardSelection(selectedBoard);
+            model.chooseBoard(selectedBoard);
+        }
+    }
+
     /**
      * Disables selected components, useful for preventing player mis-input
      */

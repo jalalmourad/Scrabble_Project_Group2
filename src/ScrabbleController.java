@@ -25,6 +25,8 @@ public class ScrabbleController implements ActionListener, Serializable {
         // Menu actions
         if (s.equals("play")) {
             if (!model.getGameStarted()) {
+                frame.gameSetup();
+                /**
                 Integer[] numPlayers = {2, 3, 4}; // Player count options
                 int playerCount = JOptionPane.showOptionDialog(null, "Select the number of players:", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, numPlayers, numPlayers[0]);
                 int selectedPlayers = numPlayers[playerCount];
@@ -50,6 +52,7 @@ public class ScrabbleController implements ActionListener, Serializable {
 
                 frame.boardSelection(selectedBoard);
                 model.chooseBoard(selectedBoard);
+                */
 
                 model.updateViews();
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
