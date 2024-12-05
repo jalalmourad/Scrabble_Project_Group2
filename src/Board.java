@@ -6,26 +6,42 @@ import java.io.Serializable;
 public class Board implements Serializable {
     private static final int SIZE = 15;
     private Square[][] board = new Square[SIZE][SIZE];
-    public static int[][][] premiumTiles = {DoubleLetterSquare.dlsCoords, TripleLetterSquare.tlsCoords, DoubleWordSquare.dwsCoords, TripleWordSquare.twsCoords};
+
+    // Different Board Options
+    public static int[][][] premiumTilesNormal = {DoubleLetterSquare.dlsCoordsNormal, TripleLetterSquare.tlsCoordsNormal, DoubleWordSquare.dwsCoordsNormal, TripleWordSquare.twsCoordsNormal};
+    public static int[][][] premiumTilesFunMode = {DoubleLetterSquare.dlsCoordsFunMode, TripleLetterSquare.tlsCoordsFunMode, DoubleWordSquare.dwsCoordsFunMode, TripleWordSquare.twsCoordsFunMode};
+    public static int[][][] premiumTilesSpiralMode = {DoubleLetterSquare.dlsCoordsSpiralMode, TripleLetterSquare.tlsCoordsSpiralMode, DoubleWordSquare.dwsCoordsSpiralMode, TripleWordSquare.twsCoordsSpiralMode};
 
     /**
      * Create empty board.
      */
-    public Board() {
+    public Board(String selection) {
+        switch (selection) {
+            case "Normal" -> NormalModeBoard();
+            case "Target" -> TargetModeBoard();
+            case "Spiral" -> SpiralModeBoard();
+            case "Boring" -> BoringModeBoard();
+        }
+    }
+
+    /**
+     * Create Normal Mode Board
+     */
+    public void NormalModeBoard() {
         for (int i = 0; i < SIZE; i++) {
             for (int j = 0; j < SIZE; j++) { // Looping through board
                 boolean isPremium = false;
 
-                for (int[][] premiumType : premiumTiles) { // Looping through premium tile types
+                for (int[][] premiumType : premiumTilesNormal) { // Looping through premium tile types
                     for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
                         if (premiumCoords[1] == i && premiumCoords[0] == j) {
-                            if (premiumType == DoubleLetterSquare.dlsCoords) {
+                            if (premiumType == DoubleLetterSquare.dlsCoordsNormal) {
                                 board[i][j] = new DoubleLetterSquare(' '); // Create Double Letter Square
-                            } else if (premiumType == TripleLetterSquare.tlsCoords) {
+                            } else if (premiumType == TripleLetterSquare.tlsCoordsNormal) {
                                 board[i][j] = new TripleLetterSquare(' '); // Create Triple Letter Square
-                            } else if (premiumType == DoubleWordSquare.dwsCoords) {
+                            } else if (premiumType == DoubleWordSquare.dwsCoordsNormal) {
                                 board[i][j] = new DoubleWordSquare(' '); // Create Double Word Square
-                            } else if (premiumType == TripleWordSquare.twsCoords) {
+                            } else if (premiumType == TripleWordSquare.twsCoordsNormal) {
                                 board[i][j] = new TripleWordSquare(' '); // Create Triple Word Square
                             }
                             isPremium = true;
@@ -39,6 +55,90 @@ public class Board implements Serializable {
                 if (!isPremium) {
                     board[i][j] = new Square(' '); // Create normal Square
                 }
+            }
+        }
+    }
+
+    /**
+     * Create Fun Mode Board (Custom 1)
+     * New format of Premium Tiles
+     */
+    public void TargetModeBoard() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) { // Looping through board
+                boolean isPremium = false;
+
+                for (int[][] premiumType : premiumTilesFunMode) { // Looping through premium tile types
+                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
+                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
+                            if (premiumType == DoubleLetterSquare.dlsCoordsFunMode) {
+                                board[i][j] = new DoubleLetterSquare(' '); // Create Double Letter Square
+                            } else if (premiumType == TripleLetterSquare.tlsCoordsFunMode) {
+                                board[i][j] = new TripleLetterSquare(' '); // Create Triple Letter Square
+                            } else if (premiumType == DoubleWordSquare.dwsCoordsFunMode) {
+                                board[i][j] = new DoubleWordSquare(' '); // Create Double Word Square
+                            } else if (premiumType == TripleWordSquare.twsCoordsFunMode) {
+                                board[i][j] = new TripleWordSquare(' '); // Create Triple Word Square
+                            }
+                            isPremium = true;
+                            break;
+                        }
+                    }
+                    if (isPremium) {
+                        break;
+                    }
+                }
+                if (!isPremium) {
+                    board[i][j] = new Square(' '); // Create normal Square
+                }
+            }
+        }
+    }
+
+    /**
+     * Create Spiral Mode Board (Custom 2)
+     * Premium Tiles in Spiral Format
+     */
+    public void SpiralModeBoard() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) { // Looping through board
+                boolean isPremium = false;
+
+                for (int[][] premiumType : premiumTilesSpiralMode) { // Looping through premium tile types
+                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
+                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
+                            if (premiumType == DoubleLetterSquare.dlsCoordsSpiralMode) {
+                                board[i][j] = new DoubleLetterSquare(' '); // Create Double Letter Square
+                            } else if (premiumType == TripleLetterSquare.tlsCoordsSpiralMode) {
+                                board[i][j] = new TripleLetterSquare(' '); // Create Triple Letter Square
+                            } else if (premiumType == DoubleWordSquare.dwsCoordsSpiralMode) {
+                                board[i][j] = new DoubleWordSquare(' '); // Create Double Word Square
+                            } else if (premiumType == TripleWordSquare.twsCoordsSpiralMode) {
+                                board[i][j] = new TripleWordSquare(' '); // Create Triple Word Square
+                            }
+                            isPremium = true;
+                            break;
+                        }
+                    }
+                    if (isPremium) {
+                        break;
+                    }
+                }
+                if (!isPremium) {
+                    board[i][j] = new Square(' '); // Create normal Square
+                }
+            }
+        }
+    }
+
+    /**
+     * Create Boring Mode Board (Custom 3)
+     * All squares are normal, no Premium Tiles
+     */
+    public void BoringModeBoard() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) {
+                board[i][j] = new Square(' ');
             }
         }
     }

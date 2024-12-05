@@ -19,10 +19,12 @@ public class ScrabbleGame implements Serializable{
     List<int[]> removedChars;
     List<int[]> InvalidChars;
 
+    Stack<int[]> undoStack;
+    Stack<int[]> redoStack;
+
     private String bestAIWord = "";
 
     String handListCoord;
-
     String text;
     private HashMap<String, Boolean> blankTileLetters;
     private boolean invalidFlag = false;
@@ -38,12 +40,16 @@ public class ScrabbleGame implements Serializable{
         removedChars = new ArrayList<>();
         InvalidChars = new ArrayList<>();
         bag = new Bag();
-        board = new Board();
+        chooseBoard("Normal Board"); // Default Choice
+        //board = new Board();
         parser = new Parser();
 
         views = new ArrayList<>();
 
         placedPositions = new ArrayList<>();
+
+        undoStack = new Stack<>();
+        redoStack = new Stack<>();
 
         blankTileLetters = new HashMap<>();
 
@@ -115,6 +121,9 @@ public class ScrabbleGame implements Serializable{
         int letterIndex = playerHand.getLetterPosition(letter);
         removedChars.add(new int[]{letterIndex, letter});
         placedPositions.add(new int[]{x, y});
+
+        undoStack.push(new int[]{x, y, letter});
+        redoStack.clear();
     }
 
     /**
@@ -417,10 +426,6 @@ public class ScrabbleGame implements Serializable{
      * Load and import a game via serialization
      * [Milestone 4]
      */
-    /**
-     * Load and import a game via serialization
-     * [Milestone 4]
-     */
     public void load(String filename) {
         try (FileInputStream fileInput = new FileInputStream(filename);
              ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
@@ -453,6 +458,84 @@ public class ScrabbleGame implements Serializable{
             System.err.println("Error loading game: " + e.getMessage());
         }
     }
+
+    public void importScrabbleGame(ScrabbleGame loadedGame) {
+        this.players = loadedGame.players;
+        this.bag = loadedGame.bag;
+        this.board = loadedGame.board;
+        this.parser = loadedGame.parser;
+        this.turn = loadedGame.turn;
+        this.playerHand = loadedGame.playerHand;
+        this.xCoordinate = loadedGame.xCoordinate;
+        this.yCoordinate = loadedGame.yCoordinate;
+        this.placedPositions = loadedGame.placedPositions;
+        this.removedChars = loadedGame.removedChars;
+        this.InvalidChars = loadedGame.InvalidChars;
+        this.bestAIWord = loadedGame.bestAIWord;
+        this.handListCoord = loadedGame.handListCoord;
+        this.text = loadedGame.text;
+        this.blankTileLetters = loadedGame.blankTileLetters;
+        this.invalidFlag = loadedGame.invalidFlag;
+        this.gameStarted = loadedGame.gameStarted;
+
+        this.views.clear();
+        this.views.addAll(loadedGame.views);
+        updateViews();
+    }
+
+    public void undo() {
+        if (undoStack.isEmpty()) {
+            System.out.println("No actions to undo.");
+            return;
+        }
+
+        int[] previousMove = undoStack.pop();
+        redoStack.push(previousMove);
+
+        int x = previousMove[0];
+        int y = previousMove[1];
+        //char letter = (char) previousMove[2];
+
+        board.setDeleteLetterFromBoard(y, x, ' ');
+        setTextPlayed(" ");
+
+        System.out.println("Undo done!");
+        board.printBoard();
+    }
+
+    public void redo() {
+        if (redoStack.isEmpty()) {
+            System.out.println("No actions to redo.");
+            return;
+        }
+
+        int[] previousMove = redoStack.pop();
+        undoStack.push(previousMove);
+
+        int x = previousMove[0];
+        int y = previousMove[1];
+        char letter = (char) previousMove[2];
+
+        board.setLetterOnBoard(y, x, letter);
+        setTextPlayed(String.valueOf(letter));
+
+        System.out.println("Redo done!");
+        board.printBoard();
+    }
+
+    /**
+     * Create a board depending on user selection
+     */
+    public void chooseBoard(String selection) {
+        switch (selection) {
+            case "Normal" -> board = new Board("Normal");
+            case "Target" -> board = new Board("Target");
+            case "Spiral" -> board =  new Board("Spiral");
+            case "Boring" -> board = new Board("Boring");
+        }
+    }
+
+
 
     /**
      * Following miscellaneous methods are used throughout the program as getters, setters, etc.
@@ -515,5 +598,19 @@ public class ScrabbleGame implements Serializable{
 
     public String getBestAIWord() {
         return bestAIWord;
+    }
+
+    public char getLatestUndoLetter() {
+        if (!undoStack.isEmpty()) {
+            return (char) undoStack.peek()[2];
+        }
+        return ' ';
+    }
+
+    public char getLatestRedoLetter() {
+        if (!redoStack.isEmpty()) {
+            return (char) redoStack.peek()[2];
+        }
+        return ' ';
     }
 }

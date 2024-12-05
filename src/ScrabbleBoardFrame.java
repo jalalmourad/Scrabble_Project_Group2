@@ -77,60 +77,13 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         setJMenuBar(menuBar);
 
+
         // Main Board Initializations
         boardPanel = new JPanel();
         boardPanel.setLayout(new GridLayout(SIZE,SIZE));
         buttons = new JButton[SIZE][SIZE];
 
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) { // Looping through board
-                boolean isPremium = false;
-
-                for (int[][] premiumType : Board.premiumTiles) { // Looping through premium tile types
-                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
-                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
-                            if (premiumType == DoubleLetterSquare.dlsCoords) { // Create Double Letter Square
-                                buttons[i][j] = new JButton();
-                                buttons[i][j].addActionListener(controller);
-                                buttons[i][j].setActionCommand(i + "" + j);
-                                buttons[i][j].setBackground(Color.CYAN);
-                                boardPanel.add(buttons[i][j]);
-                            } else if (premiumType == TripleLetterSquare.tlsCoords) { // Create Triple Letter Square
-                                buttons[i][j] = new JButton();
-                                buttons[i][j].addActionListener(controller);
-                                buttons[i][j].setActionCommand(i + "" + j);
-                                buttons[i][j].setBackground(Color.BLUE);
-                                boardPanel.add(buttons[i][j]);
-                            } else if (premiumType == DoubleWordSquare.dwsCoords) { // Create Double Word Square
-                                buttons[i][j] = new JButton();
-                                buttons[i][j].addActionListener(controller);
-                                buttons[i][j].setActionCommand(i + "" + j);
-                                buttons[i][j].setBackground(Color.MAGENTA);
-                                boardPanel.add(buttons[i][j]);
-                            } else if (premiumType == TripleWordSquare.twsCoords) { // Create Triple Word Square
-                                buttons[i][j] = new JButton();
-                                buttons[i][j].addActionListener(controller);
-                                buttons[i][j].setActionCommand(i + "" + j);
-                                buttons[i][j].setBackground(Color.RED);
-                                boardPanel.add(buttons[i][j]);
-                            }
-                            isPremium = true;
-                            break;
-                        }
-                    }
-                    if (isPremium) {
-                        break;
-                    }
-                }
-                if (!isPremium) { // Create normal square
-                    buttons[i][j] = new JButton();
-                    buttons[i][j].addActionListener(controller);
-                    buttons[i][j].setActionCommand(i + "" + j);
-                    buttons[i][j].setBackground(Color.WHITE);
-                    boardPanel.add(buttons[i][j]);
-                }
-            }
-        }
+        NormalModeBoard(); // Initialize the default game board, which can be changed later upon starting the game
         buttons[7][7].setBackground(Color.PINK);
 
         // WordsInHand Panel Initializations
@@ -209,6 +162,45 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
         ScrabbleBoardFrame frame = new ScrabbleBoardFrame();
     }
 
+    public void gameSetup() {
+        JPanel setupPanel = new JPanel();
+        setupPanel.setLayout(new BoxLayout(setupPanel,BoxLayout.Y_AXIS));
+
+        Integer[] numPlayers = {2, 3, 4}; // Player count options
+        JComboBox<Integer> playerBox = new JComboBox<>(numPlayers);
+
+        String[] boardOptions = {"Normal", "Target", "Spiral", "Boring"}; // Board options
+        JComboBox<String> boardBox = new JComboBox<>(boardOptions);
+
+        setupPanel.add(new JLabel("Players"));
+        setupPanel.add(playerBox);
+        setupPanel.add(Box.createVerticalStrut(10));
+        setupPanel.add(new JLabel("Board"));
+        setupPanel.add(boardBox);
+        setupPanel.add(Box.createVerticalStrut(10));
+
+        int option = JOptionPane.showConfirmDialog(null, setupPanel, "Scrabble!", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if (option == JOptionPane.OK_OPTION) {
+            int selectedPlayers = (Integer) playerBox.getSelectedItem();
+            String[] playerTypes = new String[selectedPlayers];
+            String selectedBoard = boardBox.getSelectedItem().toString();
+
+            playerTypes[0] ="Human";
+            for (int i = 1; i < selectedPlayers; i++) {
+                int response = JOptionPane.showConfirmDialog(
+                        null,
+                        "Is Player " + (i + 1) + " an AI?",
+                        "Player Type",
+                        JOptionPane.YES_NO_OPTION
+                );
+                playerTypes[i] = (response == JOptionPane.YES_OPTION) ? "AI" : "Human";
+            }
+            model.MVCparticipants(selectedPlayers, playerTypes);
+            boardSelection(selectedBoard);
+            model.chooseBoard(selectedBoard);
+        }
+    }
+
     /**
      * Disables selected components, useful for preventing player mis-input
      */
@@ -228,10 +220,45 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     }
 
     /**
-     * Specific disabler for the Submit button to ensure turn separation
+     * Specific disabler for buttons to ensure no wrong inputs
+     * (eg) false submits, false undos, etc.
      */
-    public void disableSubmitButton(Component comp) {
+    public void disableButton(Component comp) {
         comp.setEnabled(false);
+    }
+
+    /**
+     * Specific enablers for buttons to ensure no wrong inputs
+     * (eg) false submits, false undos, etc.
+     */
+    public void enableButton(Component comp) {
+        comp.setEnabled(true);
+    }
+
+    /**
+     * Enables specific letter in Hand, used for Undo method
+     */
+    public void enableLetterButton(char letter, Component[] comps) {
+        for (Component comp : comps) {
+            if (comp instanceof JButton button) {
+                if (button.getText().equals(String.valueOf(letter))) {
+                    button.setEnabled(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Disables specific letter in Hand, used for Redo method
+     */
+    public void disableLetterButton(char letter, Component[] comps) {
+        for (Component comp : comps) {
+            if (comp instanceof JButton button) {
+                if (button.getText().equals(String.valueOf(letter))) {
+                    button.setEnabled(false);
+                }
+            }
+        }
     }
 
     /**
@@ -273,7 +300,9 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         scoreText.setText(sb.toString());
 
-        buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
+        if (model.turn != 0) {
+            buttons[model.getyCoordinate()][model.getxCoordinate()].setText(String.valueOf(model.getTextPlayed()));
+        }
 
         if(model.getHandListCoord()!= null) {
             wordsInHandButtons[Integer.parseInt(model.getHandListCoord())].setEnabled(false);
@@ -293,13 +322,213 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     public void loadGame() {
         try (ObjectInputStream in = new ObjectInputStream(new FileInputStream("scrabble_game.ser"))) {
             ScrabbleGame loadedGame =(ScrabbleGame) in.readObject();
-            model =loadedGame;
+            //model =loadedGame;
+            model.importScrabbleGame(loadedGame);
             controller =new ScrabbleController(this, model);
             model.addView(this);
             update(model);
+            model.updateViews();
             JOptionPane.showMessageDialog(this, "Game loaded successfully!");
         } catch (IOException |ClassNotFoundException e) {
             JOptionPane.showMessageDialog(this, "Error loading the game: " +e.getMessage());
+        }
+    }
+
+    /**
+     * Selection of Board, prompted when the game is first started
+     */
+    public void boardSelection(String selection) {
+        boardPanel.removeAll();
+
+        switch (selection) {
+            case "Normal" -> NormalModeBoard();
+            case "Target" -> TargetModeBoard();
+            case "Spiral" -> SpiralModeBoard();
+            case "Boring" -> BoringModeBoard();
+        }
+        buttons[7][7].setBackground(Color.PINK);
+        disableComponents(boardPanel.getComponents());
+        boardPanel.revalidate();
+        boardPanel.repaint();
+    }
+
+    /**
+     * Normal Mode Board
+     */
+    public void NormalModeBoard() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) { // Looping through board
+                boolean isPremium = false;
+
+                for (int[][] premiumType : Board.premiumTilesNormal) { // Looping through premium tile types
+                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
+                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
+                            if (premiumType == DoubleLetterSquare.dlsCoordsNormal) { // Create Double Letter Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.CYAN);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == TripleLetterSquare.tlsCoordsNormal) { // Create Triple Letter Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.BLUE);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == DoubleWordSquare.dwsCoordsNormal) { // Create Double Word Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.MAGENTA);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == TripleWordSquare.twsCoordsNormal) { // Create Triple Word Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.RED);
+                                boardPanel.add(buttons[i][j]);
+                            }
+                            isPremium = true;
+                            break;
+                        }
+                    }
+                    if (isPremium) {
+                        break;
+                    }
+                }
+                if (!isPremium) { // Create normal square
+                    buttons[i][j] = new JButton();
+                    buttons[i][j].addActionListener(controller);
+                    buttons[i][j].setActionCommand(i + "" + j);
+                    buttons[i][j].setBackground(Color.WHITE);
+                    boardPanel.add(buttons[i][j]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Fun Mode Board (Custom 1)
+     */
+    public void TargetModeBoard() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) { // Looping through board
+                boolean isPremium = false;
+
+                for (int[][] premiumType : Board.premiumTilesFunMode) { // Looping through premium tile types
+                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
+                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
+                            if (premiumType == DoubleLetterSquare.dlsCoordsFunMode) { // Create Double Letter Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.CYAN);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == TripleLetterSquare.tlsCoordsFunMode) { // Create Triple Letter Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.BLUE);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == DoubleWordSquare.dwsCoordsFunMode) { // Create Double Word Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.MAGENTA);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == TripleWordSquare.twsCoordsFunMode) { // Create Triple Word Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.RED);
+                                boardPanel.add(buttons[i][j]);
+                            }
+                            isPremium = true;
+                            break;
+                        }
+                    }
+                    if (isPremium) {
+                        break;
+                    }
+                }
+                if (!isPremium) { // Create normal square
+                    buttons[i][j] = new JButton();
+                    buttons[i][j].addActionListener(controller);
+                    buttons[i][j].setActionCommand(i + "" + j);
+                    buttons[i][j].setBackground(Color.WHITE);
+                    boardPanel.add(buttons[i][j]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Spiral Mode Board (Custom 2)
+     */
+    public void SpiralModeBoard() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) { // Looping through board
+                boolean isPremium = false;
+
+                for (int[][] premiumType : Board.premiumTilesSpiralMode) { // Looping through premium tile types
+                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
+                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
+                            if (premiumType == DoubleLetterSquare.dlsCoordsSpiralMode) { // Create Double Letter Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.CYAN);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == TripleLetterSquare.tlsCoordsSpiralMode) { // Create Triple Letter Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.BLUE);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == DoubleWordSquare.dwsCoordsSpiralMode) { // Create Double Word Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.MAGENTA);
+                                boardPanel.add(buttons[i][j]);
+                            } else if (premiumType == TripleWordSquare.twsCoordsSpiralMode) { // Create Triple Word Square
+                                buttons[i][j] = new JButton();
+                                buttons[i][j].addActionListener(controller);
+                                buttons[i][j].setActionCommand(i + "" + j);
+                                buttons[i][j].setBackground(Color.RED);
+                                boardPanel.add(buttons[i][j]);
+                            }
+                            isPremium = true;
+                            break;
+                        }
+                    }
+                    if (isPremium) {
+                        break;
+                    }
+                }
+                if (!isPremium) { // Create normal square
+                    buttons[i][j] = new JButton();
+                    buttons[i][j].addActionListener(controller);
+                    buttons[i][j].setActionCommand(i + "" + j);
+                    buttons[i][j].setBackground(Color.WHITE);
+                    boardPanel.add(buttons[i][j]);
+                }
+            }
+        }
+    }
+
+    /**
+     * Boring Mode Board (Custom 3)
+     */
+    public void BoringModeBoard() {
+        for (int i = 0; i < SIZE; i++) {
+            for (int j = 0; j < SIZE; j++) { // Looping through board
+                buttons[i][j] = new JButton();
+                buttons[i][j].addActionListener(controller);
+                buttons[i][j].setActionCommand(i + "" + j);
+                buttons[i][j].setBackground(Color.WHITE);
+                boardPanel.add(buttons[i][j]);
+            }
         }
     }
 

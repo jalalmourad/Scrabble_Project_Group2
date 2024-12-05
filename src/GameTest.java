@@ -10,7 +10,7 @@ public class GameTest {
 
     @Test
     public void testBoard(){
-        Board board = new Board();
+        Board board = new Board("Normal Mode");
         board.setLetterOnBoard(0,0, 'A');
         assertEquals(board.getLetterOnBoard(0,0),'A');
     }
@@ -33,7 +33,7 @@ public class GameTest {
     @Test
     public void checkBoardEmpty(){
 
-        Board board = new Board();
+        Board board = new Board("Normal Mode");
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 assertEquals(' ', board.getLetterOnBoard(i,j));
@@ -69,7 +69,7 @@ public class GameTest {
 
     @Test
     public void testSetLetterOnBoard(){
-        Board board = new Board();
+        Board board = new Board("Normal Mode");
         board.setLetterOnBoard(0,0, 'A');
         assertEquals(board.getLetterOnBoard(0,0),'A');
     }
