@@ -26,33 +26,6 @@ public class ScrabbleController implements ActionListener, Serializable {
         if (s.equals("play")) {
             if (!model.getGameStarted()) {
                 frame.gameSetup();
-                /**
-                Integer[] numPlayers = {2, 3, 4}; // Player count options
-                int playerCount = JOptionPane.showOptionDialog(null, "Select the number of players:", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, numPlayers, numPlayers[0]);
-                int selectedPlayers = numPlayers[playerCount];
-
-                String[] playerTypes = new String[selectedPlayers];
-
-                playerTypes[0] ="Human";
-
-                for (int i = 1; i < selectedPlayers; i++) {
-                    int response = JOptionPane.showConfirmDialog(
-                            null,
-                            "Is Player " + (i + 1) + " an AI?",
-                            "Player Type",
-                            JOptionPane.YES_NO_OPTION
-                    );
-                    playerTypes[i] = (response == JOptionPane.YES_OPTION) ? "AI" : "Human";
-                }
-                model.MVCparticipants(selectedPlayers, playerTypes);
-
-                String[] boardOptions = {"Normal", "Target", "Spiral", "Boring"};
-                int boardSelection = JOptionPane.showOptionDialog(null, "Which board you would like to play on:", "Scrabble!", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, boardOptions, boardOptions[0]);
-                String selectedBoard = boardOptions[boardSelection];
-
-                frame.boardSelection(selectedBoard);
-                model.chooseBoard(selectedBoard);
-                */
 
                 model.updateViews();
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
@@ -88,7 +61,6 @@ public class ScrabbleController implements ActionListener, Serializable {
             return;
 
         } else if (s.equals("save")) {
-            // String filename= JOptionPane.showInputDialog(null, "Save As:");
             try {
                 model.save("scrabble_game.ser");
             } catch (IOException ex) {
@@ -97,14 +69,12 @@ public class ScrabbleController implements ActionListener, Serializable {
             frame.saveGame();
 
         } else if (s.equals("load")) {
-            // String filename= (JOptionPane.showInputDialog(null, "File Name:"));
             model.load("scrabble_game.ser");
             frame.loadGame();
             model.updateViews();
             frame.enableComponents(frame.boardPanel.getComponents());
             frame.enableComponents(frame.wordsInHandPanel.getComponents());
             frame.enableComponents(frame.submitButton.getComponents());
-            //model.updateViews();
 
         } else if (s.equals("undo")) {
             frame.enableButton(frame.redoButton);

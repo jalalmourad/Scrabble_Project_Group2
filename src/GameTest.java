@@ -74,20 +74,6 @@ public class GameTest {
         assertEquals(board.getLetterOnBoard(0,0),'A');
     }
 
-    //@Test
-    //public void testSetLetterNotInHand() {
-    //    ScrabbleGame game = new ScrabbleGame();
-    //    Player player = new Player("Ishaq");
-
-    //    game.players.add(player);
-
-    //    player.getHand().setLetters(new ArrayList<>(List.of('A', 'B', 'C', 'D', 'E', 'F', 'G')));
-
-    //    game.setLetterOnBoard(7, 7, 'Z', player);
-
-    //    assertEquals(' ', game.board.getLetterOnBoard(7, 7));
-    //}
-
     @Test
     public void testMultipleLettersOnBoard() {
         ScrabbleGame game = new ScrabbleGame();

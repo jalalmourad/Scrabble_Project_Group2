@@ -41,7 +41,6 @@ public class ScrabbleGame implements Serializable{
         InvalidChars = new ArrayList<>();
         bag = new Bag();
         chooseBoard("Normal Board"); // Default Choice
-        //board = new Board();
         parser = new Parser();
 
         views = new ArrayList<>();
