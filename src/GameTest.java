@@ -293,4 +293,42 @@ public class GameTest {
 
     }
 
+    @Test
+    public void testUndoRedo() {
+        ScrabbleGame game = new ScrabbleGame();
+        Player player = new Player("Ishaq");
+        game.players.add(player);
+        game.board = new Board("Normal");
+
+        player.getHand().setLetters(new ArrayList<>(List.of('I', 'S', 'H', 'A', 'Q', 'N', 'O')));
+
+        game.setLetterOnBoard(7, 7, 'I', player);
+        game.setLetterOnBoard(7, 8, 'N', player);
+
+        assertEquals('I', game.board.getLetterOnBoard(7, 7));
+        assertEquals('N', game.board.getLetterOnBoard(7, 8));
+
+        game.undo();
+        assertEquals(' ', game.board.getLetterOnBoard(7, 8));
+        assertEquals('I', game.board.getLetterOnBoard(7, 7));
+        assertTrue(player.getHand().getLetters().contains('N'));
+
+        game.undo();
+        assertEquals(' ', game.board.getLetterOnBoard(7, 7));
+        assertTrue(player.getHand().getLetters().contains('I'));
+
+        game.redo();
+        assertEquals('I', game.board.getLetterOnBoard(7, 7));
+
+        game.redo();
+        assertEquals('N', game.board.getLetterOnBoard(7, 8));
+
+        assertEquals('I', game.board.getLetterOnBoard(7, 7));
+        assertEquals('N', game.board.getLetterOnBoard(7, 8));
+
+        game.redo();
+        assertEquals('I', game.board.getLetterOnBoard(7, 7));
+        assertEquals('N', game.board.getLetterOnBoard(7, 8));
+    }
+
 }
