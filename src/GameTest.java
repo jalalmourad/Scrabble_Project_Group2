@@ -10,7 +10,7 @@ public class GameTest {
 
     @Test
     public void testBoard(){
-        Board board = new Board("Normal Mode");
+        Board board = new Board("Normal");
         board.setLetterOnBoard(0,0, 'A');
         assertEquals(board.getLetterOnBoard(0,0),'A');
     }
@@ -33,7 +33,7 @@ public class GameTest {
     @Test
     public void checkBoardEmpty(){
 
-        Board board = new Board("Normal Mode");
+        Board board = new Board("Normal");
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
                 assertEquals(' ', board.getLetterOnBoard(i,j));
@@ -46,6 +46,7 @@ public class GameTest {
     public void testFirstLetter(){
         Player player = new Player("TestPlayer");
         ScrabbleGame game = new ScrabbleGame();
+        game.board = new Board("Normal");
         game.bag = new Bag();
 
         player.getHand().setLetters(new ArrayList<>(List.of('A', 'B', 'C', 'D', 'E', 'F', 'G')));
@@ -58,6 +59,7 @@ public class GameTest {
     @Test
     public void testGameInitialization() {
         ScrabbleGame game = new ScrabbleGame();
+        game.board = new Board("Normal");
 
         assertNotNull(game.bag);
         assertNotNull(game.board);
@@ -69,7 +71,7 @@ public class GameTest {
 
     @Test
     public void testSetLetterOnBoard(){
-        Board board = new Board("Normal Mode");
+        Board board = new Board("Normal");
         board.setLetterOnBoard(0,0, 'A');
         assertEquals(board.getLetterOnBoard(0,0),'A');
     }
@@ -78,6 +80,7 @@ public class GameTest {
     public void testMultipleLettersOnBoard() {
         ScrabbleGame game = new ScrabbleGame();
         Player player = new Player("Ishaq");
+        game.board = new Board("Normal");
 
         game.players.add(player);
 
@@ -104,6 +107,7 @@ public class GameTest {
     public void testWord() {
         ScrabbleGame game = new ScrabbleGame();
         Player player = new Player("Ishaq");
+        game.board = new Board("Normal");
 
         game.players.add(player);
 
@@ -124,6 +128,7 @@ public class GameTest {
     public void testInvalidWord() {
         ScrabbleGame game = new ScrabbleGame();
         Player player = new Player("Ishaq");
+        game.board = new Board("Normal");
 
         game.players.add(player);
 
@@ -161,6 +166,7 @@ public class GameTest {
     public void testPremiumDoubleLetterSquares() {
         ScrabbleGame game = new ScrabbleGame();
         Player player = new Player("Kareem");
+        game.board = new Board("Normal");
         game.players.add(player);
 
         player.getHand().setLetters(new ArrayList<>(List.of('A', 'B', 'C', 'D', 'E', 'F', 'G')));
@@ -177,6 +183,7 @@ public class GameTest {
         ScrabbleGame game = new ScrabbleGame();
         Player player = new Player("Kareem");
         game.players.add(player);
+        game.board = new Board("Normal");
 
         player.getHand().setLetters(new ArrayList<>(List.of('A', 'B', 'C', 'D', 'E', 'F', 'G')));
 
@@ -192,6 +199,7 @@ public class GameTest {
         ScrabbleGame game = new ScrabbleGame();
         Player player = new Player("Kareem");
         game.players.add(player);
+        game.board = new Board("Normal");
 
         player.getHand().setLetters(new ArrayList<>(List.of('H', 'E', 'L', 'L', 'O', 'A', 'B')));
 
@@ -212,6 +220,7 @@ public class GameTest {
         ScrabbleGame game = new ScrabbleGame();
         Player player = new Player("Kareem");
         game.players.add(player);
+        game.board = new Board("Normal");
 
         player.getHand().setLetters(new ArrayList<>(List.of('A', 'A', 'A', 'B', 'C', 'D', 'E')));
 
@@ -237,6 +246,17 @@ public class GameTest {
         game.addBlankTileLetters(String.valueOf(playerHand.get(0)), true);
 
         assertTrue(game.isBlankTileLetter(String.valueOf(playerHand.get(0))));
+    }
+
+    @Test
+    public void testCustomBoards() {
+        Board normalBoard = new Board("Normal");
+        Board targetBoard = new Board("Target");
+        Board spiralBoard = new Board("Spiral");
+        Board boringBoard = new Board("Boring");
+
+
+
     }
 
 }
