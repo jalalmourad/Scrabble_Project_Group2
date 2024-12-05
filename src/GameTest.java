@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -256,6 +257,29 @@ public class GameTest {
         Board boringBoard = new Board("Boring");
 
 
+
+    }
+
+    @Test
+    public void testSaveAndLoad() throws IOException {
+
+        ScrabbleGame game = new ScrabbleGame();
+        Player player = new Player("Jalal");
+        game.players.add(player);
+        game.board = new Board("Normal");
+
+        player.getHand().setLetters(new ArrayList<>(List.of('A', 'A', 'A', 'B', 'C', 'D', 'E')));
+
+        game.setLetterOnBoard(0, 0, 'A', player);
+        game.setLetterOnBoard(0, 1, 'B', player);
+
+        //save the letters
+        game.save("scrabble_game.ser");
+
+        game.load("scrabble_game.ser");
+        //retrieve the letters
+        assertEquals(game.board.getLetterOnBoard(0,0),'A');
+        assertEquals(game.board.getLetterOnBoard(0,1),'B');
 
     }
 
