@@ -65,6 +65,7 @@ public class ScrabbleController implements ActionListener, Serializable {
                     "- Each player has the ability to select letters and place them on the board, but make sure that the letters are connecting to other letters on the board!\n" +
                     "- After completing your word, you can click 'Submit' at the top to collect points based on the word you created.\n" +
                     "- Players may also skip their turn by clicking 'Pass' at the top.\n" +
+                    "- Players may also undo/redo the letters they have placed.\n" +
                     "- Clicking on 'Letter Values' in the menu can show players value of each letter.\n" +
                     "- Letters placed on CYAN-colored squares are worth DOUBLE.\n" +
                     "- Letters placed on BLUE-colored squares are worth TRIPLE.\n" +
@@ -83,9 +84,8 @@ public class ScrabbleController implements ActionListener, Serializable {
                     "0 points: Blank Tiles");
             return;
 
-        }
-            else if (s.equals("save")) {
-               // String filename= JOptionPane.showInputDialog(null, "Save As:");
+        } else if (s.equals("save")) {
+            // String filename= JOptionPane.showInputDialog(null, "Save As:");
             try {
                 model.save("scrabble_game.ser");
             } catch (IOException ex) {
@@ -93,23 +93,25 @@ public class ScrabbleController implements ActionListener, Serializable {
             }
             frame.saveGame();
 
-            }
-            else if (s.equals("load")) {
-                // String filename= (JOptionPane.showInputDialog(null, "File Name:"));
-                model.load("scrabble_game.ser");
-                frame.loadGame();
-                model.updateViews();
-                frame.enableComponents(frame.boardPanel.getComponents());
-                frame.enableComponents(frame.wordsInHandPanel.getComponents());
-                frame.enableComponents(frame.submitButton.getComponents());
-                //model.updateViews();
+        } else if (s.equals("load")) {
+            // String filename= (JOptionPane.showInputDialog(null, "File Name:"));
+            model.load("scrabble_game.ser");
+            frame.loadGame();
+            model.updateViews();
+            frame.enableComponents(frame.boardPanel.getComponents());
+            frame.enableComponents(frame.wordsInHandPanel.getComponents());
+            frame.enableComponents(frame.submitButton.getComponents());
+            //model.updateViews();
 
-            }
-        else if (s.equals("undo")) {
+        } else if (s.equals("undo")) {
+            frame.enableButton(frame.redoButton);
+            frame.enableLetterButton(model.getLatestUndoLetter(), frame.wordsInHandPanel.getComponents());
             model.undo();
+            model.setHandListCoord(null);
             model.updateViews();
 
         } else if (s.equals("redo")) {
+            frame.disableLetterButton(model.getLatestRedoLetter(), frame.wordsInHandPanel.getComponents());
             model.redo();
             model.updateViews();
         }
@@ -199,7 +201,7 @@ public class ScrabbleController implements ActionListener, Serializable {
                 model.turn++;
                 model.updateViews();
                 frame.enableComponents(frame.wordsInHandPanel.getComponents());
-                frame.disableSubmitButton(frame.submitButton); // NEW
+                frame.disableButton(frame.submitButton);
             } else {
                 JOptionPane.showMessageDialog(null, formedWord + " is not a valid English word!");
                 model.clearInvalidWord();
@@ -240,9 +242,15 @@ public class ScrabbleController implements ActionListener, Serializable {
     }
 
     /**
-     * Used to automatically trigger AI's turn
+     * Used for end-of-turn actions, like triggering AI's turn or disabling buttons
      */
     private void completeTurn() {
+        if (model.undoStack.isEmpty()) { // Deactivates undo button if max redo have been performed
+            frame.disableButton(frame.undoButton);
+        }
+        if (model.redoStack.isEmpty()) { // Ensures redo button remains inactive unless undo has been used
+            frame.disableButton(frame.redoButton);
+        }
         while (model.getCurrentPlayer().isAI()) {
             model.aiHighestScoreWord();
             model.turn++;

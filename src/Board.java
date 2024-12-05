@@ -22,39 +22,6 @@ public class Board implements Serializable {
             case "Spiral Mode" -> SpiralModeBoard();
             case "Boring Mode" -> BoringModeBoard();
         }
-
-
-        /**
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) { // Looping through board
-                boolean isPremium = false;
-
-                for (int[][] premiumType : premiumTilesNormal) { // Looping through premium tile types
-                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
-                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
-                            if (premiumType == DoubleLetterSquare.dlsCoordsNormal) {
-                                board[i][j] = new DoubleLetterSquare(' '); // Create Double Letter Square
-                            } else if (premiumType == TripleLetterSquare.tlsCoordsNormal) {
-                                board[i][j] = new TripleLetterSquare(' '); // Create Triple Letter Square
-                            } else if (premiumType == DoubleWordSquare.dwsCoordsNormal) {
-                                board[i][j] = new DoubleWordSquare(' '); // Create Double Word Square
-                            } else if (premiumType == TripleWordSquare.twsCoordsNormal) {
-                                board[i][j] = new TripleWordSquare(' '); // Create Triple Word Square
-                            }
-                            isPremium = true;
-                            break;
-                        }
-                    }
-                    if (isPremium) {
-                        break;
-                    }
-                }
-                if (!isPremium) {
-                    board[i][j] = new Square(' '); // Create normal Square
-                }
-            }
-        }
-         */
     }
 
     /**

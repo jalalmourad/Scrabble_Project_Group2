@@ -18,13 +18,13 @@ public class ScrabbleGame implements Serializable{
     List<int[]> placedPositions;
     List<int[]> removedChars;
     List<int[]> InvalidChars;
+
     Stack<int[]> undoStack;
     Stack<int[]> redoStack;
 
     private String bestAIWord = "";
 
     String handListCoord;
-
     String text;
     private HashMap<String, Boolean> blankTileLetters;
     private boolean invalidFlag = false;
@@ -426,10 +426,6 @@ public class ScrabbleGame implements Serializable{
      * Load and import a game via serialization
      * [Milestone 4]
      */
-    /**
-     * Load and import a game via serialization
-     * [Milestone 4]
-     */
     public void load(String filename) {
         try (FileInputStream fileInput = new FileInputStream(filename);
              ObjectInputStream objectInput = new ObjectInputStream(fileInput)) {
@@ -492,18 +488,18 @@ public class ScrabbleGame implements Serializable{
             System.out.println("No actions to undo.");
             return;
         }
-        System.out.println("Undo done!");
 
         int[] previousMove = undoStack.pop();
         redoStack.push(previousMove);
 
         int x = previousMove[0];
         int y = previousMove[1];
-        char letter = (char) previousMove[2];
+        //char letter = (char) previousMove[2];
 
         board.setDeleteLetterFromBoard(y, x, ' ');
+        setTextPlayed(" ");
 
-        updateViews();
+        System.out.println("Undo done!");
         board.printBoard();
     }
 
@@ -512,8 +508,9 @@ public class ScrabbleGame implements Serializable{
             System.out.println("No actions to redo.");
             return;
         }
-        System.out.println("Undo done!");
-
+        for (int[] element : redoStack) {
+            System.out.println( (char) element[2]);
+        }
         int[] previousMove = redoStack.pop();
         undoStack.push(previousMove);
 
@@ -522,9 +519,10 @@ public class ScrabbleGame implements Serializable{
         char letter = (char) previousMove[2];
 
         board.setLetterOnBoard(y, x, letter);
-        getCurrentPlayer().getHand().removeLetter(letter);
+        setTextPlayed(String.valueOf(letter));
+        //getCurrentPlayer().getHand().removeLetter(letter);
 
-        updateViews();
+        System.out.println("Redo done!");
         board.printBoard();
     }
 
@@ -603,5 +601,19 @@ public class ScrabbleGame implements Serializable{
 
     public String getBestAIWord() {
         return bestAIWord;
+    }
+
+    public char getLatestUndoLetter() {
+        if (!undoStack.isEmpty()) {
+            return (char) undoStack.peek()[2];
+        }
+        return ' ';
+    }
+
+    public char getLatestRedoLetter() {
+        if (!redoStack.isEmpty()) {
+            return (char) redoStack.peek()[2];
+        }
+        return ' ';
     }
 }

@@ -85,57 +85,6 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
 
         NormalModeBoard(); // Initialize the default game board, which can be changed later upon starting the game
         buttons[7][7].setBackground(Color.PINK);
-        /**
-        for (int i = 0; i < SIZE; i++) {
-            for (int j = 0; j < SIZE; j++) { // Looping through board
-                boolean isPremium = false;
-
-                for (int[][] premiumType : Board.premiumTilesNormal) { // Looping through premium tile types
-                    for (int[] premiumCoords : premiumType) { // Looping through individual premium tile coordinates of each type
-                        if (premiumCoords[1] == i && premiumCoords[0] == j) {
-                            if (premiumType == DoubleLetterSquare.dlsCoordsNormal) { // Create Double Letter Square
-                                buttons[i][j] = new JButton();
-                                buttons[i][j].addActionListener(controller);
-                                buttons[i][j].setActionCommand(i + "" + j);
-                                buttons[i][j].setBackground(Color.CYAN);
-                                boardPanel.add(buttons[i][j]);
-                            } else if (premiumType == TripleLetterSquare.tlsCoordsNormal) { // Create Triple Letter Square
-                                buttons[i][j] = new JButton();
-                                buttons[i][j].addActionListener(controller);
-                                buttons[i][j].setActionCommand(i + "" + j);
-                                buttons[i][j].setBackground(Color.BLUE);
-                                boardPanel.add(buttons[i][j]);
-                            } else if (premiumType == DoubleWordSquare.dwsCoordsNormal) { // Create Double Word Square
-                                buttons[i][j] = new JButton();
-                                buttons[i][j].addActionListener(controller);
-                                buttons[i][j].setActionCommand(i + "" + j);
-                                buttons[i][j].setBackground(Color.MAGENTA);
-                                boardPanel.add(buttons[i][j]);
-                            } else if (premiumType == TripleWordSquare.twsCoordsNormal) { // Create Triple Word Square
-                                buttons[i][j] = new JButton();
-                                buttons[i][j].addActionListener(controller);
-                                buttons[i][j].setActionCommand(i + "" + j);
-                                buttons[i][j].setBackground(Color.RED);
-                                boardPanel.add(buttons[i][j]);
-                            }
-                            isPremium = true;
-                            break;
-                        }
-                    }
-                    if (isPremium) {
-                        break;
-                    }
-                }
-                if (!isPremium) { // Create normal square
-                    buttons[i][j] = new JButton();
-                    buttons[i][j].addActionListener(controller);
-                    buttons[i][j].setActionCommand(i + "" + j);
-                    buttons[i][j].setBackground(Color.WHITE);
-                    boardPanel.add(buttons[i][j]);
-                }
-            }
-        }
-        */
 
         // WordsInHand Panel Initializations
         wordsInHandPanel = new JPanel();
@@ -232,10 +181,45 @@ public class ScrabbleBoardFrame extends JFrame implements ScrabbleView {
     }
 
     /**
-     * Specific disabler for the Submit button to ensure turn separation
+     * Specific disabler for buttons to ensure no wrong inputs
+     * (eg) false submits, false undos, etc.
      */
-    public void disableSubmitButton(Component comp) {
+    public void disableButton(Component comp) {
         comp.setEnabled(false);
+    }
+
+    /**
+     * Specific enablers for buttons to ensure no wrong inputs
+     * (eg) false submits, false undos, etc.
+     */
+    public void enableButton(Component comp) {
+        comp.setEnabled(true);
+    }
+
+    /**
+     * Enables specific letter in Hand, used for Undo method
+     */
+    public void enableLetterButton(char letter, Component[] comps) {
+        for (Component comp : comps) {
+            if (comp instanceof JButton button) {
+                if (button.getText().equals(String.valueOf(letter))) {
+                    button.setEnabled(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Disables specific letter in Hand, used for Redo method
+     */
+    public void disableLetterButton(char letter, Component[] comps) {
+        for (Component comp : comps) {
+            if (comp instanceof JButton button) {
+                if (button.getText().equals(String.valueOf(letter))) {
+                    button.setEnabled(false);
+                }
+            }
+        }
     }
 
     /**
